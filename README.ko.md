@@ -39,7 +39,12 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 
 | 스킬 | 호출 | 용도 |
 |------|------|------|
-| init | `sr-obsidian:init` | 프로젝트 폴더 구조 + 허브 노트 + WBS 생성 |
+| **sr-obsidian** | `/sr-obsidian` | **워크플로우 진입점** — 상황 파악 후 첫 번째 스킬 즉시 호출 |
+| capture | `sr-obsidian:capture` | Fleeting 노트 포착 — 키워드만 기록, 00-inbox/ 저장 |
+| study | `sr-obsidian:study` | 챕터 literature 노트 → permanent 노트 추출 (2-phase: 분석 → 생성) |
+| wiki | `sr-obsidian:wiki` | LLM Wiki 용어 페이지 생성 — scan / create / index 모드 |
+| init | `sr-obsidian:init` | 제텔카스텐 프로젝트 초기화 — book / area / vault 모드 |
+| iss | `sr-obsidian:iss` | ISS 인시던트/이슈 전체 구조 생성 (hub + WBS + steps/ + comms/) |
 | hub | `sr-obsidian:hub` | 허브 노트 링크·KPI·ISS 참조 관리 |
 | wbs | `sr-obsidian:wbs` | WBS Phase 구성·진행 현황 관리 |
 | history | `sr-obsidian:history` | ADR 생성·의사결정 로그·회의록 기록 |
