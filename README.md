@@ -1,50 +1,109 @@
 # sr-obsidian
 
-Obsidian 프로젝트 문서 관리 Claude Code 플러그인.
+> A Claude Code plugin for managing Obsidian project documentation — hub notes, WBS, history, and folder structure, all in one place.
 
-PSP 프로젝트에서 검증된 문서 관리 패턴(허브·WBS·docs 구조·diagrams·히스토리)을
-재사용 가능한 스킬로 추상화하여 vault 내 모든 프로젝트에 일관되게 적용한다.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet)](https://claude.ai/code)
+[![Status](https://img.shields.io/badge/Status-Early%20Stage-orange)](.)
 
-## 스킬 목록
+> English | [한국어](./README.ko.md)
 
-| 스킬 | 호출 | 용도 |
-|------|------|------|
-| init | `sr-obsidian:init` | 새 프로젝트 폴더 구조 + 허브 + WBS 생성 |
-| hub | `sr-obsidian:hub` | 허브 노트 링크·KPI·상태 관리 |
-| wbs | `sr-obsidian:wbs` | WBS Phase 구성·진행 현황 관리 |
-| history | `sr-obsidian:history` | ADR·의사결정 로그·회의록 기록 |
-| audit | `sr-obsidian:audit` | 프로젝트 구조 검증 |
-| migrate | `sr-obsidian:migrate` | 비표준 구조 → 표준 이관 |
+---
 
-## 표준 폴더 구조
+## Why
+
+Managing project documentation in Obsidian involves repetitive patterns:
+
+- Every new project needs the same folder structure (hub, WBS, docs/, diagrams/)
+- Hub notes drift out of sync as new files are added
+- Architecture decisions scatter across notes with no ADR trail
+- HTML visualizations end up in the wrong folder, breaking Obsidian iframes
+
+sr-obsidian encodes a proven documentation pattern (extracted from the PSP project) into a set of skills that enforce consistency across all projects in your vault.
+
+---
+
+## Document Hierarchy
+
+```
+docs/reports/{report}.md     ← source of truth (full analysis, open questions)
+        ↓ select
+diagrams/{report}.html       ← full visualization (sr-obsidian:visualize)
+        ↓ curate
+diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
+```
+
+---
+
+## Skills
+
+| Skill | Invoke | Purpose |
+|-------|--------|---------|
+| init | `sr-obsidian:init` | Create full project folder structure + hub note + WBS |
+| hub | `sr-obsidian:hub` | Manage hub note links, KPIs, ISS references |
+| wbs | `sr-obsidian:wbs` | WBS phase setup and progress tracking |
+| history | `sr-obsidian:history` | ADR creation, decision log, meeting notes |
+| visualize | `sr-obsidian:visualize` | MD → HTML via claude-visualize, saved to diagrams/ with paired MD |
+| audit | `sr-obsidian:audit` | Validate project structure against the standard |
+| migrate | `sr-obsidian:migrate` | Move non-standard files to the correct locations |
+
+---
+
+## Standard Folder Structure
 
 ```
 {project}/
-├── {project-id} 프로젝트 현황.md    ← 허브 (sr-obsidian:hub)
-├── {project-id} WBS.md              ← WBS (sr-obsidian:wbs)
+├── {project-id} 프로젝트 현황.md   ← hub (sr-obsidian:hub)
+├── {project-id} WBS.md             ← WBS (sr-obsidian:wbs)
 │
 ├── docs/
-│   ├── specs/        ← 설계 문서 (컴포넌트 역할, 인터페이스, 요구사항)
-│   ├── architecture/ ← 아키텍처 분석, 전문가 리뷰, 제약 분석
+│   ├── specs/        ← component roles, interfaces, requirements
+│   ├── architecture/ ← architecture analysis, expert reviews, constraints
 │   ├── adr/          ← Architecture Decision Records (sr-obsidian:history)
-│   ├── reports/      ← 보고서 소스 MD
-│   ├── runbook/      ← 운영 절차 (Phase 5+)
-│   └── config/       ← 인프라·환경 설정 기록
+│   ├── reports/      ← report source MD files
+│   ├── runbook/      ← operational procedures (Phase 5+)
+│   └── config/       ← infrastructure and environment config
 │
-├── diagrams/         ← HTML 전용 (인터랙티브 시각화)
-├── features/         ← FT-xxx 기능 개발 폴더
-├── phases/           ← Phase step 파일
-└── meetings/         ← 회의록 (sr-obsidian:history)
+├── diagrams/         ← HTML only (sr-obsidian:visualize output)
+├── features/         ← FT-xxx feature development folders
+├── phases/           ← phase step files
+└── meetings/         ← meeting notes (sr-obsidian:history)
 ```
 
-## 설치
+---
+
+## Installation
 
 ```bash
-# GitHub 레포 등록 후
+# Add marketplace
 claude plugins marketplace add SeokRae/sr-obsidian
+
+# Install
 claude plugins install sr-obsidian
 ```
 
+Restart Claude Code, then verify:
+
+```bash
+claude plugins list
+#   ❯ sr-obsidian@sr-obsidian
+#     Version: 0.1.0
+#     Scope: user
+#     Status: ✔ enabled
+```
+
+---
+
 ## Reference Implementation
 
-PSP 프로젝트 (`20-areas/payment/psp/`) 가 이 플러그인의 reference implementation.
+The PSP project (`20-areas/payment/psp/`) is the reference implementation for this plugin's patterns.
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## License
+
+MIT © SeokRae
