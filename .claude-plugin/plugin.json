@@ -1,6 +1,6 @@
 {
   "name": "sr-obsidian",
-  "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·lint-wiki·init·iss·hub·wbs·history·visualize·audit·migrate",
+  "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·lint-wiki·daily·weekly·retro·init·iss·hub·wbs·history·visualize·audit·migrate",
   "version": "0.1.0",
   "author": {
     "name": "SeokRae",
@@ -18,7 +18,10 @@
     "adr",
     "wiki",
     "lint-wiki",
-    "study"
+    "study",
+    "daily",
+    "weekly",
+    "retro"
   ],
   "skills": [
     "./skills/sr-obsidian",
@@ -26,6 +29,9 @@
     "./skills/study",
     "./skills/wiki",
     "./skills/lint-wiki",
+    "./skills/daily",
+    "./skills/weekly",
+    "./skills/retro",
     "./skills/init",
     "./skills/iss",
     "./skills/hub",
