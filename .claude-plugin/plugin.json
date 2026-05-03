@@ -1,0 +1,27 @@
+{
+  "name": "sr-obsidian",
+  "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
+  "version": "0.1.0",
+  "author": {
+    "name": "SeokRae",
+    "email": "kslbsh@gmail.com"
+  },
+  "repository": "git@github.com:SeokRae/sr-obsidian.git",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "project",
+    "docs",
+    "wbs",
+    "hub",
+    "adr"
+  ],
+  "skills": [
+    "./skills/wbs",
+    "./skills/hub",
+    "./skills/history",
+    "./skills/init",
+    "./skills/audit",
+    "./skills/migrate"
+  ]
+}

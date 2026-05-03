@@ -1,0 +1,11 @@
+{
+  "marketplace": "sr-obsidian",
+  "plugins": [
+    {
+      "name": "sr-obsidian",
+      "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
+      "path": ".",
+      "tags": ["obsidian", "project", "docs", "wbs", "hub", "adr"]
+    }
+  ]
+}
