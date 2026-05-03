@@ -1,11 +1,26 @@
 {
-  "marketplace": "sr-obsidian",
+  "name": "sr-obsidian",
+  "id": "sr-obsidian",
+  "owner": {
+    "name": "SeokRae",
+    "email": "kslbsh@gmail.com"
+  },
+  "metadata": {
+    "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
+    "version": "0.1.0"
+  },
   "plugins": [
     {
       "name": "sr-obsidian",
+      "source": "./",
       "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
-      "path": ".",
-      "tags": ["obsidian", "project", "docs", "wbs", "hub", "adr"]
+      "version": "0.1.0",
+      "author": {
+        "name": "SeokRae",
+        "email": "kslbsh@gmail.com"
+      },
+      "keywords": ["obsidian", "project", "docs", "wbs", "hub", "adr", "visualize"],
+      "category": "knowledge"
     }
   ]
 }
