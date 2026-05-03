@@ -39,7 +39,12 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 
 | Skill | Invoke | Purpose |
 |-------|--------|---------|
-| init | `sr-obsidian:init` | Create full project folder structure + hub note + WBS |
+| **sr-obsidian** | `/sr-obsidian` | **Workflow entry point** — orchestrates new project setup or existing project management |
+| capture | `sr-obsidian:capture` | Fleeting note capture — keyword-only, no structure, saved to 00-inbox/ |
+| study | `sr-obsidian:study` | Chapter literature note → permanent note extraction (2-phase: analyze → extract) |
+| wiki | `sr-obsidian:wiki` | LLM Wiki term page creation — scan / create / index modes |
+| init | `sr-obsidian:init` | Zettelkasten project init — book study, knowledge area, or vault bootstrap |
+| iss | `sr-obsidian:iss` | Create full ISS incident/issue structure (hub + WBS + steps/ + comms/) |
 | hub | `sr-obsidian:hub` | Manage hub note links, KPIs, ISS references |
 | wbs | `sr-obsidian:wbs` | WBS phase setup and progress tracking |
 | history | `sr-obsidian:history` | ADR creation, decision log, meeting notes |

@@ -82,7 +82,11 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
    git checkout -b feature/{issue번호}-wiki-{용어-slug}
    ```
 3. **선택된 용어별 처리**:
-   - **신규**: `tpl-wiki-term` 구조로 wiki 페이지 `Write`
+   - **신규**: Obsidian CLI로 템플릿 적용 후 내용 편집
+     ```bash
+     obsidian create path="30-resources/{카테고리}/{파일명}.md" template="tpl-wiki-term"
+     ```
+     → 생성된 파일 `Read` → `Edit`으로 4유형 섹션 채우기 (`technology` / `architecture` / `principle` / `metric`)
    - **태깅만**: 기존 노트 프론트매터에 `wiki-term: true` 추가 `Edit`
 4. **Fan-out**: 출처 노트의 `## 관련 메모`에 역링크 삽입
 5. **wiki-index.md** 정적 테이블 새 행 추가
@@ -124,7 +128,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 ### Phase 2: 생성 (WRITE)
 
-scan Phase 2와 동일한 순서로 진행.
+scan Phase 2와 동일한 순서로 진행 (`obsidian create` → Read → Edit → fan-out → wiki-index → log → PR).
 
 ---
 

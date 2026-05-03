@@ -1,165 +1,254 @@
 ---
 name: init
 description: >
-  Obsidian 프로젝트 폴더 구조 초기화. 새 프로젝트 시작 시 허브·WBS·docs·diagrams 구조를 한 번에 생성.
-  Keywords: init, 프로젝트 생성, 폴더 구조, 새 프로젝트, project init
+  Obsidian 제텔카스텐 프로젝트 초기화. book(독서 노트), area(지식 영역), vault(PARA 구조 부트스트랩) 3가지 모드 지원.
+  "새 책 시작", "독서 노트 만들어줘", "지식 영역 추가", "새 주제 공부 시작", "vault 초기화" 요청 시 사용.
+  서비스 프로젝트(20-areas/) 폴더 초기화는 sr-obsidian:hub 사용.
+  Keywords: init, 초기화, 제텔카스텐, zettelkasten, 독서노트, book, area, vault, 지식 영역, 공부 시작
 allowed-tools: Read, Write, Bash, Edit
 ---
 
-# sr-obsidian:init — 프로젝트 폴더 구조 초기화
+# sr-obsidian:init — 제텔카스텐 프로젝트 초기화
 
-새 프로젝트 폴더 전체 구조(허브·WBS·docs 6개 하위폴더·diagrams)를 한 번에 생성한다.
+Obsidian vault에서 새 지식 프로젝트를 시작할 때 필요한 구조를 한 번에 만든다.
 
-## 실행 절차
+## 모드 선택
 
-### Step 1. 대상 경로 확인
+| 모드 | 설명 | 생성 위치 |
+|------|------|----------|
+| `book` | 독서 노트 프로젝트 | `30-resources/books/{slug}/` |
+| `area` | 지식 영역 (기술·도메인·방법론 등) | `30-resources/{category}/{topic}/` |
+| `vault` | vault 전체 PARA 구조 부트스트랩 | vault root |
 
-사용자 메시지에서 파악하거나 질문:
+> 서비스 프로젝트(20-areas/payment/{id}/) 초기화는 `sr-obsidian:hub` 사용.
 
-| 항목 | 예시 |
-|------|------|
-| `project-id` | `payment-npg-core` |
-| `project-name` | `NPG Core` |
-| `base-path` | `20-areas/payment/npg-core/` |
-| `start-date` | `2026-05-01` |
-| `description` | 프로젝트 한 줄 설명 |
+모드가 명확하지 않으면 질문: "독서 노트인가요, 새 공부 영역인가요?"
 
-### Step 2. 디렉토리 생성
+---
+
+## 📚 book — 독서 노트 프로젝트
+
+### 정보 수집
+
+| 항목 | 설명 | 예시 |
+|------|------|------|
+| `title` | 책 제목 | `Designing Data-Intensive Applications` |
+| `slug` | 폴더명 (kebab-case) | `designing-data-intensive-applications` |
+| `author` | 저자 | `Martin Kleppmann` |
+| `description` | 한 줄 설명 | 분산 시스템 설계 원칙과 트레이드오프 |
+| `chapters` | 챕터 목록 (선택) | ch01~ch12 제목 — 없으면 비워둠 |
+
+### 폴더 생성
 
 ```bash
-base="20-areas/payment/{project-id}"
-mkdir -p "$base/docs/specs"
-mkdir -p "$base/docs/architecture"
-mkdir -p "$base/docs/adr"
-mkdir -p "$base/docs/reports"
-mkdir -p "$base/docs/runbook"
-mkdir -p "$base/docs/config"
-mkdir -p "$base/diagrams"
-mkdir -p "$base/features"
-mkdir -p "$base/phases"
-mkdir -p "$base/meetings"
+mkdir -p 30-resources/books/{slug}
 ```
 
-### Step 3. 허브 노트 생성
+### _index.md 생성
 
-파일: `{base-path}/{project-id} 프로젝트 현황.md`
-
+`30-resources/books/{slug}/_index.md`:
 ```markdown
 ---
-type: project
+type: literature
 created: {YYYY-MM-DD}
-tags: [project, {project-id}]
-project-id: {project-id}
-status: active
-start-date: {start-date}
-end-date:
-description: {description}
+tags: [books, {slug}]
+status: reading
+author: {author}
+book-title: {title}
+chapters-total: {N}
+chapters-done: 0
 ---
 
-# {project-id} 프로젝트 현황
+# {title}
 
 > {description}
 
-← [[이슈 트래킹 MOC]] | 📊 [[{project-id} WBS]]
+← [[30-resources/books/_index|Books]]
 
----
+## 개요
 
-## 🔗 바로가기
+- **저자**: {author}
+- **핵심 주제**: {description}
+- **읽기 목적**: (미결)
 
-- 📊 [[{project-id} WBS]] · features/ · docs/ · diagrams/
+## 챕터 목록
 
-## 📌 개요
+| 챕터 | 제목 | 상태 |
+|------|------|------|
+| ch01 | (제목) | ⬜ |
 
-- **목적**: (미결)
-- **기간**: {start-date} ~
+## 핵심 개념 (Permanent 노트)
 
-## 📊 프레젠테이션 요약
+(/study 스킬로 추출한 permanent 노트 링크)
 
-### §1 개요
-- **개념 정의**: (미결)
-- **기능 범위**: (미결)
-- **관련 시스템**: (미결)
-
-### §2 본론
-- **핵심 요구사항**: (미결)
-- **주요 제약**: (미결)
-
-### §3 결론
-- **기대효과**: (미결)
-- **시사점**: (미결)
-
-## 📐 다이어그램
-
-(diagrams/ 파일 추가 후 링크 연결)
-
-## 🔗 관련 ISS
-
-(연관 ISS 발생 시 추가)
-
-## 📋 문서
-
-| 구분 | 파일 |
-|------|------|
-| 보고서 | (추가 예정) |
-| 설계 | (추가 예정) |
+## 관련 메모
 ```
 
-### Step 4. WBS 노트 생성
+### 챕터 파일 생성 (챕터 목록이 있을 때)
 
-파일: `{base-path}/{project-id} WBS.md`
-
+`30-resources/books/{slug}/ch{NN}-{slug}.md` — 각 챕터:
 ```markdown
 ---
-type: wbs
-project: {project-id}
-wbs-status: active
+type: literature
 created: {YYYY-MM-DD}
-updated: {YYYY-MM-DD}
-start-date: {start-date}
-end-date:
-tags: [wbs, {project-id}]
+tags: [books, {book-slug}]
+book: {title}
+chapter: {N}
+chapter-title: {챕터 제목}
+status: unread
 ---
 
-# {project-id} WBS
+# ch{NN} {챕터 제목}
 
-← [[{project-id} 프로젝트 현황]]
+← [[_index|{title}]]
 
----
+## 핵심 논지
 
-## 프로젝트 개요
+## 주요 개념
 
-| 항목 | 값 |
-|------|-----|
-| 프로젝트명 | {project-name} ({project-id}) |
-| 목적 | (미결) |
-| 기간 | {start-date} ~ (미결) |
+## 메모
 
----
+## Permanent 노트 후보
 
-## Phase 진행 현황
-
-| Phase | 제목 | 상태 | 기간 |
-|-------|------|------|------|
-| Phase 0 | 준비 | ready | - |
-
----
-
-## 미결 사항
-
-- [ ] Phase 계획 수립
+- [ ] 
 ```
 
-### Step 5. 완료 보고
+### 30-resources/books/_index.md 갱신
+
+`## 목록` 섹션에 링크 추가:
+```
+- [[{slug}/_index|{title}]]
+```
+
+### 완료 안내
 
 ```
-✅ 생성 완료: {base-path}
-  ├── {project-id} 프로젝트 현황.md
-  ├── {project-id} WBS.md
-  ├── docs/specs/, architecture/, adr/, reports/, runbook/, config/
-  ├── diagrams/
-  ├── features/, phases/, meetings/
+✅ 독서 노트 생성: 30-resources/books/{slug}/
+  ├── _index.md
+  └── ch{NN}-*.md ({N}개)
 
 다음 단계:
-  - sr-obsidian:hub  → 허브 노트 내용 보강
-  - sr-obsidian:audit → 구조 검증
+  /study → 챕터 읽기 후 literature 노트 → permanent 노트 추출
+```
+
+---
+
+## 🗂️ area — 지식 영역
+
+### 정보 수집
+
+| 항목 | 설명 | 유효값 |
+|------|------|--------|
+| `category` | 리소스 카테고리 | `tech` / `domain` / `methodology` / `career` / `tools` |
+| `topic` | 주제 폴더명 (kebab-case) | `distributed-systems` |
+| `title` | MOC 표시 이름 | `분산 시스템` |
+| `description` | 한 줄 설명 | - |
+
+### 폴더 생성
+
+```bash
+mkdir -p 30-resources/{category}/{topic}
+```
+
+### MOC 생성
+
+`50-moc/{title} MOC.md`:
+```markdown
+---
+type: moc
+created: {YYYY-MM-DD}
+tags: [{category}, moc, {topic}]
+---
+
+# {title} MOC
+
+> {description}
+
+← [[Home]] | [[00-index|전체 인덱스]]
+
+## 핵심 개념
+
+(permanent 노트 추가 시 링크 연결)
+
+## 관련 영역
+
+## 참고 자료
+```
+
+### 완료 안내
+
+```
+✅ 지식 영역 생성 완료
+  30-resources/{category}/{topic}/  ← permanent 노트 저장 위치
+  50-moc/{title} MOC.md            ← 진입점
+
+다음 단계:
+  /study   → 문헌 노트 → permanent 노트 추출 후 MOC에 링크 연결
+  /wiki    → 용어 wiki 페이지 생성
+  /capture → fleeting 메모 포착
+```
+
+---
+
+## 🏗️ vault — PARA 구조 부트스트랩
+
+빈 vault 또는 구조가 없는 상태에서 전체 PARA 폴더와 핵심 파일을 생성한다.
+
+### 폴더 생성
+
+```bash
+mkdir -p 00-inbox
+mkdir -p 10-projects
+mkdir -p 20-areas/meetings
+mkdir -p 30-resources/{tech,domain,methodology,career,tools,books}
+mkdir -p 40-archives
+mkdir -p 50-moc
+mkdir -p 60-logs/{daily,weekly,retro}
+mkdir -p _templates _scripts _attachments
+```
+
+### 핵심 파일 생성
+
+| 파일 | 역할 |
+|------|------|
+| `50-moc/Home.md` | vault 진입점 |
+| `50-moc/00-index.md` | permanent 노트 전체 카탈로그 (Dataview) |
+| `50-moc/wiki-index.md` | wiki-term 카탈로그 (Dataview) |
+| `60-logs/ingest-log.md` | ingest 로그 (append-only) |
+| `30-resources/books/_index.md` | 독서 노트 목록 |
+
+Home.md 기본 구조:
+```markdown
+---
+type: moc
+created: {YYYY-MM-DD}
+tags: [home, moc]
+---
+
+# Home
+
+## 빠른 진입
+
+- [[00-index|전체 Permanent 노트]]
+- [[wiki-index|Wiki 용어]]
+
+## 영역
+
+- 20-areas/ — 진행 중 프로젝트·서비스
+- 30-resources/ — 지식 아카이브
+- 10-projects/ — ISS 인시던트
+
+## 최근 작업
+
+(데일리 노트 링크)
+```
+
+---
+
+## 공통: Ingest Log 기록
+
+모든 모드에서 파일 생성 완료 후:
+
+```bash
+printf '\n## [%s] init | {모드} | {title} → {N}개\n' "$(date +%Y-%m-%d)" >> 60-logs/ingest-log.md
 ```
