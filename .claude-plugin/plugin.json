@@ -20,6 +20,7 @@
     "./skills/wbs",
     "./skills/hub",
     "./skills/history",
+    "./skills/visualize",
     "./skills/init",
     "./skills/audit",
     "./skills/migrate"
