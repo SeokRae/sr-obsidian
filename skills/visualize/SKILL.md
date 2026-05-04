@@ -49,7 +49,21 @@ cat "20-areas/payment/{project-id}/docs/{subfolder}/{file}.md"
 | `topology` | 인프라 토폴로지, 서비스 메시 |
 | `comparison` | Before/After, 아키텍처 옵션 비교 |
 
-### Step 3. HTML 생성
+### Step 3. HTML 생성 또는 수정
+
+**대상 파일 존재 여부 먼저 확인:**
+
+```bash
+ls "20-areas/payment/{project-id}/diagrams/{file}.html" 2>/dev/null && echo "EXISTS" || echo "NEW"
+```
+
+**기존 파일인 경우 (개선·업데이트) — Edit-first:**
+1. Read로 기존 HTML 전체 읽기
+2. 변경이 필요한 부분만 식별 (노드 좌표, 엣지 경로, 색상, 텍스트)
+3. Edit 도구로 해당 부분만 교체 — Write 전체 재작성 금지
+4. 수정 줄 수가 50줄 이상이면 bash-runner 서브에이전트에 위임
+
+**신규 파일인 경우 — Write:**
 
 `claude-visualize:visualize` 스킬을 호출하여 HTML 생성:
 
@@ -110,13 +124,24 @@ tags: [diagram, {project-id}]
 
 또는 `sr-obsidian:hub` 스킬로 위임.
 
-### Step 6. 완료 보고
+### Step 6. 완료 보고 + 자체 평가
 
 ```
-✅ HTML 생성: diagrams/{file}.html
+✅ HTML 생성/수정: diagrams/{file}.html
 ✅ 페어드 MD: diagrams/{file}.md
 ✅ 허브 링크: {project-id} 프로젝트 현황.md ## 📐 다이어그램 추가
 
 Obsidian에서 바로 확인:
   [[diagrams/{file}]]
 ```
+
+**자체 평가 (완료 보고 후 반드시 수행):**
+
+| 항목 | 확인 | 비고 |
+|------|------|------|
+| 기존 파일 개선 시 Edit 사용 | ✅/❌ | Write 전체 재작성 여부 |
+| 변경 줄 수 최소화 | ✅/❌ | 실제 변경 줄 수 기록 |
+| 출력 토큰 한도 위험 여부 | ✅/❌ | 500줄↑ Write 시 서브에이전트 사용 |
+| 소요 시간 적정 여부 | ✅/❌ | 10분 초과 시 원인 기록 |
+
+개선점이 있으면 `~/.claude/rules/corrections.md` 또는 프로젝트 memory에 기록한다.
