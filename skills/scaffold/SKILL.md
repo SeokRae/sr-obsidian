@@ -1,14 +1,14 @@
 ---
-name: init
+name: scaffold
 description: >
-  Obsidian 제텔카스텐 프로젝트 초기화. book(독서 노트), area(지식 영역), vault(PARA 구조 부트스트랩) 3가지 모드 지원.
+  Obsidian 제텔카스텐 프로젝트 뼈대 생성. book(독서 노트), area(지식 영역), vault(PARA 구조 부트스트랩) 3가지 모드 지원.
   "새 책 시작", "독서 노트 만들어줘", "지식 영역 추가", "새 주제 공부 시작", "vault 초기화" 요청 시 사용.
   서비스 프로젝트(20-areas/) 폴더 초기화는 sr-obsidian:hub 사용.
-  Keywords: init, 초기화, 제텔카스텐, zettelkasten, 독서노트, book, area, vault, 지식 영역, 공부 시작
+  Keywords: scaffold, 뼈대, 초기화, 제텔카스텐, zettelkasten, 독서노트, book, area, vault, 지식 영역, 공부 시작
 allowed-tools: Read, Write, Bash, Edit
 ---
 
-# sr-obsidian:init — 제텔카스텐 프로젝트 초기화
+# sr-obsidian:scaffold — 제텔카스텐 프로젝트 뼈대 생성
 
 Obsidian vault에서 새 지식 프로젝트를 시작할 때 필요한 구조를 한 번에 만든다.
 
