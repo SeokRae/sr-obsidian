@@ -37,7 +37,7 @@ cat "20-areas/payment/{project-id}/{project-id} 프로젝트 현황.md"
 
 | 요청 | 처리 |
 |------|------|
-| 허브 신규 생성 | sr-obsidian:init 실행 후 이 스킬로 보강 |
+| 허브 신규 생성 | sr-obsidian:scaffold 실행 후 이 스킬로 보강 |
 | 링크 최신화 | Step 3 → docs·diagrams 파일 스캔 후 업데이트 |
 | KPI 반영 | Step 4 → 프레젠테이션 요약 섹션 보강 |
 | ISS 연결 | Step 5 → 관련 ISS 섹션 추가 |
