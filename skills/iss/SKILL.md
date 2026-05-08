@@ -218,6 +218,13 @@ summary: {한 줄 요약}
 ## 분석 / 요약
 ```
 
+> **outbound 영문 메시지 humanize 검토 (필수)**
+> outbound comm 에 영문 메시지가 포함되면 파일 저장 전 `/humanize` 스킬로 검토한다.
+> 1. 영문 초안 작성 완료
+> 2. `/humanize` 호출 → 윤문 결과 확인 (AI 패턴·수동태·em dash 제거)
+> 3. 수정 반영 후 파일 저장
+> inbound 수신 메시지는 검토 불필요 (원문 보존 원칙).
+
 **규칙**:
 - `start-date`: 완료된 step은 실제 날짜, 미래 step은 비워둠
 - `end-date`: 체크리스트 전부 `- [x]` 완료 시만 입력
