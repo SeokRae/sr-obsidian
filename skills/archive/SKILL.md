@@ -3,6 +3,7 @@ name: archive
 description: >
   10-projects/ISS-*/ 를 스캔하여 완료 조건(hub status: closed + 모든 step status: done)을
   충족하는 ISS를 찾아 40-archives/ 로 일괄 이동. ISS 아카이브 작업 시작 시 사용.
+  Do NOT use for open/in-progress ISS — only closed hub + all steps done.
   Keywords: archive, 아카이브, ISS 완료, 이슈 정리, iss archive, 완료 이동
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
@@ -82,8 +83,12 @@ git pull origin main
 git worktree remove .claude/worktrees/archive-iss-batch --force
 ```
 
-## 주의사항
+## 판단 기준
 
-- steps/ 가 일부만 done인 ISS는 절대 이동하지 않는다
-- hub status가 closed여도 step이 하나라도 in-progress/ready면 보류
-- 이동 후 기존 내부 링크 수정은 이 스킬 범위 밖 (수동 또는 별도 작업)
+| 상황 | 처리 |
+|------|------|
+| steps/ 일부만 done | 보류 — 모든 step이 done이어야 이동 가능 |
+| hub closed이나 step in-progress/ready 있음 | 보류 — step 완료 후 재실행 |
+| steps/ 없는 ISS | hub `status: closed` 단독으로 아카이브 가능 |
+| 아카이브 대상 0건 | "아카이브할 ISS 없음" 출력 후 종료 |
+| 이동 후 내부 링크 깨짐 | 이 스킬 범위 밖 — 수동 수정 또는 sr-obsidian:migrate 사용 |

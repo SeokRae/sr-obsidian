@@ -3,6 +3,8 @@ name: hub
 description: >
   프로젝트 허브 노트({project-id} 프로젝트 현황.md) 생성·링크·KPI·상태 관리.
   "허브 업데이트", "현황 노트", "프로젝트 현황 정리" 요청 시 사용.
+  Do NOT use for new project folder creation (use sr-obsidian:scaffold first).
+  Do NOT use for ISS incident structure (use sr-obsidian:iss).
   Keywords: hub, 허브, 프로젝트 현황, KPI, ISS 링크, 다이어그램 링크
 allowed-tools: Read, Write, Bash, Edit
 ---
@@ -81,3 +83,13 @@ ISS 링크 패턴:
 ### Step 6. 완료 보고
 
 변경된 섹션 목록과 업데이트 내용을 요약해서 보고.
+
+## 판단 기준
+
+| 상황 | 처리 |
+|------|------|
+| 허브 파일 미발견 | 서비스명 확인 후 `20-areas/payment/{서비스}/{서비스} 프로젝트 현황.md` 경로 안내 |
+| `diagrams/` 폴더 없음 | 섹션 추가 없이 진행, diagrams/ 생성 시 sr-obsidian:visualize 안내 |
+| KPI 섹션 비어 있음 | 빈 테이블로 유지, 추정값 채우지 않음 |
+| 새 프로젝트 폴더 자체가 없음 | sr-obsidian:scaffold 먼저 실행 안내 |
+| ISS 번호 찾기 불명확 | `10-projects/ISS-*/` Glob으로 목록 제시 후 선택 |

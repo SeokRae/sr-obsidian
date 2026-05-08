@@ -5,6 +5,7 @@ description: >
   scan(폴더 스캔으로 후보 추출), create(직접 용어 지정), query(wiki-first 질의 + 답변 파일링), index(인덱스 재생성) 4가지 모드.
   type:permanent + wiki-term:true 프론트매터로 기존 lint-wiki·Dataview 인프라와 호환.
   "wiki", "용어", "위키", "glossary", "용어 페이지", "wiki 만들어줘", "wiki에서 찾아줘" 요청 시 사용.
+  Do NOT use for non-wiki permanent notes from literature/study (use sr-obsidian:study).
   Keywords: wiki, 용어, 위키, glossary, term, wiki-term, 용어 페이지, query, 질의
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---

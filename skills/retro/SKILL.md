@@ -1,6 +1,9 @@
 ---
 name: retro
-description: 주간 회고 작성 자동화. 주말에 실행 — obsidian-cli로 이번주 월~금 작업 수집 + KPI·오픈 이슈 진행 상태 검토 → 초안 확인 → Issue → Branch → Write → Commit → PR 자동화. Keywords: 주간 회고, retro, 회고, 이번주 회고, 주말 회고, 월~금 정리, KPI 검토, 이슈 검토, weekly retro.
+description: >
+  주간 회고 작성 자동화 (주말, 월~금 사이클). obsidian-cli로 이번주 월~금 작업 수집 + KPI·오픈 이슈 진행 상태 검토 → 초안 확인 → Issue → Branch → Write → Commit → PR 자동화.
+  Do NOT use for Thu-Wed business weekly report (use sr-obsidian:weekly).
+  Keywords: 주간 회고, retro, 회고, 이번주 회고, 주말 회고, 월~금 정리, KPI 검토, 이슈 검토.
 allowed-tools: Bash, Read, Glob, Write, Edit
 ---
 

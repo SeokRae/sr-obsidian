@@ -4,6 +4,8 @@ description: >
   Fleeting 노트 포착 모드. 대화 중 실시간으로 키워드와 문맥만 빠르게 기록한다.
   구조화·해석·정리 없이 bullet 중심으로 00-inbox/ 에 초안 생성.
   "포착", "기록", "fleeting", "capture", "메모해줘", "나중에 볼게" 요청 시 사용.
+  Do NOT use for structured study/permanent notes (use sr-obsidian:study).
+  Do NOT use for URL web clipping (use sr-obsidian:defuddle).
   Keywords: 포착, 기록, fleeting, capture, 키워드, 메모
 allowed-tools: Glob, Write
 ---
@@ -53,3 +55,12 @@ tags: []
 파일: 00-inbox/{파일명}.md
 다음 단계: sr-obsidian:study 또는 sr-obsidian:wiki 로 이어서 정리
 ```
+
+## 판단 기준
+
+| 상황 | 처리 |
+|------|------|
+| `$ARGUMENTS` 비어 있음 | 무엇을 기록할지 질문 후 대기 |
+| 동일 제목 파일 이미 존재 | `{제목}-{YYYYMMDD-HHMM}.md` 로 파일명 변경 |
+| URL이 인자로 전달됨 | sr-obsidian:defuddle 사용 안내 |
+| 구조화·분석 요청 포함 | 구조화는 생략하고 bullet만 기록, 처리는 study/wiki로 위임 |

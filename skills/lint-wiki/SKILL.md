@@ -5,6 +5,7 @@ description: >
   구조 검사: Orphan, Dangling link, MOC 미연결, 관련 메모 섹션 부재.
   의미론적 검사: 페이지 간 모순, stale 주장, prose 언급 개념, data gap, 신규 소스 제안.
   결과를 60-logs/lint-reports/YYYY-MM-DD.md 로 저장.
+  Do NOT use for project structure audit (use sr-obsidian:audit — audit covers 20-areas/ project folders).
   Keywords: lint, wiki, orphan, dangling, moc, 품질, 검사, 연결 없음, 모순, stale
 allowed-tools: Bash, Read, Glob
 ---
