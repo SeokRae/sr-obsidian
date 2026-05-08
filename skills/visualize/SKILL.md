@@ -48,6 +48,7 @@ cat "20-areas/payment/{project-id}/docs/{subfolder}/{file}.md"
 | `flow` | 인터페이스 흐름, 서비스 연동도 |
 | `topology` | 인프라 토폴로지, 서비스 메시 |
 | `comparison` | Before/After, 아키텍처 옵션 비교 |
+| `mockup` | UI 화면 설계, "화면 그려줘" 요청 — A/B 탭 전환 단일 HTML |
 
 ### Step 3. HTML 생성 또는 수정
 
@@ -113,6 +114,7 @@ tags: [diagram, {project-id}]
 - timeline (37 steps ≈ 3000px SVG): `height="3400"`
 - dashboard: `height="700"`
 - topology: `height="800"`
+- mockup: `height="900"`
 
 ### Step 5. 허브 노트 연결
 
