@@ -1,7 +1,7 @@
 {
   "name": "sr-obsidian",
-  "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·visualize·audit·migrate·search·archive·defuddle·obsidian-markdown·json-canvas·obsidian-bases",
-  "version": "0.5.0",
+  "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·visualize·audit·migrate·search·adr·archive·defuddle·obsidian-markdown·json-canvas·obsidian-bases",
+  "version": "0.6.0",
   "author": {
     "name": "SeokRae",
     "email": "kslbsh@gmail.com"
@@ -41,6 +41,7 @@
     "./skills/audit",
     "./skills/migrate",
     "./skills/search",
+    "./skills/adr",
     "./skills/archive",
     "./skills/defuddle",
     "./skills/obsidian-markdown",
