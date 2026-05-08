@@ -3,6 +3,7 @@ name: iss
 description: >
   ISS 인시던트/이슈 전체 구조 자동 생성 — hub + WBS + steps/ + comms/.
   파트너 문의·운영 이슈·인시던트 대응을 시작할 때 사용.
+  Do NOT use for non-ISS project/knowledge initialization (use sr-obsidian:scaffold or sr-obsidian:hub).
   Keywords: iss, 이슈, 인시던트, 문의 대응, ISS 생성, issue create, incident
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
@@ -281,3 +282,13 @@ git commit -m "docs: ISS-{NNN} {title} 구조 생성 (#{gh-issue-번호})"
 - Obsidian에서 `ISS-{NNN} WBS.md` 열어 gantt-b 렌더링 확인
 - step 진행 시마다 `start-date` / 완료 시 `end-date` 채울 것
 - 이슈 종료 시: `10-projects/` → `40-archives/`로 폴더 이동 후 PR
+
+## 판단 기준
+
+| 상황 | 처리 |
+|------|------|
+| ISS 번호 중복 | `10-projects/ISS-*/` + `40-archives/ISS-*/` 중 최대 번호 + 1 재계산 |
+| 관련 FT 있음 | hub 파일에 `related-ft:` 필드 추가, FT ↔ ISS 양방향 링크 |
+| steps/ 비어 있음 | 이슈 유형별 기본 steps 표에서 자동 생성 |
+| 파트너 문의인지 내부 이슈인지 불명확 | "파트너 문의인가요, 내부 운영 이슈인가요?" 질문 |
+| comms/ 필요 여부 불명확 | 외부 파트너 문의 포함 시 comms/ 생성, 내부 이슈면 선택 |

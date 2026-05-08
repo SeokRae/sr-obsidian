@@ -1,6 +1,9 @@
 ---
 name: weekly
-description: 주간보고 + 회고 작성 자동화. 해당 주 데일리 노트를 수집·분석해 초안을 보여주고, 확인 후 Issue → Branch → Write → Commit → PR 전 과정 자동화. Keywords: 주간보고, weekly, 주간 리포트, 이번주 정리, 회고, retro, 미완료 분석, 이번주 회고.
+description: >
+  주간보고 작성 자동화 (목~수 사이클). 해당 주 데일리 노트를 수집·분석해 초안을 보여주고, 확인 후 Issue → Branch → Write → Commit → PR 전 과정 자동화.
+  Do NOT use for weekend KPI/retrospective (use sr-obsidian:retro — retro covers Mon-Fri reflection).
+  Keywords: 주간보고, weekly, 주간 리포트, 이번주 정리, 미완료 분석.
 allowed-tools: Bash, Read, Glob, Write, Edit
 ---
 

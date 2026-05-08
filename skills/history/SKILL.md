@@ -164,3 +164,13 @@ tags: [meeting, {project-id}]
 ### Step 6. 허브 노트 연결
 
 신규 ADR·회의록 작성 후 `sr-obsidian:hub` 실행하여 허브 노트 `## 📋 문서` 섹션 업데이트.
+
+## 판단 기준
+
+| 상황 | 처리 |
+|------|------|
+| ADR 번호 중복 | `docs/architecture/` 내 최대 번호 + 1 재계산 |
+| 프로젝트 폴더 미존재 | sr-obsidian:scaffold 또는 sr-obsidian:hub 먼저 실행 안내 |
+| 기존 ADR superseded | 기존 ADR에 `superseded-by: ADR-{N}` 필드 추가 + 신규 ADR에 `supersedes: ADR-{M}` 추가 |
+| 회의 참석자 불명확 | 알려진 참석자만 기록, 추정 금지 |
+| docs/architecture/ 폴더 없음 | Write로 폴더 경로 포함해서 파일 생성 (Obsidian이 자동 생성) |

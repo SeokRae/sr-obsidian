@@ -3,7 +3,8 @@ name: scaffold
 description: >
   Obsidian 제텔카스텐 프로젝트 뼈대 생성. book(독서 노트), area(지식 영역), vault(PARA 구조 부트스트랩) 3가지 모드 지원.
   "새 책 시작", "독서 노트 만들어줘", "지식 영역 추가", "새 주제 공부 시작", "vault 초기화" 요청 시 사용.
-  서비스 프로젝트(20-areas/) 폴더 초기화는 sr-obsidian:hub 사용.
+  Do NOT use for service project initialization in 20-areas/ (use sr-obsidian:hub).
+  Do NOT use for ISS incident structure (use sr-obsidian:iss).
   Keywords: scaffold, 뼈대, 초기화, 제텔카스텐, zettelkasten, 독서노트, book, area, vault, 지식 영역, 공부 시작
 allowed-tools: Read, Write, Bash, Edit
 ---
@@ -252,3 +253,13 @@ tags: [home, moc]
 ```bash
 printf '\n## [%s] init | {모드} | {title} → {N}개\n' "$(date +%Y-%m-%d)" >> 60-logs/ingest-log.md
 ```
+
+## 판단 기준
+
+| 상황 | 처리 |
+|------|------|
+| 목적 폴더 이미 존재 | 사용자에게 알리고 덮어쓸지 확인 |
+| 모드 불명확 | "독서 노트인가요, 새 공부 영역인가요?" 질문 |
+| 서비스 프로젝트 초기화 요청 | sr-obsidian:hub 사용 안내 |
+| vault 이미 초기화됨 | 기존 PARA 구조 확인 후 누락 폴더만 추가 |
+| 카테고리 미존재 (30-resources/ 하위) | `tech` / `domain` / `methodology` 중 선택 안내 |
