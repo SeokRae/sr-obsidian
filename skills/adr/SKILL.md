@@ -127,12 +127,14 @@ tags: [adr, {프로젝트}]
    - 결정: {결정 한 줄 요약}
    ```
 
-2. git 커밋 (Issue/Branch 없이 직접):
+2. 커밋 — commit-msg 훅이 `#숫자` 이슈 번호를 필수로 검사한다.
+   사용자에게 이슈 번호를 묻고, 받은 번호로 커밋한다:
    ```bash
    cd /Users/sr/obsidian/sr-labs
    git add 20-areas/{프로젝트}/adr/{파일명}.md 60-logs/ingest-log.md
-   git commit -m "docs: ADR {제목} (#adr)"
+   git commit -m "docs: ADR {제목} (#{이슈번호})"
    ```
+   이슈 번호를 모르거나 없는 경우: `gh issue create --repo SeokRae/knowledge-labs --title "ADR: {제목}"` 실행 후 반환된 번호 사용.
 
 3. 완료 출력:
    ```
