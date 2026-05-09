@@ -1,5 +1,5 @@
 ---
-name: json-canvas
+name: canvas
 description: >
   Obsidian .canvas 파일 생성 및 편집 스킬.
   노드(텍스트·파일·링크·그룹)와 엣지로 구성된 JSON Canvas 형식을 사용한다.
@@ -10,7 +10,7 @@ description: >
 allowed-tools: Read, Write, Edit
 ---
 
-# sr-obsidian:json-canvas — Canvas 파일 생성
+# sr-obsidian:canvas — Canvas 파일 생성
 
 Obsidian `.canvas` 파일은 JSON Canvas Spec 1.0 형식이다.
 최상위 구조: `{"nodes": [...], "edges": [...]}` — 다른 키는 없음.
