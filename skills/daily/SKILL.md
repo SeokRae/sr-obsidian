@@ -158,10 +158,11 @@ ls 60-logs/daily/$PREV_YM/*.md 2>/dev/null | sort | tail -1
 이전 노트가 있으면 `## 목표`, `## 작업 로그`, `## 미완 작업` 섹션에서 `^- \[ \]` 항목을 추출한다.
 단, `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈는 이월하지 않는다.
 
-```bash
-# 섹션별 미완 항목 추출 (Python 스크립트로 처리)
+추출 후 **최근 30개 데일리 노트에서 이슈별 이월 횟수를 카운트**해 각 항목에 태그를 붙인다:
+
+```python
 python3 - <<'EOF'
-import re, sys
+import re, glob
 
 text = open("{PREV_NOTE_PATH}").read()
 sections = ["목표", "작업 로그", "미완 작업 (GitHub Issues)"]
@@ -175,8 +176,30 @@ for line in text.splitlines():
     elif current and any(s in current for s in sections):
         if line.startswith("- [ ]") and not DAILY_SKIP.search(line):
             results.append(line)
-for r in results:
-    print(r)
+
+# 최근 30개 노트에서 이슈별 등장 횟수 카운트
+recent_files = sorted(glob.glob("60-logs/daily/**/*.md", recursive=True))[-30:]
+issue_counts = {}
+for f in recent_files:
+    try:
+        content = open(f).read()
+    except:
+        continue
+    for line in content.splitlines():
+        if line.startswith("- [ ]") and not DAILY_SKIP.search(line):
+            for num in re.findall(r'#(\d+)', line):
+                issue_counts[num] = issue_counts.get(num, 0) + 1
+
+# 이월 횟수 태그 추가
+for item in results:
+    nums = re.findall(r'#(\d+)', item)
+    count = max((issue_counts.get(n, 0) for n in nums), default=0)
+    if count >= 3:
+        print(f"{item} ({count}회 이월) ⚠️ 재검토")
+    elif count >= 1:
+        print(f"{item} ({count}회 이월)")
+    else:
+        print(item)
 EOF
 ```
 
@@ -374,3 +397,5 @@ PR    : SeokRae/knowledge-labs#{PR_NUMBER}
 | `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 이슈 | 이월 및 미완 작업 섹션에서 제외 (이월 누적 방지) |
 | 날짜 형식 오류 | 오류 메시지 출력 후 중단 |
 | gh 인증 실패 | 오류 메시지 출력 후 중단 |
+| 이월 횟수 0회 | 횟수 태그 생략 (원본 항목 그대로 유지) |
+| glob 실패 (daily 폴더 없음) | 이월 횟수 카운트 건너뜀, 항목만 출력 |
