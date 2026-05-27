@@ -118,6 +118,27 @@ git branch --show-current
 
 신규 이슈가 없으면 이 단계를 건너뛴다.
 
+### Step G3.5: 오늘 git 커밋 → 작업 로그 자동 제안
+
+작업 로그 섹션이 `- [ ]` placeholder 상태일 때만 실행한다. 이미 기록이 있으면 건너뛴다.
+
+```bash
+# 오늘 자정 이후 커밋 수집 (merge 커밋 제외)
+git -C /Users/sr/obsidian/sr-labs log \
+  --since="$(date +%Y-%m-%d) 00:00:00" \
+  --oneline --no-merges 2>/dev/null | head -10
+```
+
+출력된 커밋 메시지에서 `#NNNN` PR 번호를 추출해 아래 형식으로 변환,
+작업 로그 섹션의 `- [ ]` placeholder 한 줄을 **Edit로 교체**한다.
+
+```
+- [x] {커밋 메시지 요약} (PR #{번호})
+```
+
+제외 패턴: `docs: {YYYY-MM-DD} 데일리 노트` (데일리 노트 자체 커밋)
+커밋이 없으면 이 단계를 건너뛴다.
+
 ### Step G4: 커밋 & Push
 
 ```bash
@@ -205,6 +226,17 @@ EOF
 
 추출 결과를 `{CARRIED_ITEMS}`로 저장한다. 없으면 빈 문자열.
 
+### Step 1.6: 오늘 목표 자동 제안
+
+`{CARRIED_ITEMS}` 에서 이월 횟수 내림차순 상위 2개를 선택해 `{GOAL_ITEMS}`로 저장한다.
+이월 항목이 없으면 `{GOAL_ITEMS}` = `- [ ]` (빈 항목).
+
+선택 규칙:
+- 이월 횟수 파싱: `(\d+)회 이월` 패턴
+- `⚠️ 재검토` 태그 항목 → 제목 뒤에 `(재검토 or 폐쇄 결정)` 주석 추가
+- 상위 2개 초과 시 나머지는 `{GOAL_ITEMS}`에서 제외 (미완 작업 섹션엔 전부 포함)
+- 이월 횟수가 동일하면 이슈 번호 내림차순(최신 이슈 우선)
+
 ### Step 2: GitHub Issue 생성
 
 ```bash
@@ -255,7 +287,7 @@ description: 날짜별 작업 로그 — 할 일, 배운 것, 회고
 
 ## 목표
 
-- [ ]
+{GOAL_ITEMS}
 
 ## Inbox — 오늘 포착한 것
 
@@ -401,3 +433,18 @@ PR    : SeokRae/knowledge-labs#{PR_NUMBER}
 | gh 인증 실패 | 오류 메시지 출력 후 중단 |
 | 이월 횟수 0회 | 횟수 태그 생략 (원본 항목 그대로 유지) |
 | glob 실패 (daily 폴더 없음) | 이월 횟수 카운트 건너뜀, 항목만 출력 |
+| 작업 로그에 기존 기록 있음 (G3.5) | placeholder 교체 건너뜀 — 기존 기록 보존 |
+| 이월 항목 없음 (Step 1.6) | `{GOAL_ITEMS}` = `- [ ]` (빈 항목 유지) |
+
+## validator 품질 지표 (내용 수준 측정)
+
+생성·갱신 완료 후 `note_validator.py` 가 아래 **추가 지표**를 측정해 `evolution_log.jsonl`에 기록한다.
+이 지표들은 **스킬 동작을 막지 않는다** — 측정·기록만 한다.
+
+| 지표 | 측정 방법 | 목표값 |
+|------|----------|--------|
+| `goal_item_count` | `## 목표` 섹션의 `- [` 항목 수 | 1 이상 |
+| `goal_issue_linked` | 목표 항목 중 `#NNN` 포함 비율 (0.0~1.0) | 0.5 이상 |
+| `log_real_items` | 작업 로그에서 placeholder(`- [ ]` 단독 1줄) 제외 후 항목 수 | 1 이상 |
+| `completion_rate` | 갱신 모드: 전날 `[ ]` 중 오늘 `[x]`로 전환된 비율 | 0.3 이상 |
+| `carryover_reduction` | 전날 이월 수 - 오늘 이월 수 (음수 = 이월 증가) | 양수 권장 |
