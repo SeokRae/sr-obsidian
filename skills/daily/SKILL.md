@@ -421,6 +421,33 @@ PR    : SeokRae/knowledge-labs#{PR_NUMBER}
 파일  : 60-logs/daily/{YYYY}/{MM}/{YYYY-MM-DD}.md
 ```
 
+## Wiki Harvest (자동 트리거)
+
+완료 출력 후 자동 실행. 회의록이 없거나 후보가 없으면 전체 생략.
+
+1. **오늘 날짜 기준 회의록 스캔**
+   ```bash
+   find 20-areas -path "*/meetings/*.md" | xargs grep -l "{YYYY-MM-DD}" 2>/dev/null || true
+   ls 20-areas/meetings/*{YYYY-MM-DD}*.md 2>/dev/null || true
+   ```
+
+2. **미처리 여부 확인** — `60-logs/ingest-log.md` 에서 해당 파일 경로 검색
+   - 기록 없으면 → 미처리로 간주
+
+3. **미처리 파일이 있으면 wiki 후보 추출** (Read 후 Grep)
+   - **볼드 용어**: `\*\*Term\*\*` 패턴
+   - Dangling wikilink: `\[\[링크\]\]`
+   - H2/H3 개념 제목
+   - 기존 `wiki-term: true` 노트와 중복이면 제외
+
+4. **후보 제시 (1개 이상일 때만)**
+   ```
+   📎 미처리 회의록 N개 | wiki 후보: "용어A", "용어B" ...
+   wiki 페이지 만들까요? [y/스킵]
+   ```
+   - `y` → `sr-obsidian:wiki scan {파일경로}` 호출
+   - `스킵` / 후보 없음 / 회의록 없음 → 종료
+
 ## 판단 기준
 
 | 상황 | 처리 |
