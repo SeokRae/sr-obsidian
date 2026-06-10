@@ -1,15 +1,20 @@
 ---
 name: history
 description: >
-  프로젝트 의사결정 히스토리 관리 — ADR 생성, 의사결정 로그, 회의록 등록.
-  "ADR 추가", "의사결정 기록", "회의록 작성", "히스토리" 요청 시 사용.
-  Keywords: adr, ADR, 의사결정, decision log, 회의록, meeting, history, 아키텍처 결정
-allowed-tools: Read, Write, Bash, Edit
+  프로젝트 의사결정 히스토리 관리 — ADR 생성, 의사결정 로그, 회의록, 아키텍처 분석 기록.
+  대화 중 기술 선택 고민이 오갔다면 사용자가 명시적으로 요청하지 않아도 ADR 작성을 먼저 제안한다.
+  "ADR 만들어줘", "ADR 추가", "기술 고민 문서화", "왜 이걸 선택했는지 남겨줘", "의사결정 기록",
+  "결정 이유 문서", "회의록 작성", "히스토리" 요청 시 사용.
+  Keywords: adr, ADR, 의사결정, 기술 고민, 선택지, 트레이드오프, architecture decision, decision log, 회의록, meeting, history, 아키텍처 결정
+allowed-tools: Read, Glob, Write, Bash, Edit
 ---
 
 # sr-obsidian:history — 프로젝트 히스토리 관리
 
-프로젝트의 의사결정 흔적(ADR, 의사결정 로그, 회의록)을 체계적으로 기록한다.
+프로젝트의 의사결정 흔적(ADR, 의사결정 로그, 회의록, 아키텍처 분석)을 체계적으로 기록한다.
+나중에 "왜 이걸 선택했지?"라는 질문에 답할 수 있게 하는 것이 목적이다.
+
+> 구 `sr-obsidian:adr` 스킬은 이 스킬로 통합되었다. ADR 단독 생성도 여기서 처리한다.
 
 ## 히스토리 구성
 
@@ -22,6 +27,8 @@ allowed-tools: Read, Write, Bash, Edit
 └── meetings/            ← 회의록
     └── {YYYY-MM-DD}-{주제}.md
 ```
+
+> ADR 저장 경로는 **항상 `docs/adr/`** 로 통일한다(구 adr 스킬의 `{project}/adr/` 경로는 사용하지 않는다).
 
 ## 실행 절차
 
@@ -38,9 +45,21 @@ allowed-tools: Read, Write, Bash, Edit
 
 ### Step 2. ADR 생성
 
+**Phase 0 — 대화에서 자동 추출 (구 adr 스킬 흡수):**
+`$ARGUMENTS`가 있으면 힌트로 사용하고, 없으면 현재 대화에서 아래를 추출해 사용자 확인을 먼저 받는다.
+
+1. **문제 상황** — 왜 결정이 필요했는가
+2. **검토한 선택지** — 고민했던 옵션들 (2개 이상)
+3. **결정** — 무엇을 선택했는가
+4. **이유** — 선택의 근거 (기술적 제약, 성능, 유지보수 등)
+5. **트레이드오프** — 선택하지 않은 옵션의 장점 / 선택한 옵션의 단점
+6. **프로젝트** — `20-areas/` 하위 어느 폴더에 넣을지
+
+> 대화에서 기술 선택 고민이 오갔다면 사용자가 명시적으로 요청하지 않아도 ADR 작성을 먼저 제안한다.
+
 **다음 ADR 번호 확인:**
 ```bash
-ls "20-areas/payment/{project-id}/docs/adr/" | grep "adr-" | tail -1
+ls "20-areas/{...}/{project-id}/docs/adr/" | grep "adr-" | tail -1
 ```
 
 **파일명 패턴:** `adr-{NNN}-{decision-title-kebab}.md`
@@ -169,8 +188,8 @@ tags: [meeting, {project-id}]
 
 | 상황 | 처리 |
 |------|------|
-| ADR 번호 중복 | `docs/architecture/` 내 최대 번호 + 1 재계산 |
+| ADR 번호 중복 | `docs/adr/` 내 최대 번호 + 1 재계산 |
 | 프로젝트 폴더 미존재 | sr-obsidian:scaffold 또는 sr-obsidian:hub 먼저 실행 안내 |
 | 기존 ADR superseded | 기존 ADR에 `superseded-by: ADR-{N}` 필드 추가 + 신규 ADR에 `supersedes: ADR-{M}` 추가 |
 | 회의 참석자 불명확 | 알려진 참석자만 기록, 추정 금지 |
-| docs/architecture/ 폴더 없음 | Write로 폴더 경로 포함해서 파일 생성 (Obsidian이 자동 생성) |
+| docs/adr·docs/architecture 폴더 없음 | Write로 폴더 경로 포함해서 파일 생성 (Obsidian이 자동 생성) |
