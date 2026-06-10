@@ -60,7 +60,6 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki 품질 검사 — 구조(orphan·dangling link) + 의미론 2단계 |
 | canvas | `sr-obsidian:canvas` | Obsidian .canvas 생성·편집 (JSON Canvas) — 타임라인·의존관계 맵·마인드맵 |
 | obsidian-bases | `sr-obsidian:obsidian-bases` | Obsidian .base 데이터베이스 뷰 생성·편집 — vault 노트 필터·정렬·집계 |
-| obsidian-markdown | `sr-obsidian:obsidian-markdown` | Obsidian Flavored Markdown 문법 참조 (wikilink·callout·Dataview·Mermaid) |
 
 ---
 
