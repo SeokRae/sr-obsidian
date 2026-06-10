@@ -60,7 +60,6 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki quality checks — structural (orphan, dangling link) + semantic |
 | canvas | `sr-obsidian:canvas` | Create/edit Obsidian .canvas files (JSON Canvas) — timelines, dependency maps, mindmaps |
 | obsidian-bases | `sr-obsidian:obsidian-bases` | Create/edit Obsidian .base database views — filter, sort, aggregate vault notes |
-| obsidian-markdown | `sr-obsidian:obsidian-markdown` | Obsidian Flavored Markdown syntax reference (wikilink, callout, Dataview, Mermaid) |
 
 ---
 
