@@ -54,7 +54,6 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | daily | `sr-obsidian:daily` | Create or refresh today's daily note — Issue → branch → write → commit → PR automation |
 | weekly | `sr-obsidian:weekly` | Weekly business report (Thu–Wed cycle) — collect daily notes, draft, full PR automation |
 | retro | `sr-obsidian:retro` | Weekend retrospective (Mon–Fri cycle) — KPI and open-issue review, full PR automation |
-| adr | `sr-obsidian:adr` | Record technical decisions as ADRs in 20-areas/{project}/adr/ |
 | archive | `sr-obsidian:archive` | Batch-move completed ISS (closed hub + all steps done) to 40-archives/ |
 | search | `sr-obsidian:search` | Natural-language vault search — returns related notes for any query |
 | defuddle | `sr-obsidian:defuddle` | Clip a URL into a clean markdown fleeting note in 00-inbox/ |
