@@ -51,6 +51,17 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | visualize | `sr-obsidian:visualize` | MD → HTML via claude-visualize, saved to diagrams/ with paired MD |
 | audit | `sr-obsidian:audit` | Validate project structure against the standard |
 | migrate | `sr-obsidian:migrate` | Move non-standard files to the correct locations |
+| daily | `sr-obsidian:daily` | Create or refresh today's daily note — Issue → branch → write → commit → PR automation |
+| weekly | `sr-obsidian:weekly` | Weekly business report (Thu–Wed cycle) — collect daily notes, draft, full PR automation |
+| retro | `sr-obsidian:retro` | Weekend retrospective (Mon–Fri cycle) — KPI and open-issue review, full PR automation |
+| adr | `sr-obsidian:adr` | Record technical decisions as ADRs in 20-areas/{project}/adr/ |
+| archive | `sr-obsidian:archive` | Batch-move completed ISS (closed hub + all steps done) to 40-archives/ |
+| search | `sr-obsidian:search` | Natural-language vault search — returns related notes for any query |
+| defuddle | `sr-obsidian:defuddle` | Clip a URL into a clean markdown fleeting note in 00-inbox/ |
+| lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki quality checks — structural (orphan, dangling link) + semantic |
+| canvas | `sr-obsidian:canvas` | Create/edit Obsidian .canvas files (JSON Canvas) — timelines, dependency maps, mindmaps |
+| obsidian-bases | `sr-obsidian:obsidian-bases` | Create/edit Obsidian .base database views — filter, sort, aggregate vault notes |
+| obsidian-markdown | `sr-obsidian:obsidian-markdown` | Obsidian Flavored Markdown syntax reference (wikilink, callout, Dataview, Mermaid) |
 
 ---
 
