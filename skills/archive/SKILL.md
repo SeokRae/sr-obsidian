@@ -61,10 +61,13 @@ gh issue create \
   --body "완료 ISS를 10-projects/ → 40-archives/ 이동.\n\n대상:\n- ISS-0XX ...\n- ISS-0YY ..."
 ```
 
-### 4-2. Worktree 생성
+### 4-2. Feature 브랜치 생성
+
+> **worktree 사용 금지** (vault 전용 규칙) — worktree 안 파일은 머지 전까지 Obsidian vault 루트에서 보이지 않아 PR 리뷰 단계에서 노트 확인이 불가능하다. 반드시 main에서 feature 브랜치를 직접 체크아웃한다.
+
 ```bash
-git worktree add -b feature/{ISSUE_NUM}-archive-iss-batch \
-  .claude/worktrees/archive-iss-batch main
+git checkout main && git pull origin main
+git checkout -b feature/{ISSUE_NUM}-archive-iss-batch
 ```
 
 ### 4-3. git mv (대상 ISS 각각)
@@ -74,13 +77,12 @@ git mv "10-projects/ISS-{NNN}-{slug}" "40-archives/ISS-{NNN}-{slug}"
 
 ### 4-4. Commit → Push → PR → Merge
 ```bash
-git commit -m "chore: 완료 ISS 일괄 아카이브 #{ISSUE_NUM}"
+git commit -m "chore: 완료 ISS 일괄 아카이브 (#{ISSUE_NUM})"
 git push origin feature/{ISSUE_NUM}-archive-iss-batch
 gh pr create --title "chore: 완료 ISS 일괄 아카이브" --body "Closes #{ISSUE_NUM}" \
   --head feature/{ISSUE_NUM}-archive-iss-batch
-gh pr merge {PR_NUM} --squash
-git pull origin main
-git worktree remove .claude/worktrees/archive-iss-batch --force
+gh pr merge {PR_NUM} --merge --delete-branch
+git checkout main && git pull origin main
 ```
 
 ## 판단 기준

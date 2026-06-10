@@ -51,6 +51,17 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | visualize | `sr-obsidian:visualize` | MD → HTML 시각화 (claude-visualize 래핑) + diagrams/ 저장·페어드 MD·허브 링크 |
 | audit | `sr-obsidian:audit` | 표준 구조 대비 검증 |
 | migrate | `sr-obsidian:migrate` | 비표준 파일을 표준 위치로 이관 |
+| daily | `sr-obsidian:daily` | 오늘 데일리 노트 생성·갱신 — Issue → 브랜치 → 작성 → 커밋 → PR 자동화 |
+| weekly | `sr-obsidian:weekly` | 주간보고 자동화 (목~수 사이클) — 데일리 노트 수집·초안·PR 전 과정 자동화 |
+| retro | `sr-obsidian:retro` | 주간 회고 자동화 (월~금 사이클, 주말) — KPI·오픈 이슈 검토·PR 자동화 |
+| adr | `sr-obsidian:adr` | 기술 의사결정을 ADR로 기록 — 20-areas/{프로젝트}/adr/ 저장 |
+| archive | `sr-obsidian:archive` | 완료 ISS(hub closed + 모든 step done) 일괄 40-archives/ 이동 |
+| search | `sr-obsidian:search` | vault 자연어 검색 — 어떤 쿼리든 관련 노트 목록 반환 |
+| defuddle | `sr-obsidian:defuddle` | URL을 깔끔한 마크다운으로 추출해 00-inbox/ fleeting 노트로 저장 |
+| lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki 품질 검사 — 구조(orphan·dangling link) + 의미론 2단계 |
+| canvas | `sr-obsidian:canvas` | Obsidian .canvas 생성·편집 (JSON Canvas) — 타임라인·의존관계 맵·마인드맵 |
+| obsidian-bases | `sr-obsidian:obsidian-bases` | Obsidian .base 데이터베이스 뷰 생성·편집 — vault 노트 필터·정렬·집계 |
+| obsidian-markdown | `sr-obsidian:obsidian-markdown` | Obsidian Flavored Markdown 문법 참조 (wikilink·callout·Dataview·Mermaid) |
 
 ---
 
