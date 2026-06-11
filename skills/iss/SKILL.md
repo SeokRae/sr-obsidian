@@ -12,6 +12,17 @@ allowed-tools: Read, Write, Bash, Grep, Glob
 
 파트너 문의·운영 이슈·인시던트를 시작할 때 ISS 전체 디렉토리 구조를 한 번에 생성한다.
 
+## ⚡ 속도 최적화 (필수)
+
+**목표: 전체 실행 2분 이내**
+
+| 규칙 | 세부 |
+|------|------|
+| 파일 병렬 Write | Step 5의 모든 파일(hub + WBS + steps + comms)을 **단일 응답에서 Write 도구 동시 호출** — 파일 간 의존 없음 |
+| 관련 이슈 Read 최소화 | related-iss 추가 시 **hub 파일 1개만** 읽기 — steps/comms 개별 파일 읽기 금지 |
+| AskUserQuestion 최소화 | 대화 맥락에서 title·slug·steps 충분히 파악했으면 질문 없이 진행 |
+| humanize 논블로킹 | outbound comms 포함 시 전체 파일 Write 완료 후 `/humanize` 별도 호출 — 파일 쓰기 전 호출 금지 |
+
 ## 생성 구조
 
 ```
@@ -75,7 +86,7 @@ git checkout -b feature/{gh-issue-번호}-iss-{NNN}-{slug}
 
 ### Step 5. 파일 생성
 
-순서: hub → WBS → steps/ (순서 중요 — hub 먼저)
+**병렬 Write (필수)**: hub · WBS · 모든 steps · comms 를 **단일 응답에서 동시 Write** — 파일 간 의존 없으므로 순차 실행 금지
 
 #### hub: `ISS-{NNN} {title}.md`
 
