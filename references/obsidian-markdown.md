@@ -46,7 +46,7 @@ Obsidian 특화 확장만 기술한다.
 ![[문서.pdf#page=3]]                PDF 특정 페이지
 ```
 
-전체 임베드 타입 → [EMBEDS.md](references/EMBEDS.md)
+전체 임베드 타입 → [EMBEDS.md](EMBEDS.md)
 
 ## 콜아웃
 
@@ -63,7 +63,7 @@ Obsidian 특화 확장만 기술한다.
 
 지원 타입: `note`, `tip`, `warning`, `info`, `example`, `quote`, `bug`, `danger`, `success`, `failure`, `question`, `abstract`, `todo`
 
-전체 타입 + 별칭 → [CALLOUTS.md](references/CALLOUTS.md)
+전체 타입 + 별칭 → [CALLOUTS.md](CALLOUTS.md)
 
 ## Properties (Frontmatter)
 
@@ -84,7 +84,7 @@ status: active
 
 sr-labs 공통 `type` 값: `fleeting`, `permanent`, `literature`, `daily`, `weekly`, `retro`, `issue`, `incident-step`, `wbs`, `wbs-step`, `meeting`, `diagram`, `adr`, `config`
 
-전체 property 타입 → [PROPERTIES.md](references/PROPERTIES.md)
+전체 property 타입 → [PROPERTIES.md](PROPERTIES.md)
 
 ## 태그
 
