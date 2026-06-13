@@ -7,14 +7,14 @@
   },
   "metadata": {
     "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
-    "version": "0.9.2"
+    "version": "0.9.3"
   },
   "plugins": [
     {
       "name": "sr-obsidian",
       "source": "./",
       "description": "Obsidian 프로젝트 문서 관리 플러그인 — 허브·WBS·히스토리·폴더 구조 초기화·검증·이관을 자동화",
-      "version": "0.9.2",
+      "version": "0.9.3",
       "author": {
         "name": "SeokRae",
         "email": "kslbsh@gmail.com"

@@ -3,6 +3,7 @@ name: migrate
 description: >
   비표준 프로젝트 구조를 표준으로 이관. docs/ 직하 파일 → 하위폴더, HTML → diagrams/ 이동.
   "구조 정리", "파일 이동", "migrate", "docs 재구성" 요청 시 사용.
+  Do NOT use for read-only structure verification (use sr-obsidian:audit — audit가 탐지, migrate는 수정).
   Keywords: migrate, 이관, 파일 이동, 구조 정리, 재구성
 allowed-tools: Read, Write, Bash, Edit
 ---
