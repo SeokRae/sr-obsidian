@@ -4,6 +4,7 @@ description: >
   챕터 literature 노트 분석 → permanent 노트 추출. 읽은 챕터에서 핵심 개념을 식별하고,
   기존 permanent 노트와 중복 체크 후 새 permanent 노트를 생성하고 학습 메모를 채운다.
   "학습", "읽기", "독서", "개념 추출", "permanent 생성", "챕터 정리", "study" 요청 시 사용.
+  Do NOT use for quick fleeting/inbox capture without analysis (use sr-obsidian:capture — capture는 포착, study는 분석·추출).
   Keywords: 학습, 읽기, 독서, 개념 추출, permanent 생성, 학습 메모, study, literature, 챕터
 allowed-tools: Read, Glob, Write, Edit, Bash
 ---
