@@ -1,9 +1,9 @@
 ---
 name: archive
 description: >
-  10-projects/ISS-*/ 를 스캔하여 완료 조건(hub status: closed + 모든 step status: done)을
+  10-projects/ISS-*/ 를 스캔하여 완료 조건(hub status: done|closed + 모든 step status: done)을
   충족하는 ISS를 찾아 40-archives/ 로 일괄 이동. ISS 아카이브 작업 시작 시 사용.
-  Do NOT use for open/in-progress ISS — only closed hub + all steps done.
+  Do NOT use for open/in-progress ISS — only done/closed hub + all steps done.
   Keywords: archive, 아카이브, ISS 완료, 이슈 정리, iss archive, 완료 이동
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
@@ -23,10 +23,10 @@ grep -r "^status:" 10-projects/ISS-*/steps/*.md 2>/dev/null
 ```
 
 **완료 기준** (둘 다 충족해야 아카이브 대상):
-1. hub 파일 `status: closed`
+1. hub 파일 `status: done` 또는 `closed`
 2. `steps/` 하위 모든 파일 `status: done`
 
-steps/ 가 없는 ISS는 hub `status: closed` 단독으로 판단.
+steps/ 가 없는 ISS는 hub `status: done` 또는 `closed` 단독으로 판단.
 
 ## Phase 2: 결과 보고
 
@@ -90,7 +90,7 @@ git checkout main && git pull origin main
 | 상황 | 처리 |
 |------|------|
 | steps/ 일부만 done | 보류 — 모든 step이 done이어야 이동 가능 |
-| hub closed이나 step in-progress/ready 있음 | 보류 — step 완료 후 재실행 |
-| steps/ 없는 ISS | hub `status: closed` 단독으로 아카이브 가능 |
+| hub done/closed이나 step in-progress/ready 있음 | 보류 — step 완료 후 재실행 |
+| steps/ 없는 ISS | hub `status: done` 또는 `closed` 단독으로 아카이브 가능 |
 | 아카이브 대상 0건 | "아카이브할 ISS 없음" 출력 후 종료 |
 | 이동 후 내부 링크 깨짐 | 이 스킬 범위 밖 — 수동 수정 또는 sr-obsidian:migrate 사용 |
