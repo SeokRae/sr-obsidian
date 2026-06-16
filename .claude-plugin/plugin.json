@@ -1,7 +1,7 @@
 {
   "name": "sr-obsidian",
   "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·visualize·audit·migrate·search·archive·defuddle·canvas·obsidian-bases",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "author": {
     "name": "SeokRae",
     "email": "kslbsh@gmail.com"
