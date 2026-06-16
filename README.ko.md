@@ -54,7 +54,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | daily | `sr-obsidian:daily` | 오늘 데일리 노트 생성·갱신 — Issue → 브랜치 → 작성 → 커밋 → PR 자동화 |
 | weekly | `sr-obsidian:weekly` | 주간보고 자동화 (목~수 사이클) — 데일리 노트 수집·초안·PR 전 과정 자동화 |
 | retro | `sr-obsidian:retro` | 주간 회고 자동화 (월~금 사이클, 주말) — KPI·오픈 이슈 검토·PR 자동화 |
-| archive | `sr-obsidian:archive` | 완료 ISS(hub closed + 모든 step done) 일괄 40-archives/ 이동 |
+| archive | `sr-obsidian:archive` | 완료 ISS(hub done/closed + 모든 step done) 일괄 40-archives/ 이동 |
 | search | `sr-obsidian:search` | vault 자연어 검색 — 어떤 쿼리든 관련 노트 목록 반환 |
 | defuddle | `sr-obsidian:defuddle` | URL을 깔끔한 마크다운으로 추출해 00-inbox/ fleeting 노트로 저장 |
 | lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki 품질 검사 — 구조(orphan·dangling link) + 의미론 2단계 |
