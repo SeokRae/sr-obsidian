@@ -5,6 +5,7 @@ description: >
   기존 permanent 노트와 중복 체크 후 새 permanent 노트를 생성하고 학습 메모를 채운다.
   "학습", "읽기", "독서", "개념 추출", "permanent 생성", "챕터 정리", "study" 요청 시 사용.
   Do NOT use for quick fleeting/inbox capture without analysis (use sr-obsidian:capture — capture는 포착, study는 분석·추출).
+  Do NOT use for wiki/glossary term pages (use sr-obsidian:wiki — wiki는 용어 페이지, study는 문헌 개념 추출).
   Keywords: 학습, 읽기, 독서, 개념 추출, permanent 생성, 학습 메모, study, literature, 챕터
 allowed-tools: Read, Glob, Write, Edit, Bash
 ---
