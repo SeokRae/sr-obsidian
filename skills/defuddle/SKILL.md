@@ -6,6 +6,7 @@ description: >
   "URL 저장", "웹 클리핑", "이 페이지 메모해줘", "링크 캡처", "clip", "웹 페이지 보관" 요청 시 사용.
   Do NOT use for .md URLs (use WebFetch directly).
   Do NOT use for structured study/permanent notes (use sr-obsidian:study).
+  Do NOT use for quick manual fleeting capture without a URL (use sr-obsidian:capture — capture는 수동 포착, defuddle는 URL 본문 추출).
   Keywords: 웹 클리핑, URL 저장, clip, defuddle, 링크 캡처, 웹 보관, inbox
 allowed-tools: Bash, Write, Read
 ---
