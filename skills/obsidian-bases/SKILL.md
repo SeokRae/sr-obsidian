@@ -6,6 +6,7 @@ description: >
   ISS 추적 대시보드, FT 현황 목록, step 진행 현황, 독서 목록 등 요청 시 사용.
   Do NOT use for dynamic queries requiring DataviewJS (use Dataview code blocks instead).
   Do NOT use for one-off table views — add a Dataview query to the note instead.
+  Do NOT use for WBS 생성·Phase 구성·Gantt 진행 관리 (use sr-obsidian:wbs — obsidian-bases는 .base 뷰, wbs는 WBS 상태머신·간트).
   Keywords: bases, .base, 데이터베이스, ISS 추적, FT 현황, 대시보드, 필터, 집계
 allowed-tools: Read, Write, Edit
 ---
