@@ -6,6 +6,7 @@ description: >
   의미론적 검사: 페이지 간 모순, stale 주장, prose 언급 개념, data gap, 신규 소스 제안.
   결과를 60-logs/lint-reports/YYYY-MM-DD.md 로 저장.
   Do NOT use for project structure audit (use sr-obsidian:audit — audit covers 20-areas/ project folders).
+  Do NOT use for creating/querying wiki term pages (use sr-obsidian:wiki — wiki는 용어 페이지 생성·질의, lint-wiki는 orphan·dangling·moc 품질 검사).
   Keywords: lint, wiki, orphan, dangling, moc, 품질, 검사, 연결 없음, 모순, stale
 allowed-tools: Bash, Read, Glob
 ---
