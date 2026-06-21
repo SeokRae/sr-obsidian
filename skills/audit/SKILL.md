@@ -4,6 +4,7 @@ description: >
   프로젝트 문서 구조 검증. 표준 폴더·파일 존재 여부, HTML/MD 혼재, 링크 무결성 체크.
   "구조 확인", "docs 점검", "audit" 요청 시 사용.
   Do NOT use for actually moving/restructuring files (use sr-obsidian:migrate — audit는 탐지만, migrate가 수정).
+  Do NOT use for wiki/permanent 노트 품질·연결 검사 (use sr-obsidian:lint-wiki — audit는 20-areas/ 프로젝트 구조 검증, lint-wiki는 wiki orphan·dangling·moc 품질 검사).
   Keywords: audit, 구조 검증, 폴더 점검, 링크 확인, HTML 혼재
 allowed-tools: Read, Bash
 ---
