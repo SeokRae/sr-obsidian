@@ -43,6 +43,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | capture | `sr-obsidian:capture` | Fleeting 노트 포착 — 키워드만 기록, 00-inbox/ 저장 |
 | study | `sr-obsidian:study` | 챕터 literature 노트 → permanent 노트 추출 (2-phase: 분석 → 생성) |
 | wiki | `sr-obsidian:wiki` | LLM Wiki 용어 페이지 생성 — scan / create / index 모드 |
+| radar | `sr-obsidian:radar` | 외부 웹 동향 수집 → 위키 누적 (날짜 로그 + wiki-term 노트) — 스케줄러 자동 실행 |
 | scaffold | `sr-obsidian:scaffold` | 제텔카스텐 프로젝트 뼈대 생성 — book / area / vault 모드 |
 | iss | `sr-obsidian:iss` | ISS 인시던트/이슈 전체 구조 생성 (hub + WBS + steps/ + comms/) |
 | hub | `sr-obsidian:hub` | 허브 노트 링크·KPI·ISS 참조 관리 |
