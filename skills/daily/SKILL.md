@@ -36,7 +36,7 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 
 ### Step G1: 오픈 이슈 조회 + 하위 작업 추출
 
-오늘 갱신용으로 생성한 이슈(데일리 노트 자체 이슈)와 `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈는 모두 제외한다.
+오늘 갱신용으로 생성한 이슈(데일리 노트 자체 이슈), `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈, 제목에 `(standing)` 마커가 있는 상시 이슈는 모두 제외한다.
 
 각 이슈의 본문에서 `## 범위`, `## 작업 범위`, `## 작업 내용`, `## 변경사항`, `## 구현 내용`, `## 체크리스트`, `## Changes`, `## 산출물` 섹션의 bullet 항목을 추출해 계층형 sub-bullet으로 출력한다.
 
@@ -49,6 +49,7 @@ TARGET_SECTIONS = {
     '체크리스트', 'Changes', '산출물'
 }
 DAILY_SKIP = re.compile(r'^docs: \d{4}-\d{2}-\d{2} 데일리 노트')
+STANDING_SKIP = re.compile(r'\(standing\)')  # 완료 불가한 상시 이슈는 미완 작업에서 제외
 
 result = subprocess.run(
     ['gh', 'issue', 'list', '--repo', 'SeokRae/knowledge-labs',
@@ -60,7 +61,7 @@ issues = json.loads(result.stdout)
 for issue in issues:
     num = issue['number']
     title = issue['title']
-    if DAILY_SKIP.match(title):
+    if DAILY_SKIP.match(title) or STANDING_SKIP.search(title):
         continue
     print(f"- [ ] #{num} — {title}")
 
@@ -177,7 +178,7 @@ ls 60-logs/daily/$PREV_YM/*.md 2>/dev/null | sort | tail -1
 ```
 
 이전 노트가 있으면 `## 목표`, `## 작업 로그`, `## 미완 작업` 섹션에서 `^- \[ \]` 항목을 추출한다.
-단, `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈는 이월하지 않는다.
+단, `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈와 제목에 `(standing)` 마커가 있는 상시 이슈는 이월하지 않는다.
 
 추출 후 **최근 30개 데일리 노트에서 이슈별 이월 횟수를 카운트**해 각 항목에 태그를 붙인다:
 
@@ -188,6 +189,7 @@ import re, glob
 text = open("{PREV_NOTE_PATH}").read()
 sections = ["목표", "작업 로그", "미완 작업 (GitHub Issues)"]
 DAILY_SKIP = re.compile(r'— docs: \d{4}-\d{2}-\d{2} 데일리 노트')
+STANDING_SKIP = re.compile(r'\(standing\)')  # 완료 불가한 상시 이슈는 이월·카운트 제외
 results = []
 current = None
 for line in text.splitlines():
@@ -195,7 +197,7 @@ for line in text.splitlines():
     if h:
         current = h.group(1)
     elif current and any(s in current for s in sections):
-        if line.startswith("- [ ]") and not DAILY_SKIP.search(line):
+        if line.startswith("- [ ]") and not DAILY_SKIP.search(line) and not STANDING_SKIP.search(line):
             results.append(line)
 
 # 최근 30개 노트에서 이슈별 등장 횟수 카운트
@@ -207,7 +209,7 @@ for f in recent_files:
     except:
         continue
     for line in content.splitlines():
-        if line.startswith("- [ ]") and not DAILY_SKIP.search(line):
+        if line.startswith("- [ ]") and not DAILY_SKIP.search(line) and not STANDING_SKIP.search(line):
             for num in re.findall(r'#(\d+)', line):
                 issue_counts[num] = issue_counts.get(num, 0) + 1
 
@@ -483,6 +485,7 @@ PR    : SeokRae/knowledge-labs#{PR_NUMBER}
 | 직전~어제 머지 PR 없음 | `### ✅ 어제 완료` = `- (없음)` |
 | 이전 노트에 미완 항목 없음 | `### ⏭ 이어서 할 일` = `- (없음)` (어제 완료는 유지) |
 | `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 이슈 | 이월 및 미완 작업 섹션에서 제외 (이월 누적 방지) |
+| 제목에 `(standing)` 마커가 있는 상시 이슈 | 이월·목표·미완 작업 섹션에서 제외 (완료 불가 이슈의 이월 누적 방지) |
 | 날짜 형식 오류 | 오류 메시지 출력 후 중단 |
 | gh 인증 실패 | 오류 메시지 출력 후 중단 |
 | 이월 횟수 0회 | 횟수 태그 생략 (원본 항목 그대로 유지) |
