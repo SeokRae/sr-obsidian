@@ -8,6 +8,7 @@ description: >
   Do NOT use for non-wiki permanent notes from literature/study (use sr-obsidian:study).
   Do NOT use for wiki 품질·연결 검사 (use sr-obsidian:lint-wiki — wiki는 용어 생성·질의, lint-wiki는 orphan·dangling·moc 품질 검사).
   Do NOT use for 외부 웹 최신 정보 수집·동향 누적 (use sr-obsidian:radar — wiki는 vault 내부 노트 용어 추출·질의, radar는 외부 웹 수집·누적).
+  Do NOT use for vault 전체 노트·이슈 검색 (use sr-obsidian:search — wiki query는 wiki-term 우선 질의·답변 파일링, search는 vault 전체 노트 검색).
   Keywords: wiki, 용어, 위키, glossary, term, wiki-term, 용어 페이지, query, 질의
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
