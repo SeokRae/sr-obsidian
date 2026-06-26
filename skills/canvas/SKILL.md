@@ -6,6 +6,7 @@ description: >
   ISS 타임라인, 서비스 의존관계 맵, 아키텍처 다이어그램, 마인드맵 요청 시 사용.
   Do NOT use for HTML diagrams (use sr-obsidian:visualize instead).
   Do NOT use for Mermaid diagrams (embed in standard .md notes).
+  Do NOT use for ISS 추적·FT 현황 등 데이터 테이블 대시보드 (use sr-obsidian:obsidian-bases — canvas는 공간 배치 맵·다이어그램, obsidian-bases는 .base 데이터 집계 뷰).
   Keywords: canvas, json-canvas, 캔버스, 마인드맵, 의존관계, 다이어그램, 아키텍처 맵
 allowed-tools: Read, Write, Edit
 ---
