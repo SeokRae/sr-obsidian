@@ -4,6 +4,7 @@ description: >
   10-projects/ISS-*/ 를 스캔하여 완료 조건(hub status: done|closed + 모든 step status: done)을
   충족하는 ISS를 찾아 40-archives/ 로 일괄 이동. ISS 아카이브 작업 시작 시 사용.
   Do NOT use for open/in-progress ISS — only done/closed hub + all steps done.
+  Do NOT use for docs/ 구조 이관·HTML→diagrams/ 이동 등 프로젝트 구조 재구성 (use sr-obsidian:migrate — archive는 완료 ISS 폴더 이동, migrate는 구조 이관·수정).
   Keywords: archive, 아카이브, ISS 완료, 이슈 정리, iss archive, 완료 이동
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
