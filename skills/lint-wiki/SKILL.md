@@ -7,6 +7,7 @@ description: >
   결과를 60-logs/lint-reports/YYYY-MM-DD.md 로 저장.
   Do NOT use for project structure audit (use sr-obsidian:audit — audit covers 20-areas/ project folders).
   Do NOT use for creating/querying wiki term pages (use sr-obsidian:wiki — wiki는 용어 페이지 생성·질의, lint-wiki는 orphan·dangling·moc 품질 검사).
+  Do NOT use for 외부 웹 최신 정보 수집·동향 누적 (use sr-obsidian:radar — lint-wiki는 내부 wiki 품질·연결 검사, radar는 외부 웹 수집·누적).
   Keywords: lint, wiki, orphan, dangling, moc, 품질, 검사, 연결 없음, 모순, stale
 allowed-tools: Bash, Read, Glob
 ---
