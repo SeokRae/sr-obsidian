@@ -4,6 +4,7 @@ description: >
   프로젝트 문서(MD)를 HTML 시각화로 변환하여 diagrams/에 저장하고 페어드 MD + 허브 링크까지 연결.
   "시각화", "HTML로 만들어줘", "다이어그램 생성", "슬라이드 만들어줘" 요청 시 사용.
   Do NOT use for Obsidian .canvas 맵·마인드맵·의존관계 맵 (use sr-obsidian:canvas — visualize는 HTML, canvas는 json-canvas).
+  Do NOT use for ISS 추적·FT 현황 등 .base 데이터 집계 뷰·대시보드 (use sr-obsidian:obsidian-bases — visualize는 MD→HTML 다이어그램·보고서, obsidian-bases는 .base 데이터 뷰).
   Keywords: visualize, html, diagram, 시각화, 슬라이드, 보고서 HTML, 다이어그램
 allowed-tools: Read, Write, Bash, Edit
 ---

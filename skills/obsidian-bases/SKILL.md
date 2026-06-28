@@ -8,6 +8,7 @@ description: >
   Do NOT use for one-off table views — add a Dataview query to the note instead.
   Do NOT use for WBS 생성·Phase 구성·Gantt 진행 관리 (use sr-obsidian:wbs — obsidian-bases는 .base 뷰, wbs는 WBS 상태머신·간트).
   Do NOT use for 공간 배치 맵·마인드맵·의존관계/타임라인 다이어그램 (use sr-obsidian:canvas — obsidian-bases는 .base 데이터 집계 뷰, canvas는 json-canvas 공간 맵).
+  Do NOT use for MD→HTML 다이어그램·슬라이드·보고서 시각화 (use sr-obsidian:visualize — obsidian-bases는 .base 데이터 집계 뷰, visualize는 HTML 다이어그램·보고서).
   Keywords: bases, .base, 데이터베이스, ISS 추적, FT 현황, 대시보드, 필터, 집계
 allowed-tools: Read, Write, Edit
 ---
