@@ -4,6 +4,7 @@ description: >
   서비스 개발 WBS를 상태 머신 기반으로 생성·관리. 신규 프로젝트 WBS 작성, Phase 구성,
   진행 현황 업데이트, Excel 변환 안내. "WBS 만들어줘", "Phase 추가", "WBS 작성", "wbs" 요청 시 사용.
   Do NOT use for .base 대시보드·진행 현황 뷰 생성 (use sr-obsidian:obsidian-bases — wbs는 WBS 상태머신 생성·관리, obsidian-bases는 .base 뷰).
+  Do NOT use for 프로젝트 허브 노트·KPI·현황 정리 (use sr-obsidian:hub — wbs는 WBS Phase·step 상태머신 생성·관리, hub는 프로젝트 허브 노트·링크·KPI 관리).
   Keywords: wbs, WBS, phase, 간트, Gantt, 진행 현황, 작업 분류, 상태 머신
 allowed-tools: Read, Write, Glob, Edit
 ---

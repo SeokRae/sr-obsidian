@@ -5,6 +5,7 @@ description: >
   "허브 업데이트", "현황 노트", "프로젝트 현황 정리" 요청 시 사용.
   Do NOT use for new project folder creation (use sr-obsidian:scaffold first).
   Do NOT use for ISS incident structure (use sr-obsidian:iss).
+  Do NOT use for WBS Phase·step 상태머신·진행 현황 생성·관리 (use sr-obsidian:wbs — hub는 프로젝트 허브 노트·링크·KPI 관리, wbs는 WBS Phase·step 상태머신).
   Keywords: hub, 허브, 프로젝트 현황, KPI, ISS 링크, 다이어그램 링크
 allowed-tools: Read, Write, Bash, Edit
 ---
