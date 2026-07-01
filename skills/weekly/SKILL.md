@@ -3,6 +3,7 @@ name: weekly
 description: >
   주간보고 작성 자동화 (목~수 사이클). 해당 주 데일리 노트를 수집·분석해 초안을 보여주고, 확인 후 Issue → Branch → Write → Commit → PR 전 과정 자동화.
   Do NOT use for weekend KPI/retrospective (use sr-obsidian:retro — retro covers Mon-Fri reflection).
+  Do NOT use for 오늘 하루 데일리 작업 로그 (use sr-obsidian:daily — weekly는 주간(목~수) 집계 보고, daily는 당일 노트 생성·갱신).
   Keywords: 주간보고, weekly, 주간 리포트, 이번주 정리, 미완료 분석.
 allowed-tools: Bash, Read, Glob, Write, Edit
 ---
