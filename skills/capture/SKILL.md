@@ -6,6 +6,7 @@ description: >
   "포착", "기록", "fleeting", "capture", "메모해줘", "나중에 볼게" 요청 시 사용.
   Do NOT use for structured study/permanent notes (use sr-obsidian:study).
   Do NOT use for URL web clipping (use sr-obsidian:defuddle).
+  Do NOT use for ADR·의사결정 로그·회의록 등 구조화된 기록 (use sr-obsidian:history).
   Keywords: 포착, 기록, fleeting, capture, 키워드, 메모
 allowed-tools: Glob, Write
 ---
