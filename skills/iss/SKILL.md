@@ -1,7 +1,7 @@
 ---
 name: iss
 description: >
-  ISS 인시던트/이슈 전체 구조 자동 생성 — hub + WBS + steps/ + comms/.
+  ISS 인시던트/이슈 전체 구조 자동 생성 — hub + WBS + summary + steps/ + comms/.
   파트너 문의·운영 이슈·인시던트 대응을 시작할 때 사용.
   Do NOT use for non-ISS project/knowledge initialization (use sr-obsidian:scaffold or sr-obsidian:hub).
   Keywords: iss, 이슈, 인시던트, 문의 대응, ISS 생성, issue create, incident
@@ -29,6 +29,7 @@ allowed-tools: Read, Write, Bash, Grep, Glob
 10-projects/ISS-{NNN}-{slug}/
 ├── ISS-{NNN} {title}.md      ← hub (tpl-issue 기반)
 ├── ISS-{NNN} WBS.md           ← gantt-b Gantt
+├── ISS-{NNN} summary.md       ← 히스토리 파악용 요약 노트 (steps·comms 엮어 갱신)
 ├── comms/                     ← 외부 질의·답변 원문 (파트너/Stripe 등)
 │   └── YYYY-MM-DD {주제}.md
 └── steps/
@@ -86,7 +87,7 @@ git checkout -b feature/{gh-issue-번호}-iss-{NNN}-{slug}
 
 ### Step 5. 파일 생성
 
-**병렬 Write (필수)**: hub · WBS · 모든 steps · comms 를 **단일 응답에서 동시 Write** — 파일 간 의존 없으므로 순차 실행 금지
+**병렬 Write (필수)**: hub · WBS · summary · 모든 steps · comms 를 **단일 응답에서 동시 Write** — 파일 간 의존 없으므로 순차 실행 금지
 
 #### hub: `ISS-{NNN} {title}.md`
 
@@ -260,6 +261,49 @@ await dv.view("_scripts/gantt/gantt-b");
 - [[ISS-{NNN} {title}]]
 ````
 
+#### summary: `ISS-{NNN} summary.md`
+
+인시던트의 **히스토리(맥락·흐름)를 서사로 파악**하기 위한 노트. hub의 `보고용 서머리`(STAR, 종료 후 보고용 압축)와 목적이 다르다 — 이건 **진행 중** 흐름 파악용이다. 생성 시엔 배경 seed만 채우고, steps/comms가 쌓이면 아래 **요약 노트 갱신** 절차로 이어 붙인다.
+
+```markdown
+---
+type: summary
+incident: ISS-{NNN}
+created: {today}
+updated: {today}
+tags: [summary, incident, history]
+related-issue: ISS-{NNN}
+---
+
+# ISS-{NNN} 요약 (히스토리)
+
+← [[ISS-{NNN} {title}]]
+
+> **목적**: 이 인시던트가 어떤 배경에서 시작돼 어떻게 흘러왔고 지금 어디까지 왔는지 **서사로 파악**한다.
+> steps/·comms/·진행 기록이 쌓일 때마다 갱신한다. **완료/미완 체크가 아니라 맥락·흐름을 서술**한다.
+
+## 배경
+
+{왜 이 이슈가 시작됐는지 — 발생/발견 국면의 맥락. 생성 시 step-01 기준 seed 작성}
+
+## 경과 (시간순 서사)
+
+{steps·comms를 시간순으로 엮은 내러티브. 각 국면을 "무엇이 있었고 → 무엇을 확인했고 → 어디로 갔는지" 로 잇는다. 생성 시엔 placeholder}
+
+- {today} — 이슈 생성, 대응 착수 전
+
+## 현재 상태
+
+{지금 어디까지 왔고 다음은 무엇인지. 진행 중이면 열린 스레드·다음 방향 명시. 생성 시엔 "이슈 생성 단계"}
+
+## 관련 메모
+
+- [[ISS-{NNN} {title}]]
+- [[ISS-{NNN} WBS]]
+```
+
+> **생성 시엔 `## 배경`만 step-01 기준으로 seed**하고, `## 경과`·`## 현재 상태`는 placeholder로 둔다. 히스토리 축적은 아래 절차가 담당한다.
+
 #### steps: `steps/step-{NN}-{slug}.md`
 
 각 step마다 생성:
@@ -338,10 +382,10 @@ summary: {한 줄 요약}
 
 ### Step 6. Ingest Log
 
-파일 생성(hub·WBS·steps) 완료 후 `60-logs/ingest-log.md` 말미에 1개 항목 append:
+파일 생성(hub·WBS·summary·steps) 완료 후 `60-logs/ingest-log.md` 말미에 1개 항목 append:
 
 ```bash
-printf '\n## [%s] iss | ISS-{NNN} {title} (issue) → {N}개\n- 10-projects/ISS-{NNN}-{slug}/ISS-{NNN} {title}.md\n- 10-projects/ISS-{NNN}-{slug}/ISS-{NNN} WBS.md\n- (steps/ 파일 목록)\n' "$(date +%Y-%m-%d)" >> 60-logs/ingest-log.md
+printf '\n## [%s] iss | ISS-{NNN} {title} (issue) → {N}개\n- 10-projects/ISS-{NNN}-{slug}/ISS-{NNN} {title}.md\n- 10-projects/ISS-{NNN}-{slug}/ISS-{NNN} WBS.md\n- 10-projects/ISS-{NNN}-{slug}/ISS-{NNN} summary.md\n- (steps/ 파일 목록)\n' "$(date +%Y-%m-%d)" >> 60-logs/ingest-log.md
 ```
 
 ### Step 7. 커밋
@@ -385,6 +429,24 @@ git commit -m "docs: ISS-{NNN} {title} 구조 생성 (#{gh-issue-번호})"
 - Obsidian에서 `ISS-{NNN} WBS.md` 열어 gantt-b 렌더링 확인
 - step 진행 시마다 `start-date` / 완료 시 `end-date` 채울 것
 - 이슈 종료 시: `10-projects/` → `40-archives/`로 폴더 이동 후 PR
+- 새 step/comms 작성 시 `ISS-{NNN} summary.md` 를 아래 **요약 노트 갱신** 절차로 이어 붙일 것
+
+## 요약 노트 갱신 (히스토리 축적)
+
+`ISS-{NNN} summary.md` 는 **A안(축적)** 으로 운영한다 — 생성 시엔 배경 seed만 있고, steps/comms가 추가·갱신될 때마다 히스토리를 이어 붙인다.
+
+**트리거**: 새 step/comms 작성 후, 또는 사용자가 "ISS-{NNN} 요약 갱신" 요청 시.
+
+**절차**:
+1. 해당 ISS의 `steps/*.md` 전체 + `comms/*.md` 전체 + hub `## 진행 기록` 을 Read
+2. 시간순(step 번호·comms 날짜)으로 정렬해 **`## 경과` 를 서사로 재구성** — 각 국면을 "무엇이 있었고 → 무엇을 확인했고 → 어디로 갔는지" 한 흐름으로 잇는다
+3. **`## 현재 상태`** 를 최신 국면 기준으로 갱신 (진행 중이면 열린 스레드·다음 방향 명시)
+4. frontmatter `updated:` 를 오늘 날짜로 갱신
+
+**원칙**:
+- **완료/미완 tally 금지** — "PR 3건 머지, 2건 미완" 같은 상태 집계가 아니라 **왜·어떻게·어디까지**를 서술
+- steps/comms를 **재구성**해 엮되 원문을 복붙하지 않는다 (원문은 step/comms 파일이 소유)
+- 시간 흐름을 유지해 이어 읽을 수 있게 한다
 
 ## 판단 기준
 
@@ -395,3 +457,4 @@ git commit -m "docs: ISS-{NNN} {title} 구조 생성 (#{gh-issue-번호})"
 | steps/ 비어 있음 | 이슈 유형별 기본 steps 표에서 자동 생성 |
 | 파트너 문의인지 내부 이슈인지 불명확 | "파트너 문의인가요, 내부 운영 이슈인가요?" 질문 |
 | comms/ 필요 여부 불명확 | 외부 파트너 문의 포함 시 comms/ 생성, 내부 이슈면 선택 |
+| 요약 노트 갱신 시점 | 새 step/comms 추가 후, 또는 "요약 갱신" 요청 시 — steps·comms·진행 기록 재구성 (완료/미완 tally 금지) |
