@@ -90,7 +90,7 @@ git checkout -b feature/{gh-issue-번호}-iss-{NNN}-{slug}
 
 #### hub: `ISS-{NNN} {title}.md`
 
-```markdown
+````markdown
 ---
 type: issue
 id: ISS-{NNN}
@@ -113,6 +113,33 @@ description: {한 줄 설명}
 ## 설명
 
 {이슈 배경 및 목적}
+
+## 진행 현황
+
+> 한눈에 보는 요약. **단계 표는 `steps/` frontmatter 기반 자동 갱신**(step 상태·완료일 바뀌면 노트 열 때 반영). **안건 표는 수동 갱신** — 결정이 확정되면 옮긴다.
+
+### 단계 진행 (자동)
+
+```dataviewjs
+const S = { done: "✅ 완료", "in-progress": "🔄 진행중", ready: "⏳ 대기" };
+const steps = dv.pages()
+  .where(p => p.incident == "ISS-{NNN}" && p.step)
+  .sort(p => p.step, 'asc');
+dv.table(
+  ["#", "구분", "단계", "상태", "완료일"],
+  steps.map(p => [p.step, p.section, p.file.link, S[p.status] ?? p.status, p["end-date"] ?? "—"])
+);
+```
+
+### 안건 해결 / 미결 (수동)
+
+> 이슈에서 다루는 안건을 결정 상태별로 정리. 회신·결정이 확정되면 ⏳ → ✅ 로 옮긴다. (안건 없으면 섹션 생략 가능)
+
+| 안건 | 상태 | 결론/담당 |
+|------|------|-----------|
+| {핵심 안건} | ✅ 확정 / ⏳ 미결 | {결론 또는 담당 부서} |
+
+> **다음 액션**: ① {구체적인 다음 액션}
 
 ## 체크리스트
 
@@ -196,7 +223,7 @@ description: {한 줄 설명}
 
 - [[ISS-{NNN} WBS]]
 - [[steps/step-01-...]]
-```
+````
 
 > **내부 공유 · 보고용 서머리 작성 시 주의**
 > - 내부 공유: 실시간 현황 공유용. 날짜 갱신하며 업데이트. 내부 ID·기술 식별자 미포함.
