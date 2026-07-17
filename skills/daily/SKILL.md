@@ -39,59 +39,13 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 
 오늘 갱신용으로 생성한 이슈(데일리 노트 자체 이슈), `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈, 제목에 `(standing)` 마커가 있는 상시 이슈는 모두 제외한다.
 
-각 이슈의 본문에서 `## 범위`, `## 작업 범위`, `## 작업 내용`, `## 변경사항`, `## 구현 내용`, `## 체크리스트`, `## Changes`, `## 산출물` 섹션의 bullet 항목을 추출해 계층형 sub-bullet으로 출력한다.
+각 이슈의 본문에서 `## 범위`, `## 작업 범위`, `## 작업 내용`, `## 변경사항`, `## 구현 내용`, `## 체크리스트`, `## Changes`, `## 산출물` 섹션의 bullet 항목을 추출해 계층형 sub-bullet으로 출력한다. (로직은 `_scripts/daily/collect.py` 로 추출됨 — 데일리 노트 자체 이슈·`(standing)` 이슈 제외, 대상 섹션 bullet 추출.)
 
-```python
-python3 - <<'PYEOF'
-import subprocess, json, re
-
-TARGET_SECTIONS = {
-    '범위', '작업 범위', '작업 내용', '변경사항', '구현 내용',
-    '체크리스트', 'Changes', '산출물'
-}
-DAILY_SKIP = re.compile(r'^docs: \d{4}-\d{2}-\d{2} 데일리 노트')
-STANDING_SKIP = re.compile(r'\(standing\)')  # 완료 불가한 상시 이슈는 미완 작업에서 제외
-
-result = subprocess.run(
-    ['gh', 'issue', 'list', '--repo', 'SeokRae/knowledge-labs',
-     '--state', 'open', '--limit', '20', '--json', 'number,title'],
-    capture_output=True, text=True
-)
-issues = json.loads(result.stdout)
-
-for issue in issues:
-    num = issue['number']
-    title = issue['title']
-    if DAILY_SKIP.match(title) or STANDING_SKIP.search(title):
-        continue
-    print(f"- [ ] #{num} — {title}")
-
-    body_result = subprocess.run(
-        ['gh', 'issue', 'view', str(num), '--repo', 'SeokRae/knowledge-labs',
-         '--json', 'body'],
-        capture_output=True, text=True
-    )
-    body = json.loads(body_result.stdout).get('body', '')
-
-    in_section = False
-    in_code = False
-    for line in body.splitlines():
-        if line.strip().startswith('```'):
-            in_code = not in_code
-            continue
-        if in_code:
-            continue
-        h = re.match(r'^## (.+)', line)
-        if h:
-            in_section = h.group(1).strip() in TARGET_SECTIONS
-        elif in_section:
-            stripped = line.strip()
-            if re.match(r'^[-*] ', stripped) or re.match(r'^- \[', stripped):
-                print(f"  {stripped}")
-PYEOF
+```bash
+python3 _scripts/daily/collect.py open-issues
 ```
 
-결과를 `{OPEN_ISSUES_WITH_STEPS}`로 저장한다.
+출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장한다.
 
 ### Step G2: 브랜치 확인
 
@@ -181,53 +135,13 @@ ls 60-logs/daily/$PREV_YM/*.md 2>/dev/null | sort | tail -1
 이전 노트가 있으면 `## 목표`, `## 작업 로그`, `## 미완 작업` 섹션에서 `^- \[ \]` 항목을 추출한다.
 단, `docs: YYYY-MM-DD 데일리 노트 작성/갱신` 패턴의 이슈와 제목에 `(standing)` 마커가 있는 상시 이슈는 이월하지 않는다.
 
-추출 후 **최근 30개 데일리 노트에서 이슈별 이월 횟수를 카운트**해 각 항목에 태그를 붙인다:
+추출 후 **최근 30개 데일리 노트에서 이슈별 이월 횟수를 카운트**해 각 항목에 태그를 붙인다. (로직은 `_scripts/daily/collect.py` 로 추출됨 — 직전 노트의 목표·작업 로그·미완 작업 섹션 `- [ ]` 항목 추출, 최근 30개 노트 이월 횟수 카운트, `3회 이상 = ⚠️ 재검토` 태그.)
 
-```python
-python3 - <<'EOF'
-import re, glob
-
-text = open("{PREV_NOTE_PATH}").read()
-sections = ["목표", "작업 로그", "미완 작업 (GitHub Issues)"]
-DAILY_SKIP = re.compile(r'— docs: \d{4}-\d{2}-\d{2} 데일리 노트')
-STANDING_SKIP = re.compile(r'\(standing\)')  # 완료 불가한 상시 이슈는 이월·카운트 제외
-results = []
-current = None
-for line in text.splitlines():
-    h = re.match(r'^## (.+)', line)
-    if h:
-        current = h.group(1)
-    elif current and any(s in current for s in sections):
-        if line.startswith("- [ ]") and not DAILY_SKIP.search(line) and not STANDING_SKIP.search(line):
-            results.append(line)
-
-# 최근 30개 노트에서 이슈별 등장 횟수 카운트
-recent_files = sorted(glob.glob("60-logs/daily/**/*.md", recursive=True))[-30:]
-issue_counts = {}
-for f in recent_files:
-    try:
-        content = open(f).read()
-    except:
-        continue
-    for line in content.splitlines():
-        if line.startswith("- [ ]") and not DAILY_SKIP.search(line) and not STANDING_SKIP.search(line):
-            for num in re.findall(r'#(\d+)', line):
-                issue_counts[num] = issue_counts.get(num, 0) + 1
-
-# 이월 횟수 태그 추가
-for item in results:
-    nums = re.findall(r'#(\d+)', item)
-    count = max((issue_counts.get(n, 0) for n in nums), default=0)
-    if count >= 3:
-        print(f"{item} ({count}회 이월) ⚠️ 재검토")
-    elif count >= 1:
-        print(f"{item} ({count}회 이월)")
-    else:
-        print(item)
-EOF
+```bash
+python3 _scripts/daily/collect.py carryover "{PREV_NOTE_PATH}"
 ```
 
-추출 결과를 `{CARRIED_ITEMS}`로 저장한다. 없으면 빈 문자열.
+출력을 `{CARRIED_ITEMS}`로 저장한다. 없으면 빈 문자열.
 직전 노트 파일명의 날짜를 `{PREV_DATE}`로 둔다.
 
 **직전 노트~어제 완료 PR 집계** (`{PREV_DONE_PRS}`):
@@ -235,14 +149,11 @@ EOF
 직전 노트 날짜(`{PREV_DATE}`)부터 어제(오늘 전날)까지 머지된 PR을 집계한다.
 오늘 머지분은 "오늘 작업"이므로 제외하고, 데일리 노트·ingest 자동 기록 PR도 회고 대상이 아니므로 제외한다.
 GitHub `merged:` 검색은 UTC 기준이므로 KST(`+09:00`) 시간대를 명시해 날짜 경계를 맞춘다.
+(집계·필터 로직은 `_scripts/daily/collect.py` 로 추출됨.)
 
 ```bash
 YESTERDAY=$(date -j -v-1d -f "%Y-%m-%d" "{YYYY-MM-DD}" "+%Y-%m-%d")
-gh pr list --repo SeokRae/knowledge-labs --state merged \
-  --search "merged:{PREV_DATE}T00:00:00+09:00..${YESTERDAY}T23:59:59+09:00" \
-  --json number,title --jq '
-  .[] | select(.title | test("데일리 노트|\\(ingest\\)") | not)
-  | "- [x] \(.title) (PR #\(.number))"'
+python3 _scripts/daily/collect.py done-prs "{PREV_DATE}" "$YESTERDAY"
 ```
 
 출력을 `{PREV_DONE_PRS}`로 저장한다. 비어 있으면 `- (없음)`.
@@ -280,7 +191,7 @@ git checkout -b feature/{ISSUE_NUMBER}-daily-{YYYY-MM-DD}
 
 ### Step 3.5: 오픈 이슈 + 하위 작업 조회
 
-Step G1과 동일한 Python 스크립트를 실행해 `{OPEN_ISSUES_WITH_STEPS}`를 생성한다.
+Step G1과 동일하게 `python3 _scripts/daily/collect.py open-issues` 를 실행해 `{OPEN_ISSUES_WITH_STEPS}`를 생성한다.
 갱신용 이슈(오늘 데일리 노트 작성 이슈)는 제외한다.
 
 ### Step 4: 데일리 노트 작성
