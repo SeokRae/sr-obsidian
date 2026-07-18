@@ -45,7 +45,20 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 python3 _scripts/daily/collect.py open-issues
 ```
 
-출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장한다.
+**완료신호 검사 (종료 후보 태그)**: '열려 있음'과 '실제 미완료'는 다르다 — 완료됐는데 종료 신호(`Closes`·hub status)만 누락돼 무기한 open으로 남는 이슈가 매일 반복 노출된다(#5841 22회 이월·ISS-007/033 hub 미종료). 각 오픈 이슈에 완료신호를 검사해 있으면 `⚠️ 종료 후보` 태그를 붙여 목록 상단에 분리한다.
+
+```bash
+# GH 이슈: 머지된 PR가 #N 을 참조하는가
+for N in {오픈이슈번호들}; do
+  M=$(gh pr list --repo SeokRae/knowledge-labs --state merged \
+        --search "$N in:body" --json number --jq '.[0].number' 2>/dev/null)
+  [ -n "$M" ] && echo "#$N ⚠️ 종료 후보 (머지 PR #$M 참조·미종료)"
+done
+```
+
+- **ISS 이슈(vault)**: 해당 `10-projects/ISS-*/steps/` step이 전부 `end-date` 세팅인데 hub `status`가 `done`/`closed`가 아니면 → `⚠️ 종료 후보 (전 step done·hub 미종료)` 태그.
+
+출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장한다(종료 후보는 상단 분리).
 
 ### Step G2: 브랜치 확인
 
@@ -54,14 +67,21 @@ git branch --show-current
 ```
 
 - 현재 브랜치가 `feature/*-daily-{YYYY-MM-DD}` 형식이면 → 그대로 사용
-- 아니면 → 새 Issue + 브랜치 생성 후 진행
+- 아니면 → 당일 데일리 이슈를 먼저 조회해 재사용, 없을 때만 신규 생성:
 
   ```bash
-  gh issue create --repo SeokRae/knowledge-labs \
-    --title "docs: {YYYY-MM-DD} 데일리 노트 갱신" \
-    --body "- 미완 작업(GitHub Issues) 섹션 갱신\n- 파일: 60-logs/daily/{YYYY}/{MM}/{YYYY-MM-DD}.md"
-  git checkout -b feature/{ISSUE_NUMBER}-daily-{YYYY-MM-DD}-update
+  ISSUE_NUMBER=$(gh issue list --repo SeokRae/knowledge-labs --state open \
+    --search "{YYYY-MM-DD} 데일리 in:title" --json number --jq '.[0].number' 2>/dev/null)
+  if [ -z "$ISSUE_NUMBER" ]; then
+    ISSUE_NUMBER=$(gh issue create --repo SeokRae/knowledge-labs \
+      --title "docs: {YYYY-MM-DD} 데일리 노트 갱신" \
+      --body "- 미완 작업(GitHub Issues) 섹션 갱신\n- 파일: 60-logs/daily/{YYYY}/{MM}/{YYYY-MM-DD}.md" \
+      | grep -oE '[0-9]+$')
+  fi
+  git checkout -b feature/${ISSUE_NUMBER}-daily-{YYYY-MM-DD}-update
   ```
+
+  당일 '작성'·'갱신' 데일리 이슈가 여러 개로 갈라지지 않고 하나로 수렴 → self-issue open 누수 차단.
 
 ### Step G3: 미완 작업 섹션 업데이트
 
@@ -74,26 +94,27 @@ git branch --show-current
 
 신규 이슈가 없으면 이 단계를 건너뛴다.
 
-### Step G3.5: 오늘 git 커밋 → 작업 로그 자동 제안
+### Step G3.5: 그날 머지된 PR → 작업 로그 자동 제안
 
 작업 로그 섹션이 `- [ ]` placeholder 상태일 때만 실행한다. 이미 기록이 있으면 건너뛴다.
 
+소스는 로컬 커밋 그래프가 아니라 **그날 머지된 PR 전량**(권위 소스)이다. 로컬 `git log --since`는 체크아웃 브랜치·pull 상태에 좌우돼 그날 실제 머지분과 어긋난다(실측 2026-07-17: 로컬 41 vs `gh merged:` 30). vault 규칙(그날 전체 `gh pr list --search merged:날짜` 집계)을 따른다.
+
 ```bash
-# 오늘 자정 이후 커밋 수집 (merge 커밋 제외)
-git -C /Users/sr/obsidian/sr-labs log \
-  --since="$(date +%Y-%m-%d) 00:00:00" \
-  --oneline --no-merges 2>/dev/null | head -10
+# 그날(KST) 머지된 PR 전량 — 로컬 커밋 그래프 비의존, 데일리/ingest 자동기록 제외
+gh pr list --repo SeokRae/knowledge-labs --state merged \
+  --search "merged:{YYYY-MM-DD}T00:00:00+09:00..{YYYY-MM-DD}T23:59:59+09:00" \
+  --limit 100 --json number,title \
+  --jq '.[] | select(.title | test("데일리 노트|ingest") | not) | "- [x] \(.title) (PR #\(.number))"'
 ```
 
-출력된 커밋 메시지에서 `#NNNN` PR 번호를 추출해 아래 형식으로 변환,
-작업 로그 섹션의 `- [ ]` placeholder 한 줄을 **Edit로 교체**한다.
+출력된 각 줄을 그대로 작업 로그 후보로 삼아, 작업 로그 섹션의 `- [ ]` placeholder를 **Edit로 교체**한다(여러 건이면 여러 줄로 확장).
 
 ```
-- [x] {커밋 메시지 요약} (PR #{번호})
+- [x] {PR 제목 요약} (PR #{번호})
 ```
 
-제외 패턴: `docs: {YYYY-MM-DD} 데일리 노트` (데일리 노트 자체 커밋)
-커밋이 없으면 이 단계를 건너뛴다.
+머지된 PR이 없으면 이 단계를 건너뛴다.
 
 ### Step G4: 커밋 & Push
 
@@ -170,16 +191,27 @@ python3 _scripts/daily/collect.py done-prs "{PREV_DATE}" "$YESTERDAY"
 - 상위 2개 초과 시 나머지는 `{GOAL_ITEMS}`에서 제외 (미완 작업 섹션엔 전부 포함)
 - 이월 횟수가 동일하면 이슈 번호 내림차순(최신 이슈 우선)
 
-### Step 2: GitHub Issue 생성
+### Step 2: GitHub Issue 조회 후 재사용 또는 생성
+
+무조건 신규 생성하지 않는다. 데일리-노트-자체 이슈가 매 호출마다 신규 생성되면 자동 종료 실패 시 open으로 누수된다(예: #6172 잔존). 먼저 당일 데일리 이슈가 이미 열려 있는지 조회한다:
 
 ```bash
-gh issue create \
-  --repo SeokRae/knowledge-labs \
-  --title "docs: {YYYY-MM-DD} 데일리 노트 작성" \
-  --body "## Summary\n- {YYYY-MM-DD} ({요일}) 데일리 노트 생성\n- 파일: \`60-logs/daily/{YYYY}/{MM}/{YYYY-MM-DD}.md\`"
+ISSUE_NUMBER=$(gh issue list --repo SeokRae/knowledge-labs --state open \
+  --search "{YYYY-MM-DD} 데일리 in:title" --json number --jq '.[0].number' 2>/dev/null)
 ```
 
-반환된 Issue 번호를 `{ISSUE_NUMBER}`로 저장한다.
+- **`{ISSUE_NUMBER}`가 있으면** → 그 번호를 **재사용**(신규 생성 안 함). 하루 여러 번 실행돼도 데일리 이슈는 1개로 수렴.
+- **없으면** → 신규 생성:
+
+  ```bash
+  ISSUE_NUMBER=$(gh issue create \
+    --repo SeokRae/knowledge-labs \
+    --title "docs: {YYYY-MM-DD} 데일리 노트 작성" \
+    --body "## Summary\n- {YYYY-MM-DD} ({요일}) 데일리 노트 생성\n- 파일: \`60-logs/daily/{YYYY}/{MM}/{YYYY-MM-DD}.md\`" \
+    | grep -oE '[0-9]+$')
+  ```
+
+Step 6의 PR body에 `Closes #{ISSUE_NUMBER}`가 반드시 포함되게 해, 머지 시 self-issue가 자동 종료되도록 한다(open 누수 구조적 차단).
 
 ### Step 3: Feature 브랜치 생성
 
