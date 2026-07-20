@@ -6,6 +6,7 @@ description: >
   "ADR 만들어줘", "ADR 추가", "기술 고민 문서화", "왜 이걸 선택했는지 남겨줘", "의사결정 기록",
   "결정 이유 문서", "회의록 작성", "히스토리" 요청 시 사용.
   Do NOT use for 대화 중 빠른 fleeting 포착·단순 메모 (use sr-obsidian:capture) — history 는 ADR·의사결정·회의록 등 구조화된 기록 전용.
+  Do NOT use for 누적된 기록을 사후 종합한 인수인계·경위 문서 (use sr-obsidian:handover — history는 결정 발생 시점의 단건 기록 생성, handover는 쌓인 기록의 사후 서사 복원).
   Keywords: adr, ADR, 의사결정, 기술 고민, 선택지, 트레이드오프, architecture decision, decision log, 회의록, meeting, history, 아키텍처 결정
 allowed-tools: Read, Glob, Write, Bash, Edit
 ---
