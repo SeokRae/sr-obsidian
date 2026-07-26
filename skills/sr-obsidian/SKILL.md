@@ -1,10 +1,7 @@
 ---
 name: sr-obsidian
 description: >
-  sr-obsidian 플러그인 진입점 — 신규 프로젝트 초기화(init→hub→wbs→history) 또는
-  기존 프로젝트 관리(audit→migrate→hub/wbs 갱신) 전체 워크플로우를 오케스트레이션.
-  "/sr-obsidian" 단독 호출, "새 프로젝트 시작", "obsidian 프로젝트", "프로젝트 구조 잡아줘",
-  "프로젝트 관리", "어떤 스킬 써야 해" 언급 시 사용.
+  sr-obsidian 플러그인 진입점 — 신규 프로젝트 초기화(scaffold→hub→wbs→history) 또는 기존 프로젝트 관리(audit→migrate→hub/wbs 갱신) 워크플로우 오케스트레이션. "/sr-obsidian" 단독 호출, "새 프로젝트 시작", "프로젝트 구조 잡아줘", "어떤 스킬 써야 해" 언급 시 사용.
   Keywords: sr-obsidian, obsidian, 프로젝트 시작, 신규 프로젝트, 프로젝트 관리, 워크플로우
 allowed-tools: Read, Bash
 ---

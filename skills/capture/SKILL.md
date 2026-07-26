@@ -1,12 +1,10 @@
 ---
 name: capture
 description: >
-  Fleeting 노트 포착 모드. 대화 중 실시간으로 키워드와 문맥만 빠르게 기록한다.
-  구조화·해석·정리 없이 bullet 중심으로 00-inbox/ 에 초안 생성.
-  "포착", "기록", "fleeting", "capture", "메모해줘", "나중에 볼게" 요청 시 사용.
-  Do NOT use for structured study/permanent notes (use sr-obsidian:study).
-  Do NOT use for URL web clipping (use sr-obsidian:defuddle).
-  Do NOT use for ADR·의사결정 로그·회의록 등 구조화된 기록 (use sr-obsidian:history).
+  Fleeting 노트 포착 — 구조화·해석 없이 키워드·문맥만 bullet로 00-inbox/에 초안 생성. "포착", "기록", "fleeting", "capture", "메모해줘", "나중에 볼게" 요청 시 사용.
+  Do NOT use for 구조화된 학습·permanent 노트 → sr-obsidian:study.
+  Do NOT use for URL 웹 클리핑 → sr-obsidian:defuddle.
+  Do NOT use for ADR·의사결정·회의록 → sr-obsidian:history.
   Keywords: 포착, 기록, fleeting, capture, 키워드, 메모
 allowed-tools: Glob, Write
 ---

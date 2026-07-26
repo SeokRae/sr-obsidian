@@ -1,13 +1,11 @@
 ---
 name: defuddle
 description: >
-  URL에서 깔끔한 마크다운을 추출해 00-inbox/에 fleeting 노트로 저장한다.
-  웹 페이지의 광고·네비게이션·클러터를 제거하고 핵심 본문만 보존.
-  "URL 저장", "웹 클리핑", "이 페이지 메모해줘", "링크 캡처", "clip", "웹 페이지 보관" 요청 시 사용.
-  Do NOT use for .md URLs (use WebFetch directly).
-  Do NOT use for structured study/permanent notes (use sr-obsidian:study).
-  Do NOT use for quick manual fleeting capture without a URL (use sr-obsidian:capture — capture는 수동 포착, defuddle는 URL 본문 추출).
-  Do NOT use for 외부 웹 최신 정보 수집·동향 누적 (use sr-obsidian:radar — defuddle는 단일 URL 본문 추출, radar는 외부 웹 동향 수집·누적).
+  URL 본문을 클러터 제거한 마크다운으로 추출해 00-inbox/ fleeting 노트로 저장. "URL 저장", "웹 클리핑", "이 페이지 메모해줘", "clip" 요청 시 사용.
+  Do NOT use for .md URL (WebFetch 직접 사용).
+  Do NOT use for URL 없는 수동 포착 → sr-obsidian:capture.
+  Do NOT use for 구조화된 permanent 노트 → sr-obsidian:study.
+  Do NOT use for 외부 웹 동향 수집·누적 → sr-obsidian:radar.
   Keywords: 웹 클리핑, URL 저장, clip, defuddle, 링크 캡처, 웹 보관, inbox
 allowed-tools: Bash, Write, Read
 ---

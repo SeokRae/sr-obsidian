@@ -1,14 +1,10 @@
 ---
 name: radar
 description: >
-  외부 웹에서 특정 주제(기본: Claude Code · AI 에이전트)의 최신 정보를 주기적으로 수집해
-  vault 위키로 점진 누적한다. 웹 검색 → 기존 위키·ingest-log 대조로 신규 정보만 추출 →
-  ① 60-logs/radar/ 날짜별 수집 로그(원본·출처·날짜) ② 30-resources/{카테고리}/ wiki-term 노트
-  2갈래로 파일링. 기존 wiki·lint-wiki·Dataview·index 인프라와 완전 호환. 스케줄러로 매일 자동 실행 설계.
-  "레이더", "radar", "최신 정보 수집", "동향 수집", "위키 업데이트", "claude code 동향" 요청 시 사용.
-  Do NOT use for 단일 URL 클리핑 (use sr-obsidian:defuddle).
-  Do NOT use for wiki 품질·연결 검사 (use sr-obsidian:lint-wiki).
-  Do NOT use for vault 내부 노트로부터의 용어 추출 (use sr-obsidian:wiki scan — wiki는 내부 스캔, radar는 외부 웹 수집).
+  외부 웹에서 주제(기본: Claude Code · AI 에이전트) 최신 정보를 수집해 ① 60-logs/radar/ 날짜별 수집 로그 ② 30-resources/ wiki-term 노트 2갈래로 누적. "레이더", "radar", "동향 수집", "최신 정보 수집", "claude code 동향" 요청 시 사용.
+  Do NOT use for 단일 URL 클리핑 → sr-obsidian:defuddle.
+  Do NOT use for wiki 품질·연결 검사 → sr-obsidian:lint-wiki.
+  Do NOT use for vault 내부 노트 용어 추출 → sr-obsidian:wiki scan.
   Keywords: radar, 레이더, 동향 수집, 최신 정보, 위키 누적, claude code, agentic, 에이전트
 allowed-tools: WebSearch, WebFetch, Bash, Read, Glob, Grep, Write, Edit
 ---

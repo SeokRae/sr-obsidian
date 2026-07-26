@@ -1,11 +1,10 @@
 ---
 name: scaffold
 description: >
-  Obsidian 제텔카스텐 프로젝트 뼈대 생성. book(독서 노트), area(지식 영역), vault(PARA 구조 부트스트랩) 3가지 모드 지원.
-  "새 책 시작", "독서 노트 만들어줘", "지식 영역 추가", "새 주제 공부 시작", "vault 초기화" 요청 시 사용.
-  Do NOT use for service project initialization in 20-areas/ (use sr-obsidian:hub).
-  Do NOT use for ISS incident structure (use sr-obsidian:iss).
-  Do NOT use for 읽은 챕터 개념 추출·permanent 노트 생성 (use sr-obsidian:study — scaffold는 독서 노트 구조 뼈대 생성, study는 챕터 개념 추출).
+  Obsidian 제텔카스텐 뼈대 생성 — book(독서 노트)·area(지식 영역)·vault(PARA 부트스트랩) 3모드. "새 책 시작", "지식 영역 추가", "새 주제 공부 시작", "vault 초기화" 요청 시 사용.
+  Do NOT use for 20-areas/ 서비스 프로젝트 초기화 → sr-obsidian:hub.
+  Do NOT use for ISS 인시던트 구조 → sr-obsidian:iss.
+  Do NOT use for 챕터 개념 추출·permanent 생성 → sr-obsidian:study.
   Keywords: scaffold, 뼈대, 초기화, 제텔카스텐, zettelkasten, 독서노트, book, area, vault, 지식 영역, 공부 시작
 allowed-tools: Read, Write, Bash, Edit
 ---

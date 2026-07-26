@@ -1,13 +1,10 @@
 ---
 name: lint-wiki
 description: >
-  LLM Wiki 품질 검사. Phase 1(스크립트 구조 검사) + Phase 2(LLM 의미론적 검사) 2단계.
-  구조 검사: Orphan, Dangling link, MOC 미연결, 관련 메모 섹션 부재.
-  의미론적 검사: 페이지 간 모순, stale 주장, prose 언급 개념, data gap, 신규 소스 제안.
-  결과를 60-logs/lint-reports/YYYY-MM-DD.md 로 저장.
-  Do NOT use for project structure audit (use sr-obsidian:audit — audit covers 20-areas/ project folders).
-  Do NOT use for creating/querying wiki term pages (use sr-obsidian:wiki — wiki는 용어 페이지 생성·질의, lint-wiki는 orphan·dangling·moc 품질 검사).
-  Do NOT use for 외부 웹 최신 정보 수집·동향 누적 (use sr-obsidian:radar — lint-wiki는 내부 wiki 품질·연결 검사, radar는 외부 웹 수집·누적).
+  LLM Wiki 품질 검사 2단계 — Phase 1 구조(orphan·dangling·MOC 미연결·관련 메모 섹션 부재) + Phase 2 의미론(모순·stale 주장·data gap·신규 소스 제안). 결과는 60-logs/lint-reports/YYYY-MM-DD.md 저장.
+  Do NOT use for 프로젝트 구조 검증 → sr-obsidian:audit.
+  Do NOT use for wiki 용어 페이지 생성·질의 → sr-obsidian:wiki.
+  Do NOT use for 외부 웹 수집·누적 → sr-obsidian:radar.
   Keywords: lint, wiki, orphan, dangling, moc, 품질, 검사, 연결 없음, 모순, stale
 allowed-tools: Bash, Read, Glob
 ---
