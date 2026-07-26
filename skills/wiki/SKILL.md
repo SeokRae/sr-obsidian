@@ -71,40 +71,26 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 ### Phase 2: 생성 (WRITE)
 
-1. **GitHub Issue 생성**
-   ```bash
-   gh issue create --repo SeokRae/knowledge-labs \
-     --title "docs: wiki-term {용어} 추가" \
-     --body "wiki-term 페이지 생성 — /wiki scan 결과"
-   ```
-2. **Branch 생성** (반드시 main에서)
-   ```bash
-   git checkout main && git pull origin main
-   git checkout -b feature/{issue번호}-wiki-{용어-slug}
-   ```
-3. **선택된 용어별 처리**:
+1. **Issue + Branch** — [git-workflow](../../references/git-workflow.md) 표준 절차 적용:
+   제목 `docs: wiki-term {용어} 추가`, 브랜치 `feature/{issue번호}-wiki-{용어-slug}`
+2. **선택된 용어별 처리**:
    - **신규**: Obsidian CLI로 템플릿 적용 후 내용 편집
      ```bash
      obsidian create path="30-resources/{카테고리}/{파일명}.md" template="tpl-wiki-term"
      ```
      → 생성된 파일 `Read` → `Edit`으로 4유형 섹션 채우기 (`technology` / `architecture` / `principle` / `metric`)
    - **태깅만**: 기존 노트 프론트매터에 `wiki-term: true` 추가 `Edit`
-4. **Fan-out**: 출처 노트의 `## 관련 메모`에 역링크 삽입
-5. **wiki-index.md** 정적 테이블 새 행 추가
-6. **Ingest Log** 기록:
+3. **Fan-out**: 출처 노트의 `## 관련 메모`에 역링크 삽입
+4. **wiki-index.md** 정적 테이블 새 행 추가
+5. **Ingest Log** 기록:
    ```
    ## [YYYY-MM-DD] wiki | {용어명}
    - 생성: [[{파일경로}]]
    - 출처: [[{출처 노트}]]
    - 유형: {technology|architecture|principle|metric}
    ```
-7. **커밋 + PR**:
-   ```bash
-   git add -A
-   git commit -m "docs: wiki-term {용어} 추가 (#{issue번호})"
-   git push -u origin HEAD
-   gh pr create --title "docs: wiki-term {용어} 추가" --body "Closes #{issue번호}"
-   ```
+6. **커밋 + PR** — [git-workflow](../../references/git-workflow.md) 커밋·PR 단계:
+   커밋 `docs: wiki-term {용어} 추가 (#{issue번호})`, PR body `Closes #{issue번호}`
 
 ---
 

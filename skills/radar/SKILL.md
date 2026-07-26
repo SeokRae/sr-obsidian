@@ -116,13 +116,9 @@ grep -rl "wiki-term: true" "$WIKI_DIR" 2>/dev/null
 
 ### Step 1. GitHub Issue + 브랜치
 
-```bash
-gh issue create --repo "$REPO" \
-  --title "docs: radar {TOPIC} 수집 — {TODAY}" \
-  --body "radar 일일 수집: 신규 N건, 갱신 M건, 로그 K건"
-git -C "$VAULT" checkout main && git -C "$VAULT" pull origin main
-git -C "$VAULT" checkout -b "feature/{issue번호}-radar-{TODAY}"
-```
+[git-workflow](../../references/git-workflow.md) 표준 절차 적용 —
+제목 `docs: radar {TOPIC} 수집 — {TODAY}`, 브랜치 `feature/{issue번호}-radar-{TODAY}`.
+git 명령은 `git -C "$VAULT"` 로 실행.
 
 ### Step 2. ① 날짜별 수집 로그 작성 (원본 보존)
 
@@ -200,13 +196,8 @@ aliases: [{영문 약어}, {풀네임}]
 
 ### Step 5. 커밋 + PR
 
-```bash
-git -C "$VAULT" add -A
-git -C "$VAULT" commit -m "docs: radar {TOPIC} 수집 {TODAY} (#{issue번호})"
-git -C "$VAULT" push -u origin HEAD
-gh pr create --repo "$REPO" \
-  --title "docs: radar {TOPIC} 수집 — {TODAY}" --body "Closes #{issue번호}"
-```
+[git-workflow](../../references/git-workflow.md) 표준 절차의 커밋·PR 단계 적용 —
+커밋 `docs: radar {TOPIC} 수집 {TODAY} (#{issue번호})`, PR body `Closes #{issue번호}`.
 
 ### Step 6. 완료 출력
 

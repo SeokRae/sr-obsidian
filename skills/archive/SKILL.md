@@ -54,36 +54,20 @@ steps/ 가 없는 ISS는 hub `status: done` 또는 `closed` 단독으로 판단.
 
 sr-harness 워크플로우 준수.
 
-### 4-1. GH Issue 생성
-```bash
-gh issue create \
-  --title "chore: 완료 ISS 일괄 아카이브 (N건)" \
-  --body "완료 ISS를 10-projects/ → 40-archives/ 이동.\n\n대상:\n- ISS-0XX ...\n- ISS-0YY ..."
-```
+### 4-1. Issue + Branch
 
-### 4-2. Feature 브랜치 생성
+[git-workflow](../../references/git-workflow.md) 표준 절차 적용 —
+제목 `chore: 완료 ISS 일괄 아카이브 (N건)` (body에 대상 ISS 목록), 브랜치 `feature/{ISSUE_NUM}-archive-iss-batch`.
 
-> **worktree 사용 금지** (vault 전용 규칙) — worktree 안 파일은 머지 전까지 Obsidian vault 루트에서 보이지 않아 PR 리뷰 단계에서 노트 확인이 불가능하다. 반드시 main에서 feature 브랜치를 직접 체크아웃한다.
-
-```bash
-git checkout main && git pull origin main
-git checkout -b feature/{ISSUE_NUM}-archive-iss-batch
-```
-
-### 4-3. git mv (대상 ISS 각각)
+### 4-2. git mv (대상 ISS 각각)
 ```bash
 git mv "10-projects/ISS-{NNN}-{slug}" "40-archives/ISS-{NNN}-{slug}"
 ```
 
-### 4-4. Commit → Push → PR → Merge
-```bash
-git commit -m "chore: 완료 ISS 일괄 아카이브 (#{ISSUE_NUM})"
-git push origin feature/{ISSUE_NUM}-archive-iss-batch
-gh pr create --title "chore: 완료 ISS 일괄 아카이브" --body "Closes #{ISSUE_NUM}" \
-  --head feature/{ISSUE_NUM}-archive-iss-batch
-gh pr merge {PR_NUM} --merge --delete-branch
-git checkout main && git pull origin main
-```
+### 4-3. Commit → PR → Merge
+
+[git-workflow](../../references/git-workflow.md) 커밋·PR·**머지까지** 수행 —
+커밋 `chore: 완료 ISS 일괄 아카이브 (#{ISSUE_NUM})`, 머지 후 main pull.
 
 ## 판단 기준
 
