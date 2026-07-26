@@ -1,12 +1,10 @@
 ---
 name: canvas
 description: >
-  Obsidian .canvas 파일 생성 및 편집 스킬.
-  노드(텍스트·파일·링크·그룹)와 엣지로 구성된 JSON Canvas 형식을 사용한다.
-  ISS 타임라인, 서비스 의존관계 맵, 아키텍처 다이어그램, 마인드맵 요청 시 사용.
-  Do NOT use for HTML diagrams (use sr-obsidian:visualize instead).
-  Do NOT use for Mermaid diagrams (embed in standard .md notes).
-  Do NOT use for ISS 추적·FT 현황 등 데이터 테이블 대시보드 (use sr-obsidian:obsidian-bases — canvas는 공간 배치 맵·다이어그램, obsidian-bases는 .base 데이터 집계 뷰).
+  Obsidian .canvas(JSON Canvas) 파일 생성·편집. ISS 타임라인, 서비스 의존관계 맵, 아키텍처 다이어그램, 마인드맵 요청 시 사용.
+  Do NOT use for HTML 다이어그램 → sr-obsidian:visualize.
+  Do NOT use for Mermaid 다이어그램 (일반 .md에 임베드).
+  Do NOT use for 데이터 테이블 대시보드 → sr-obsidian:obsidian-bases.
   Keywords: canvas, json-canvas, 캔버스, 마인드맵, 의존관계, 다이어그램, 아키텍처 맵
 allowed-tools: Read, Write, Edit
 ---

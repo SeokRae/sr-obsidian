@@ -1,14 +1,11 @@
 ---
 name: obsidian-bases
 description: >
-  Obsidian .base 파일 생성 및 편집 스킬.
-  YAML 기반 데이터베이스 뷰로 vault 노트를 필터·정렬·집계한다.
-  ISS 추적 대시보드, FT 현황 목록, step 진행 현황, 독서 목록 등 요청 시 사용.
-  Do NOT use for dynamic queries requiring DataviewJS (use Dataview code blocks instead).
-  Do NOT use for one-off table views — add a Dataview query to the note instead.
-  Do NOT use for WBS 생성·Phase 구성·Gantt 진행 관리 (use sr-obsidian:wbs — obsidian-bases는 .base 뷰, wbs는 WBS 상태머신·간트).
-  Do NOT use for 공간 배치 맵·마인드맵·의존관계/타임라인 다이어그램 (use sr-obsidian:canvas — obsidian-bases는 .base 데이터 집계 뷰, canvas는 json-canvas 공간 맵).
-  Do NOT use for MD→HTML 다이어그램·슬라이드·보고서 시각화 (use sr-obsidian:visualize — obsidian-bases는 .base 데이터 집계 뷰, visualize는 HTML 다이어그램·보고서).
+  Obsidian .base 파일 생성·편집 — YAML 데이터베이스 뷰로 vault 노트를 필터·정렬·집계. ISS 추적 대시보드, FT 현황 목록, step 진행 현황, 독서 목록 요청 시 사용.
+  Do NOT use for DataviewJS 동적 쿼리·일회성 표 (Dataview 코드 블록 사용).
+  Do NOT use for WBS·Phase·Gantt 관리 → sr-obsidian:wbs.
+  Do NOT use for 공간 배치 맵·마인드맵 → sr-obsidian:canvas.
+  Do NOT use for MD→HTML 시각화 → sr-obsidian:visualize.
   Keywords: bases, .base, 데이터베이스, ISS 추적, FT 현황, 대시보드, 필터, 집계
 allowed-tools: Read, Write, Edit
 ---

@@ -1,14 +1,12 @@
 ---
 name: handover
 description: >
-  누적된 기록(steps·comms·ADR·설계문서·daily·PR)을 종합해 "요건이 어떻게 확정됐고, 어떻게 작업해왔고, 무엇을 고민했고, 지금 무엇이 남았는지"를 서사로 복원하는 인수인계 문서 생성.
-  ISS-NNN · FT-NNN · 서비스 영역 셋 다 지원하며, 대상 폴더에 summary 노트로 남기고 Issue→Branch→PR까지 자동화.
-  "인수인계", "인계 문서", "히스토리 정리", "그동안 어떻게 진행됐는지", "경위 정리", "이거 넘겨받아야 하는데", "배경 파악", "onboarding 문서", "handover" 요청 시 즉시 사용.
-  후속 요청도 이 스킬 — "인계 문서 갱신", "다시 정리", "최근 것만 추가", "미결 항목만 다시".
-  Do NOT use for ADR·회의록 등 결정 발생 시점의 단건 기록 (use sr-obsidian:history — handover는 축적된 기록의 사후 종합, history는 그 시점의 기록 생성).
-  Do NOT use for 현재 상태 스냅샷·링크·KPI 갱신 (use sr-obsidian:hub — handover는 경위 서사, hub는 현황 스냅샷).
-  Do NOT use for 노트 검색·목록 반환 (use sr-obsidian:search — handover는 종합 문서 생성, search는 검색 결과 반환).
-  Do NOT use for 주간·일간 작업 집계 (use sr-obsidian:weekly / sr-obsidian:daily).
+  누적 기록(steps·comms·ADR·설계문서·daily·PR)을 종합해 요건 확정 경위·작업 흐름·미결 사항을 서사로 복원하는 인수인계 문서 생성. ISS-NNN · FT-NNN · 서비스 영역 지원, 대상 폴더 summary 노트 + Issue→PR 자동화.
+  "인수인계", "인계 문서", "히스토리 정리", "경위 정리", "배경 파악", "onboarding 문서", "handover" 및 후속 갱신 요청("인계 문서 갱신", "미결 항목만 다시") 시 사용.
+  Do NOT use for 결정 발생 시점의 단건 기록(ADR·회의록) → sr-obsidian:history.
+  Do NOT use for 현재 상태 스냅샷·링크·KPI → sr-obsidian:hub.
+  Do NOT use for 노트 검색·목록 반환 → sr-obsidian:search.
+  Do NOT use for 주간·일간 작업 집계 → sr-obsidian:weekly / sr-obsidian:daily.
   Keywords: 인수인계, 인계, handover, 히스토리, 경위, 배경, 넘겨받다, 온보딩, summary, 그동안
 allowed-tools: Bash, Read, Glob, Grep, Write, Edit, Agent
 ---

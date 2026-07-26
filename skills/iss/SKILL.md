@@ -1,9 +1,8 @@
 ---
 name: iss
 description: >
-  ISS 인시던트/이슈 전체 구조 자동 생성 — hub + WBS + summary + steps/ + comms/.
-  파트너 문의·운영 이슈·인시던트 대응을 시작할 때 사용.
-  Do NOT use for non-ISS project/knowledge initialization (use sr-obsidian:scaffold or sr-obsidian:hub).
+  ISS 인시던트/이슈 전체 구조 자동 생성 — hub + WBS + summary + steps/ + comms/. 파트너 문의·운영 이슈·인시던트 대응을 시작할 때 사용.
+  Do NOT use for 비-ISS 프로젝트·지식 초기화 → sr-obsidian:scaffold / sr-obsidian:hub.
   Keywords: iss, 이슈, 인시던트, 문의 대응, ISS 생성, issue create, incident
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
