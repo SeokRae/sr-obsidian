@@ -61,15 +61,16 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 3. **파일 작성** — [format.md](references/format.md)의 **파일 형식** 기준, `weekly-planner` 에이전트에 위임:
    `Agent(weekly-planner, {week, goal})` → 생성 파일 Read 후 Phase 1 데이터·사용자 수정사항 보완.
    **에이전트 오류·파일 미생성 시 fallback**: Phase 1 데이터를 직접 Write.
-4. **커밋 & PR** — git-workflow 커밋·PR 단계, 커밋 `docs: {YYYY-WNN} 주간보고 작성 (#{N})`
-5. **완료 출력** — Issue·Branch·PR·파일 경로 + 처리 건수(agent/수동)
+4. **자기검증** — 커밋 전 생성 파일을 다시 확인: 이월 3회↑ 항목에 "재검토 필요" 플래그를 붙였는가 / `steps/`가 존재하는 ISS를 flat으로 쓰지 않았는가. 누락 시 Edit로 보완 후 진행.
+5. **커밋 & PR** — git-workflow 커밋·PR 단계, 커밋 `docs: {YYYY-WNN} 주간보고 작성 (#{N})`
+6. **완료 출력** — Issue·Branch·PR·파일 경로 + 처리 건수(agent/수동)
 
 ## 판단 기준
 
 | 상황 | 처리 |
 |------|------|
 | 미완료 분류 수정 | `"1번 blocked→deferred"` 형식 입력 반영 후 재출력 |
-| ISS step 파일 없음 | 데일리 로그 기반 flat 형식으로 대체 |
+| `steps/` 디렉터리가 실제로 없음 | 데일리 로그 기반 flat 형식으로 대체 (있는데 하위 작업만 없는 경우는 대체 대상 아님 — step 한 줄로 표기) |
 | ISS 이름과 실제 작업 범위 불일치 | 실제 작업 기준 기재, 괄호로 원래 트리거 병기 |
 | 완료 0개 / 미완료 0개 | 완료율 0%(이월만 정리) / 100%(인사이트만 작성) |
 
