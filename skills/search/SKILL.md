@@ -6,6 +6,7 @@ description: >
   키워드·필드명·이슈번호·도메인 용어 등 어떤 형태의 쿼리든 받아 관련 노트 목록과
   맥락 스니펫을 vault 영역별로 그룹화하여 반환. 60-logs(데일리·주간보고)는 기본 제외.
   Do NOT use for wiki 용어 페이지 질의·생성 (use sr-obsidian:wiki — search는 vault 전체 노트 검색, wiki query는 wiki-term 우선 질의·답변 파일링).
+  Do NOT use for 축적된 기록의 사후 종합 인수인계·경위 문서 생성 (use sr-obsidian:handover — search는 검색 결과 목록·스니펫 반환, handover는 종합 문서 생성).
   Keywords: 찾아줘, 검색, 어디, 있어, 관련, 이슈 찾기, 노트 찾기, search, 조회, 어디서 다뤘
 allowed-tools: Bash, Read
 ---
