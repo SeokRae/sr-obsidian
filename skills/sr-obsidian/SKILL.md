@@ -151,3 +151,5 @@ Obsidian Flavored Markdown 문법을 확인해야 할 때 아래 참조 문서�
 | [CALLOUTS](../../references/CALLOUTS.md) | 콜아웃(`> [!note]`) 타입·접기 문법 |
 | [EMBEDS](../../references/EMBEDS.md) | 파일·섹션·블록 임베드 문법 |
 | [PROPERTIES](../../references/PROPERTIES.md) | 프론트매터 속성 타입·표기 규칙 |
+| [git-workflow](../../references/git-workflow.md) | vault 표준 Issue→Branch→PR 절차 (노트 발행 스킬 공통) |
+| [wiki-harvest](../../references/wiki-harvest.md) | 회의록 → wiki 후보 추출 공통 후처리 (daily·weekly·retro) |

@@ -157,38 +157,16 @@ gh pr list --repo SeokRae/knowledge-labs --state merged --search "{label}" --lim
 
    서비스는 형제 파일(`{project-id} WBS.md` · `{project-id} 프로젝트 현황.md`)의 명명을 따른다.
 
-2. **Issue 생성**
+2. **Issue + Branch** — [git-workflow](../../references/git-workflow.md) 표준 절차 적용:
+   제목 `docs: {label} 인수인계 문서 작성`, 브랜치 `feature/{N}-handover-{label}`
 
-   ```bash
-   gh issue create --repo SeokRae/knowledge-labs \
-     --title "docs: {label} 인수인계 문서 작성" \
-     --body "## Summary
-- {label} 누적 기록 종합 → 경위·결정·미결 정리
-- 파일: \`{출력경로}\`"
-   ```
+3. **노트 작성** — 아래 형식. 갱신 모드면 Edit로 해당 섹션만 손댄다.
 
-3. **브랜치 생성** — main에서만 딴다. 직전 작업 브랜치에 머문 상태로 `-b` 하면 체인 분기가 된다.
+4. **커밋 & PR** — [git-workflow](../../references/git-workflow.md) 커밋·PR 단계.
+   `git add "{출력경로}"` 후 `git diff --cached --name-only`로 의도한 파일만 staged인지 확인.
+   커밋 `docs: {label} 인수인계 문서 작성 (#{N})`
 
-   ```bash
-   git checkout main && git pull origin main
-   git branch --show-current      # main 확인 후에만 다음 줄 실행
-   git checkout -b feature/{N}-handover-{label}
-   ```
-
-4. **노트 작성** — 아래 형식. 갱신 모드면 Edit로 해당 섹션만 손댄다.
-
-5. **커밋 & PR**
-
-   ```bash
-   git add "{출력경로}"
-   git diff --cached --name-only      # 의도한 파일만 staged 인지 확인
-   git commit -m "docs: {label} 인수인계 문서 작성 (#{N})"
-   git push -u origin feature/{N}-handover-{label}
-   gh pr create --repo SeokRae/knowledge-labs \
-     --title "docs: {label} 인수인계 문서 작성" --body "Closes #{N}"
-   ```
-
-6. **완료 출력** — Issue·Branch·PR·파일 경로, 그리고 근거 없는 구간 건수.
+5. **완료 출력** — Issue·Branch·PR·파일 경로, 그리고 근거 없는 구간 건수.
 
 ## 노트 형식
 
