@@ -40,13 +40,19 @@ python3 _scripts/daily/collect.py open-issues
 
 **종료 후보 감지**: '열려 있음'과 '실제 미완료'는 다르다 — 완료됐는데 종료 신호만 누락된 이슈를 분리 표시한다.
 
-- **GH 이슈**: 머지된 PR이 `#N`을 참조하면 `⚠️ 종료 후보`
+- **GH 이슈**: 머지된 PR이 `Closes/Fixes/Resolves #N`으로 **종료를 선언**하면 `⚠️ 종료 후보`
+  (데일리·주간보고 등 로그성 PR이 오픈 이슈 목록을 본문에 나열하는 자기인용은 제외 — 단순 `#N` 언급만으론 오탐)
 
   ```bash
   for N in {오픈이슈번호들}; do
     M=$(gh pr list --repo SeokRae/knowledge-labs --state merged \
-          --search "$N in:body" --json number --jq '.[0].number' 2>/dev/null)
-    [ -n "$M" ] && echo "#$N ⚠️ 종료 후보 (머지 PR #$M 참조·미종료)"
+          --search "$N in:body" --limit 20 --json number,title,body \
+        | jq -r --arg n "$N" '
+            [ .[]
+              | select(.title | test("데일리 노트|주간보고|회고|\\(ingest\\)") | not)
+              | select(.body  | test("(?i)\\b(clos(e|es|ed)|fix(es|ed)?|resolv(e|es|ed)) +#" + $n + "\\b"))
+            ] | .[0].number // empty')
+    [ -n "$M" ] && echo "#$N ⚠️ 종료 후보 (머지 PR #$M 종료키워드 참조·미종료)"
   done
   ```
 
