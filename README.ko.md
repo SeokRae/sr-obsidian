@@ -49,6 +49,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | hub | `sr-obsidian:hub` | 허브 노트 링크·KPI·ISS 참조 관리 |
 | wbs | `sr-obsidian:wbs` | WBS Phase 구성·진행 현황 관리 |
 | history | `sr-obsidian:history` | ADR 생성·의사결정 로그·회의록 기록 |
+| transcript | `sr-obsidian:transcript` | 영문 AI 회의 전사(Clova/Caret) 번역+STT 보정 → 구조화 회의록 3단 파이프라인 |
 | handover | `sr-obsidian:handover` | 누적 기록 종합 인수인계 문서 — 요건 확정 경위·작업 이력·검토한 선택지·미결 항목 |
 | visualize | `sr-obsidian:visualize` | MD → HTML 시각화 (claude-visualize 래핑) + diagrams/ 저장·페어드 MD·허브 링크 |
 | audit | `sr-obsidian:audit` | 표준 구조 대비 검증 |

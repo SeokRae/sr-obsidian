@@ -49,6 +49,7 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | hub | `sr-obsidian:hub` | Manage hub note links, KPIs, ISS references |
 | wbs | `sr-obsidian:wbs` | WBS phase setup and progress tracking |
 | history | `sr-obsidian:history` | ADR creation, decision log, meeting notes |
+| transcript | `sr-obsidian:transcript` | English AI meeting transcript (Clova/Caret) → translation+STT correction → structured meeting note pipeline |
 | handover | `sr-obsidian:handover` | Handover doc from accumulated history — how requirements settled, what was done, what was debated, what is left |
 | visualize | `sr-obsidian:visualize` | MD → HTML via claude-visualize, saved to diagrams/ with paired MD |
 | audit | `sr-obsidian:audit` | Validate project structure against the standard |
