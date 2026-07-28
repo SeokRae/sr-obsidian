@@ -6,6 +6,7 @@ description: >
   Do NOT use for URL 없는 수동 포착 → sr-obsidian:capture.
   Do NOT use for 구조화된 permanent 노트 → sr-obsidian:study.
   Do NOT use for 외부 웹 동향 수집·누적 → sr-obsidian:radar.
+  Do NOT use for 외부 웹 최신 정보 수집·동향 누적 (use sr-obsidian:radar — defuddle는 단일 URL 본문 추출, radar는 외부 웹 동향 수집·누적).
   Keywords: 웹 클리핑, URL 저장, clip, defuddle, 링크 캡처, 웹 보관, inbox
 allowed-tools: Bash, Write, Read
 ---
