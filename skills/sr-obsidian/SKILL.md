@@ -33,6 +33,7 @@ sr-obsidian 플러그인의 시작점. 상황을 파악하고 첫 번째 스킬�
 | `sr-obsidian:wbs` | WBS 생성·Phase 추가·진행 현황 갱신 |
 | `sr-obsidian:history` | ADR 생성, 의사결정 로그, 회의록 |
 | `sr-obsidian:handover` | 누적 기록 종합 → 인수인계·경위 문서 (ISS/FT/서비스) |
+| `sr-obsidian:transcript` | AI 회의 전사 번역·STT 보정 → 구조화 회의록 (meetings-raw verbatim 보존) |
 
 **시간 기반 로그**
 
