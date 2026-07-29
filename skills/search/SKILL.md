@@ -2,7 +2,6 @@
 name: search
 description: >
   sr-labs vault 자연어 검색 — 관련 노트 목록 + 맥락 스니펫을 영역별 그룹화해 반환, 60-logs(데일리·주간보고)는 기본 제외. "X 찾아줘", "Y 관련 이슈 있어?", "Z 어디서 다뤘지?", "ISS-XXX 어떻게 됐어" 표현에서 즉시 실행.
-  Do NOT use for wiki 용어 페이지 질의·생성 → sr-obsidian:wiki.
   Do NOT use for 인수인계·경위 문서 생성 → sr-obsidian:handover.
   Do NOT use for wiki 용어 페이지 질의·생성 (use sr-obsidian:wiki — search는 vault 전체 노트 검색, wiki query는 wiki-term 우선 질의·답변 파일링).
   Keywords: 찾아줘, 검색, 어디, 있어, 관련, 이슈 찾기, 노트 찾기, search, 조회, 어디서 다뤘
