@@ -56,9 +56,18 @@ python3 _scripts/daily/collect.py open-issues
   done
   ```
 
-- **ISS 이슈(vault)**: `10-projects/ISS-*/steps/` 전부 `end-date` 세팅인데 hub `status`가 `done`/`closed`가 아니면 `⚠️ 종료 후보`
+- **ISS 이슈(vault)**: 위 `open-issues` 출력에 `ISS-NNN` 패턴으로 언급된 이슈만 검사 대상 —
+  **vault 전체 `10-projects/ISS-*/` 스캔 금지** (대상 외 스캔 시 무관한 결과가 대량 발생한다).
+  해당 ISS의 `steps/` 전부 `end-date` 세팅인데 hub `status`가 `done`/`closed`가 아니면 `⚠️ 종료 후보`
 
-출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장 (종료 후보는 상단 분리).
+출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장 (종료 후보는 상단 분리). 종료 후보 sub-bullet은 다음 포맷을 고정한다:
+
+```
+- [ ] #N — 제목
+  - {ISS-NNN} steps {완료}/{전체} 완료, hub status: {status} — 종결 판단 필요
+```
+
+(GH 이슈 종료 후보는 기존 "머지 PR #M 종료키워드 참조·미종료" 문구를 유지한다)
 
 ### G2. 브랜치
 
@@ -117,7 +126,7 @@ git-workflow 절차 — 제목 `docs: {YYYY-MM-DD} 데일리 노트 작성`, 브
 ### 4. 노트 작성
 
 [template.md](references/template.md) 형식으로 Write. 섹션 구성 규칙(리마인드 생략 조건 포함)도 같은 파일 참조.
-오픈 이슈 조회는 G1과 동일하게 `collect.py open-issues` 실행.
+오픈 이슈 조회는 G1과 동일하게 `collect.py open-issues` 실행 — **종료 후보 감지(G1의 GH+ISS 절차)도 동일 적용**.
 
 ### 5~7. 마무리
 
