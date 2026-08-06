@@ -91,6 +91,14 @@ gh pr list --repo SeokRae/knowledge-labs --state merged \
 
 출력 각 줄로 placeholder를 Edit 교체. 머지 PR 없으면 건너뜀.
 
+당일 코드 저장소 릴리즈도 같이 수집한다 (placeholder 여부와 무관하게 매번 실행 — 릴리즈는 노트 작성 이후 시각에 나기 쉽다):
+
+```bash
+python3 _scripts/daily/collect.py releases "{YYYY-MM-DD}"
+```
+
+출력이 있으면 작업 로그의 `### 서비스 릴리즈` 하위에 삽입하되, **이미 같은 태그가 적혀 있으면 건너뛴다**(중복 누적 방지).
+
 ### G4~G5. 마무리
 
 git-workflow 절차로 커밋(`docs: {YYYY-MM-DD} 데일리 노트 갱신 (#{N})`)·Push 후 완료 출력 (파일·브랜치).
@@ -107,10 +115,14 @@ git-workflow 절차로 커밋(`docs: {YYYY-MM-DD} 데일리 노트 갱신 (#{N})
 python3 _scripts/daily/collect.py carryover "{PREV_NOTE_PATH}"        # 이월 항목 + 최근 30개 노트 이월 횟수 태그
 YESTERDAY=$(date -j -v-1d -f "%Y-%m-%d" "{YYYY-MM-DD}" "+%Y-%m-%d")
 python3 _scripts/daily/collect.py done-prs "{PREV_DATE}" "$YESTERDAY" # 직전~어제 머지 PR (KST 경계, 데일리·ingest 제외)
+python3 _scripts/daily/collect.py releases "{PREV_DATE}" "$YESTERDAY" # 직전~어제 코드 저장소 릴리즈
 ```
 
-→ `{CARRIED_ITEMS}` (없으면 빈 문자열), `{PREV_DONE_PRS}` (없으면 `- (없음)`).
+→ `{CARRIED_ITEMS}` (없으면 빈 문자열), `{PREV_DONE_PRS}` (없으면 `- (없음)`), `{PREV_RELEASES}` (없으면 빈 문자열).
 직전 노트가 금요일이면 주말 머지분까지 자연 포함된다.
+
+`done-prs`는 vault 저장소만 조회하므로 코드 저장소의 서비스 릴리즈를 못 잡는다. `releases`가 그 갭을 메우는 별도 소스이니
+**둘 중 하나만 돌리고 끝내지 않는다.** vault 산출물 노트만 기록되고 정작 그것을 만든 배포가 누락되는 사고가 실제로 있었다.
 
 ### 2. 오늘 목표 자동 제안
 
