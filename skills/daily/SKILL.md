@@ -56,7 +56,21 @@ python3 _scripts/daily/collect.py open-issues
 
 - **ISS 이슈(vault)**: 위 `open-issues` 출력에 `ISS-NNN` 패턴으로 언급된 이슈만 검사 대상 —
   **vault 전체 `10-projects/ISS-*/` 스캔 금지** (대상 외 스캔 시 무관한 결과가 대량 발생한다).
-  해당 ISS의 `steps/` 전부 `end-date` 세팅인데 hub `status`가 `done`/`closed`가 아니면 `⚠️ 종료 후보`
+  해당 ISS의 `steps/` 전부 `end-date`가 **실제 날짜값으로 채워짐**인데 hub `status`가 `done`/`closed`가 아니면 `⚠️ 종료 후보`.
+
+  **`end-date` 필드 존재 여부와 값 유무를 반드시 구분할 것** — frontmatter에 `end-date:`만 있고 값이 비어있는 step도
+  단순 `grep -l "end-date"`로는 "세팅됨"으로 오카운트된다. 반드시 값까지 매치하는 정규식을 쓴다:
+
+  ```bash
+  DIR="10-projects/ISS-{NNN}-*"
+  TOTAL=$(find $DIR/steps -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+  DONE=$(grep -lE "^end-date: [0-9]{4}-[0-9]{2}-[0-9]{2}" $DIR/steps/*.md 2>/dev/null | wc -l | tr -d ' ')
+  HUB=$(grep -l "^type: issue" $DIR/*.md 2>/dev/null | head -1)
+  HUB_STATUS=$(grep -m1 "^status" "$HUB" | cut -d: -f2 | tr -d ' ')
+  ```
+
+  hub는 `type: issue` frontmatter를 가진 파일로 식별한다 — 파일명 패턴(`*현황*` 등)으로 추측하지 않는다.
+  `ISS-{NNN} WBS.md`(`type: literature`)에도 `status:` 필드가 있어 파일명만으로 hub를 짚으면 잘못된 status를 읽는다.
 
 출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장 (종료 후보는 상단 분리). 종료 후보 sub-bullet은 다음 포맷을 고정한다:
 
