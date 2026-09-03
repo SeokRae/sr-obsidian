@@ -7,27 +7,35 @@
   },
   "metadata": {
     "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·radar·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·transcript·visualize·audit·migrate·search·archive·defuddle·canvas·obsidian-bases·handover",
-    "version": "0.15.2"
+    "version": "0.15.3"
   },
   "plugins": [
     {
       "name": "sr-obsidian",
       "source": "./",
       "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·radar·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·transcript·visualize·audit·migrate·search·archive·defuddle·canvas·obsidian-bases·handover",
-      "version": "0.15.2",
+      "version": "0.15.3",
       "author": {
         "name": "SeokRae",
         "email": "kslbsh@gmail.com"
       },
       "keywords": [
         "obsidian",
+        "zettelkasten",
         "project",
         "docs",
         "wbs",
         "hub",
         "adr",
-        "visualize",
-        "handover"
+        "wiki",
+        "radar",
+        "lint-wiki",
+        "study",
+        "daily",
+        "weekly",
+        "retro",
+        "handover",
+        "transcript"
       ],
       "category": "knowledge"
     }
