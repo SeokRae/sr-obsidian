@@ -46,7 +46,20 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 
 4. **프로젝트별 그루핑** — **ISS는 step 기준**: `10-projects/ISS-NNN-*/steps/step-*.md` frontmatter(title·status·날짜)를
    읽어 step 순서대로 나열하고 이번 주 완료·진행 항목을 데일리 로그와 매핑. 비-ISS(FT·QA·dqr)는 flat 묶음.
-   상태 표기: ✅ done / 🚧 in-progress / ⏸ ready
+   ISS 폴더는 셸 glob 대신 `find`로 `10-projects`, `40-archives` 양쪽에서 찾습니다. zsh는 한쪽 glob만 비어도 명령 전체를 실패시켜요.
+
+   ```bash
+   find 10-projects 40-archives -maxdepth 1 -type d -name 'ISS-{NNN}-*' 2>/dev/null
+   ```
+
+   `40-archives`에 있는 ISS는 이번 주(목~수)에 옮겨진 것만 step 계층으로 펼칩니다. 주중에 종료, 아카이브된 ISS가 주간보고에서 빠지지 않게 하려는 거예요. 옮겨진 날은 아래 명령의 첫 줄(그 경로에 파일이 처음 생긴 커밋)로 확인합니다. 그보다 먼저 아카이브된 ISS는 이번 주 데일리에 나온 작업(원본 `comms/` 추가 등, #8607 D2)만 flat 한 줄로 적고 step 목록은 다시 펼치지 않아요.
+
+   ```bash
+   git log --reverse --diff-filter=A --format=%ad --date=short -- "40-archives/ISS-{NNN}-{slug}" | head -1
+   ```
+
+   상태 표기: ✅ done / 🚧 in-progress / ⏸ ready / ⛔ cancelled(ISS 종료로 중단) / ➖ 미적용(`applicable: false`)
+   중단, 미적용 step은 완료로 세지 않습니다. status와 날짜가 어긋나면 날짜를 따라요 (`end-date` 값이 있어야 완료, #8607 D1)
 
    **step 계층 규칙**: step 내에 이번 주 추적할 하위 작업이 있을 때만 계층 표기, 없으면 step 한 줄.
 
@@ -72,6 +85,7 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 | 미완료 분류 수정 | `"1번 blocked→deferred"` 형식 입력 반영 후 재출력 |
 | `steps/` 디렉터리가 실제로 없음 | 데일리 로그 기반 flat 형식으로 대체 (있는데 하위 작업만 없는 경우는 대체 대상 아님 — step 한 줄로 표기) |
 | ISS 이름과 실제 작업 범위 불일치 | 실제 작업 기준 기재, 괄호로 원래 트리거 병기 |
+| 데일리에 나온 ISS가 `40-archives`에 있음 | 이번 주(목~수)에 옮겨졌으면 step 계층으로 펼침, 그 전에 옮겨졌으면 이번 주 작업만 flat 한 줄 |
 | 완료 0개 / 미완료 0개 | 완료율 0%(이월만 정리) / 100%(인사이트만 작성) |
 
 ## Wiki Harvest (자동 트리거)

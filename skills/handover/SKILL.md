@@ -33,8 +33,10 @@ vault 커버리지가 갭이다 — ISS는 일부만 summary가 있고, FT·서�
 1. 대상 폴더에 기존 summary 노트가 있는지 확인한다.
 
    ```bash
-   ls {대상폴더}/*summary*.md 2>/dev/null
+   find {대상폴더} -maxdepth 1 -type f -name '*summary*.md'
    ```
+
+   셸 glob(`ls {대상폴더}/*summary*.md`)은 쓰지 않습니다. zsh는 매치가 없으면 `no matches found`로 명령을 실패시켜서, "summary 없음"과 명령 오류가 구분되지 않아요.
 
 2. 실행 모드를 정한다.
 
@@ -58,13 +60,16 @@ vault 커버리지가 갭이다 — ISS는 일부만 summary가 있고, FT·서�
 
 ```bash
 cd /Users/sr/obsidian/sr-labs
-ls -d 10-projects/ISS-119-* 40-archives/ISS-119-* 2>/dev/null
+find 10-projects 40-archives -maxdepth 1 -type d -name 'ISS-119-*' 2>/dev/null
 ```
+
+ISS 폴더는 `find`로 찾습니다. `ls -d 10-projects/ISS-119-* 40-archives/ISS-119-*`는 zsh에서 한쪽 glob만 비어도(진행 중이면 `40-archives` 쪽이 빔) 명령 전체가 실패해요.
 
 서비스 대상일 때 링크된 ISS는 허브 노트의 ISS 링크와 역참조로 찾는다.
 
 ```bash
-grep -rl "{서비스 키워드}" 10-projects/ISS-*/ 40-archives/ISS-*/ --include="*.md" 2>/dev/null | sed 's|/[^/]*$||' | sort -u
+grep -rl --include='*.md' "{서비스 키워드}" 10-projects 40-archives 2>/dev/null \
+  | grep -E '^(10-projects|40-archives)/ISS-' | cut -d/ -f1-2 | sort -u
 ```
 
 **후보가 2개 이상이거나 0개면 진행하지 말고 되묻는다.** 엉뚱한 대상으로 문서를 만들면 인계받는 사람이 잘못된 배경을 사실로 학습한다.
@@ -89,7 +94,7 @@ find {scope} -name "*.md" | wc -l
 Agent(handover-collector, model: "opus", run_in_background: false) × 3
   - axis: timeline     — 무슨 일이 언제
   - axis: decisions    — 무엇을 고민했고 왜 그렇게 정했나 (미결 논의 포함)
-  - axis: open-items   — 지금 남은 것·지뢰 (ready/in-progress step, applicable:false+na-reason, 미발송 draft)
+  - axis: open-items   : 지금 남은 것과 지뢰 (ready/in-progress step, 회신 대기 waiting-on/waiting-since/review-by, 중단 step cancelled-reason, applicable:false+na-reason, 미발송 draft)
 ```
 
 **`run_in_background: false`로 띄운다.** Phase 3은 3축이 모두 있어야 시작할 수 있어 백그라운드로 겹칠 작업이 없다 — 이득이 없는 대신 수집기가 결과를 반환하지 않고 유휴 상태로 방치되는 실패 모드만 생긴다(sr-obsidian#153).
@@ -239,6 +244,8 @@ tags: [summary, handover]
 | 아카이브된 ISS | `40-archives/`에서 찾아 동일하게 처리, 최종 상태를 `현재 상태`에 명시 |
 | step frontmatter 불일치 (status vs 날짜) | 날짜 필드 기준으로 판단, 불일치 사실을 출처에 병기 |
 | `applicable: false` + `na-reason` | **누락 아님** — 미진행 사유로 `인계 시 알아야 할 것`에 기재 |
+| step `status: cancelled` + `cancelled-reason` | 완료로 쓰지 않습니다. 중단 사유와 `cancelled-date`를 `인계 시 알아야 할 것`에 적어요 (#8607 D1) |
+| step에 `waiting-on`, `waiting-since`, `review-by` | 회신 대기로 적습니다. 상대, 대기 시작일, 재확인일을 함께 쓰고, `review-by`가 지났으면 정체로 표시해요 (#8607 D1) |
 | 미발송 draft comm | 인계 항목으로 올림 (발송 주체가 사람인 경우가 많음) |
 | 수집기 1개 실패 | 1회 재시도 → 재실패 시 **호출자가 그 축을 인라인 수집**. 범위가 커 인라인이 불가능할 때만 축 없이 진행하고 누락을 문서에 명시 |
 | 기록이 수 년치 | 시간순 전량 나열 대신 국면(phase)으로 묶고, 국면마다 근거 노트를 단다 |

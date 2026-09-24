@@ -25,7 +25,7 @@ allowed-tools: Bash, Read, Glob
 | 코드 | 항목 | 판단 기준 |
 |------|------|----------|
 | (a) | **Orphan** | `type:permanent`인데 vault 내 어떤 파일도 `[[이 노트]]`로 링크하지 않음 |
-| (b) | **Dangling link** | `[[title]]`이 vault에 존재하지 않는 파일을 가리킴 |
+| (b) | **Dangling link** | `[[X]]`의 X가 vault 파일명이나 경로로 해석되지 않음. X가 어떤 노트의 H1이나 aliases와 같아도 Obsidian은 해석하지 않으니 dangling이에요(#8607 D6) |
 | (c) | **MOC 미연결** | `type:permanent`인데 `50-moc/` 어디서도 참조되지 않음 |
 | (d) | **섹션 부재** | `type:permanent`인데 `## 관련 메모` 섹션이 없음 |
 
@@ -45,8 +45,8 @@ python3 _scripts/lint-wiki.py --vault /Users/sr/obsidian/sr-labs
 4. 이슈가 있으면 우선순위 제안:
    - **(d) 섹션 부재** → 즉시 수정 가능
    - **(a) Orphan** → 역링크 삽입 또는 MOC 추가
-   - **(b) Dangling** → 링크 오타 수정 또는 대상 노트 생성
-   - **(c) MOC 미연결** → 해당 MOC에 `[[노트]]` 추가
+   - **(b) Dangling** → H1이나 aliases로 건 제목형 링크면 `[[파일명|표시명]]`으로 고쳐요. 표 셀 안의 링크는 `[[파일명\|표시명]]`처럼 `\|`를 그대로 둡니다. 대상이 정말 없으면 평문으로 바꾸거나 노트를 새로 만듭니다. 제목형 링크 때문에 같은 개념의 노트를 또 만들지 않아요
+   - **(c) MOC 미연결** → 해당 MOC에 `[[파일명|용어명]]` 추가 (링크 형식은 [obsidian-markdown](../../references/obsidian-markdown.md) `링크 대상 규칙`)
 
 ---
 

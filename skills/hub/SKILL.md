@@ -76,10 +76,27 @@ find "20-areas/payment/{project-id}/diagrams" -name "*.html" | sort
 
 ### Step 5. ISS 연결
 
-ISS 링크 패턴:
-```markdown
-- [[10-projects/ISS-{NNN}-{slug}/ISS-{NNN} {title}|ISS-{NNN}]] — {한 줄 설명}
+ISS 링크는 허브 파일명(basename) 기준으로 겁니다 (#8607 D6). 허브는 ISS 폴더 루트의 frontmatter `type: issue` 파일이에요.
+진행 중이면 `10-projects/`, 종료돼 옮겨졌으면 `40-archives/`에 있습니다.
+
+```bash
+find 10-projects 40-archives -maxdepth 2 -type f -path '*/ISS-{NNN}-*/*.md' -exec grep -l '^type: issue' {} + 2>/dev/null
 ```
+
+```markdown
+- [[{허브 파일명}|ISS-{NNN}]]: {한 줄 설명}
+```
+
+- 예전 패턴 `[[10-projects/ISS-.../...|ISS-NNN]]` 같은 전체 경로형은 쓰지 않습니다. 허브 파일명은 vault에서 유일하고, 전체 경로형은 아카이브로 폴더가 옮겨지면 깨져요
+- H1 제목이나 `ISS-NNN`만 적은 링크는 Obsidian이 풀지 않습니다
+- 허브를 찾지 못하면 링크 없이 평문 `ISS-{NNN}`으로 둡니다 (없는 노트에 선행 링크 금지)
+- ISS 상태를 적을 때는 허브 `status` 어휘(`ready`, `in-progress`, `done`, `cancelled`)를 씁니다. `open`, `closed`는 폐기된 값이에요 (#8607 D1)
+- #8610 이관 전까지는 레거시 값을 가진 ISS 허브가 남아 있습니다. ISS 허브 파일은 고치지 않고, 이 프로젝트 허브 노트에 적는 표기만 아래처럼 바꿔요
+
+  | ISS 허브 `status` | 프로젝트 허브 노트에 적는 표기 |
+  |------|------|
+  | `open` | step에서 계산한 값. step이 없거나 하나라도 `start-date`가 있으면 `in-progress`, 전부 착수 전이면 `ready` (`lint-frontmatter.py`의 치환 힌트와 같은 규칙) |
+  | `closed` | `종료(레거시 closed)`. `done`인지 `cancelled`인지는 사람이 정할 일이라 추측해서 적지 않습니다 |
 
 ### Step 6. 완료 보고
 
@@ -93,4 +110,4 @@ ISS 링크 패턴:
 | `diagrams/` 폴더 없음 | 섹션 추가 없이 진행, diagrams/ 생성 시 sr-obsidian:visualize 안내 |
 | KPI 섹션 비어 있음 | 빈 테이블로 유지, 추정값 채우지 않음 |
 | 새 프로젝트 폴더 자체가 없음 | sr-obsidian:scaffold 먼저 실행 안내 |
-| ISS 번호 찾기 불명확 | `10-projects/ISS-*/` Glob으로 목록 제시 후 선택 |
+| ISS 번호 찾기 불명확 | `10-projects/ISS-*/`, `40-archives/ISS-*/` Glob으로 목록 제시 후 선택 |

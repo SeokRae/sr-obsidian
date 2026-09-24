@@ -54,6 +54,17 @@ WIKI_DIR="$VAULT/30-resources/ai/claude-code"   # 카테고리/주제 — 주제
 | 커뮤니티·생태계 | `Claude Code plugin`, `awesome claude code`, `open source agent tool` | github, 블로그·튜토리얼 |
 | Anthropic 공식 발표 | `Anthropic announcement`, `Claude model release`, `API change` | anthropic.com/news, docs |
 
+## 링크 규칙 (#8607 D6)
+
+radar가 `[[ ]]`를 쓰는 모든 자리에 적용합니다: 미리보기의 갱신 목록, 수집 로그 본문과 `## 위키 반영`, wiki-term 노트의 MOC 역링크와 `## 관련 메모`, fan-out 역링크, MOC 등재, wiki-index 행, ingest-log 기록.
+
+- **형식은 `[[{파일명}|{용어명}]]`**: 파일명은 대상 노트의 실제 파일명에서 `.md`를 뺀 값이에요. radar 노트는 파일명이 영문 slug이고 H1이 한글 용어명이라 둘이 거의 늘 다릅니다. 예: `[[block-reads-outside-working-dirs|작업 디렉토리 밖 읽기 차단]]`
+- **H1 제목이나 `aliases`로 링크 금지**: Obsidian은 파일명과 경로로만 링크를 해석해요. `[[작업 디렉토리 밖 읽기 차단]]`처럼 제목이나 alias를 대상으로 쓰면 미해소로 남습니다. 제목이나 alias로 노트를 찾았더라도 링크는 그 노트의 파일명으로 겁니다. `WIKI_DIR` 노트는 Phase 1 Step 1에서 짝지어 둔 파일명을 쓰고, 그 밖의 노트는 Glob이나 grep으로 실제 파일 경로를 확인해요.
+- **표 셀 안에서는 `\|`**: `| [[{파일명}\|{용어명}]] |`로 씁니다. 이스케이프하지 않은 파이프는 표 구분자로 읽혀 링크가 색인되지 않아요.
+- **같은 파일명이 둘 이상이면 경로형**: `[[{vault 기준 경로(.md 제외)}|{표시명}]]`. 날짜 로그 `{TODAY}.md`는 데일리 노트와 파일명이 같아서 항상 경로형으로 겁니다.
+- **선행 링크 금지**: 커밋 시점에 없는 노트에는 `[[ ]]`를 걸지 않아요. 로그 전용 항목, 승격하지 않은 후보, 하루 5건 한도로 다음 회차에 넘긴 후보는 평문으로 적습니다. MOC 역링크도 실재하는 MOC에만 겁니다.
+- **커밋 전 해소 확인**: Phase 2 Step 4를 마치면 [obsidian-markdown](../../references/obsidian-markdown.md)의 `링크 해소 확인`을 이번 회차에 쓰거나 고친 파일에 돌려 `미해소 0건`을 확인해요.
+
 ---
 
 ## Phase 1: 수집 + 대조 (READ-ONLY)
@@ -68,7 +79,7 @@ ls "$VAULT/60-logs/radar/$YYYY/$MM/" 2>/dev/null
 grep -rl "wiki-term: true" "$WIKI_DIR" 2>/dev/null
 ```
 
-기존 wiki-term 노트 제목·aliases·출처 URL을 메모해 둔다 → Step 3 대조에 사용.
+기존 wiki-term 노트마다 파일명(`.md` 제외), H1 제목, aliases, 출처 URL을 짝지어 메모해 둡니다. Step 3 대조에 쓰고, Phase 2에서 링크를 걸 때는 이 파일명을 대상으로 써요(§링크 규칙).
 
 ### Step 2. 웹 검색 (범위별)
 
@@ -100,7 +111,7 @@ grep -rl "wiki-term: true" "$WIKI_DIR" 2>/dev/null
 | 1 | {용어} | technology | {정의} | {url} |
 
 **기존 노트 갱신** (M건)
-- [[{노트}]] ← {무엇이 바뀜} ({url})
+- [[{파일명}|{용어명}]] ← {무엇이 바뀜} ({url})
 
 **로그 전용** (K건)
 - {항목} ({url})
@@ -148,11 +159,12 @@ tags: [radar, {주제-slug}]
 - ...
 
 ## 위키 반영
-- 신규: [[{wiki-term 노트}]]
-- 갱신: [[{wiki-term 노트}]]
+- 신규: [[{파일명}|{용어명}]]
+- 갱신: [[{파일명}|{용어명}]]
 ```
 
 자료가 없는 범위 섹션은 `- (신규 없음)` 으로 남긴다.
+본문 항목에서 wiki-term 노트를 가리킬 때도 `[[{파일명}|{용어명}]]`로 씁니다. `## 위키 반영`에는 Step 3에서 실제로 만들거나 고친 노트만 적고, 승격하지 않은 항목은 넣지 않아요(§링크 규칙).
 
 ### Step 3. ② wiki-term 노트 생성·갱신 (정제 지식)
 
@@ -174,25 +186,29 @@ aliases: [{영문 약어}, {풀네임}]
 
 > **한 줄 정의**: {한 문장}
 
-← [[AI 에이전트 MOC]]
+← [[Claude Code MOC]]
 ```
+
+MOC 역링크는 실재하는 MOC 파일명으로 겁니다. 기본 주제는 `50-moc/Claude Code MOC.md`이고, 주제를 바꿨는데 맞는 MOC가 없으면 이 줄을 생략해요.
 
 **갱신** — 기존 노트 Read 후, 변경분만 해당 섹션에 Edit 추가하고 `source:`에 새 URL 보강.
 
-**Fan-out**: 관련 노트의 `## 관련 메모`에 `[[역링크]]` 삽입 → 위키 그래프 연결.
+**Fan-out**: 관련 노트의 `## 관련 메모`에 새 노트를 `[[{새 노트 파일명}|{용어명}]]`으로 삽입해 위키 그래프를 잇습니다. 새 노트의 `## 관련 메모`에 기존 노트를 적을 때도 그 노트의 파일명으로 걸고, H1 제목을 옮겨 적지 않아요(§링크 규칙).
 
 ### Step 4. 인덱스 + ingest-log 갱신
 
-- `50-moc/wiki-index.md` 정적 테이블에 신규 노트 행 추가.
+- `50-moc/wiki-index.md` 정적 테이블에 신규 노트 행 추가. 해당 섹션의 기존 열 구성을 따르고, 용어 열은 `[[{파일명}\|{용어명}]]`로 씁니다.
 - `60-logs/ingest-log.md` 말미에 append:
 
 ```
 ## [{TODAY}] radar | {TOPIC}
-- 로그: [[60-logs/radar/{YYYY}/{MM}/{TODAY}.md]]
-- 신규: [[{노트1}]], [[{노트2}]]
-- 갱신: [[{노트3}]]
+- 로그: [[60-logs/radar/{YYYY}/{MM}/{TODAY}|{TODAY} radar 로그]]
+- 신규: [[{파일명1}|{용어명1}]], [[{파일명2}|{용어명2}]]
+- 갱신: [[{파일명3}|{용어명3}]]
 - 출처: {N}건 웹 수집
 ```
+
+**링크 해소 확인**: 커밋 전에 [obsidian-markdown](../../references/obsidian-markdown.md)의 `링크 해소 확인`을 돌립니다. 대상은 Step 2~4에서 쓰거나 고친 파일 전부(날짜 로그, 신규와 갱신 wiki-term 노트, fan-out한 관련 노트, 등재한 MOC 파일, `wiki-index.md`, `ingest-log.md`)의 절대 경로예요. `미해소 0건`이 아니면 §링크 규칙대로 고친 뒤 다시 돌리고, 통과해야 Step 5로 갑니다. `검증 불가`(exit 2)는 링크 문제가 아니니 노트는 두고 vault 경로와 파일 인자를 바로잡아 다시 돌려요.
 
 ### Step 5. 커밋 + PR
 

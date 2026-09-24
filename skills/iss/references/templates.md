@@ -3,6 +3,16 @@
 `sr-obsidian:iss` Step 5(파일 생성)에서 사용하는 전체 템플릿.
 플레이스홀더(`{NNN}`, `{title}`, `{today}` 등)는 실제 값으로 치환한다.
 
+### 링크 플레이스홀더 (#8607 D6)
+
+존재하지 않는 노트에 `[[ ]]`를 미리 걸지 않습니다. 그래서 WBS 링크는 파일이 있을 때만 씁니다.
+
+- `{wbs-link}`: WBS 파일(`ISS-{NNN} WBS.md`)이 있으면 `- [[ISS-{NNN} WBS]]`, 없으면 줄째 생략
+- `{back-link}`: WBS 파일이 있으면 `← [[ISS-{NNN} WBS]]`, 없으면 허브로 `← [[{허브 파일명}|ISS-{NNN}]]` (허브 basename, 확장자 제외)
+- Step 5 신규 생성은 WBS를 같이 만들기 때문에 항상 WBS 쪽 링크를 씁니다.
+- 기존 ISS에 summary, step, comms를 덧붙일 때는 `ISS-{NNN} WBS.md`가 실제로 있는지 먼저 확인해요. WBS 없이 운영된 ISS가 있습니다.
+- `{related-iss}`: 후속 ISS면 `[ISS-원본]`, 관련 ISS가 여럿이면 `[ISS-a, ISS-b]`, 없으면 `[]` (#8607 D2, D5)
+
 ## hub: `ISS-{NNN} {title}.md`
 
 ````markdown
@@ -11,13 +21,14 @@ type: issue
 id: ISS-{NNN}
 created: {today}
 tags: [issue]
-status: open
+status: in-progress   # ready | in-progress | done | cancelled (진행 상태는 step에서 계산)
 source: {source}
 assignee: SeokRae
 due:
 effort:
 github: SeokRae/knowledge-labs#{gh-issue-번호}
 related-ft: {related-ft}
+related-iss: {related-iss}
 description: {한 줄 설명}
 ---
 
@@ -36,13 +47,14 @@ description: {한 줄 설명}
 ### 단계 진행 (자동)
 
 ```dataviewjs
-const S = { done: "✅ 완료", "in-progress": "🔄 진행중", ready: "⏳ 대기" };
+const S = { done: "✅ 완료", "in-progress": "🔄 진행중", ready: "⏳ 대기", cancelled: "⛔ 중단" };
 const steps = dv.pages()
   .where(p => p.incident == "ISS-{NNN}" && p.step)
   .sort(p => p.step, 'asc');
+// applicable:false 는 미적용, cancelled 는 중단으로 표시 (#8607 D1, 끝나지 않은 step 을 완료로 보이지 않게)
 dv.table(
   ["#", "구분", "단계", "상태", "완료일"],
-  steps.map(p => [p.step, p.section, p.file.link, S[p.status] ?? p.status, p["end-date"] ?? "—"])
+  steps.map(p => [p.step, p.section, p.file.link, String(p.applicable) === "false" ? "➖ 미적용" : (S[p.status] ?? p.status), p["end-date"] ?? "-"])
 );
 ```
 
@@ -136,9 +148,11 @@ dv.table(
 
 ## 관련 메모
 
-- [[ISS-{NNN} WBS]]
+{wbs-link}
 - [[steps/step-01-...]]
 ````
+
+> **허브 status (#8607 D1)**: 유효값은 `ready | in-progress | done | cancelled`이고 `open`, `closed`는 쓰지 않습니다. 종료 전 값은 step에서 계산해요. step 중 하나라도 `start-date`가 있거나 step이 없으면 `in-progress`, 전부 착수 전이면 `ready`입니다. 새 ISS는 발생 시점에 step-01이 이미 착수된 것으로 보고 step-01 `start-date`에 생성일을 채우므로, 생성 시 허브는 항상 `in-progress`입니다. `ready` 허브(예: #8610에서 `open`을 치환한 허브)는 step에 `start-date`를 처음 채울 때 허브도 `in-progress`로 같이 올려요. `done`, `cancelled`는 사람이 종료를 선언할 때만 씁니다(SKILL.md "종료 절차").
 
 > **내부 공유 · 보고용 서머리 작성 시 주의**
 > - 내부 공유: 실시간 현황 공유용. 날짜 갱신하며 업데이트. 내부 ID·기술 식별자 미포함.
@@ -148,12 +162,12 @@ dv.table(
 
 ````markdown
 ---
-type: literature
+type: wbs
 created: {today}
 start-date: {today}
 tags: [timeline, dataviewjs, incident]
 status: in-progress
-related-issue: ISS-{NNN}
+related-iss: [ISS-{NNN}]
 ---
 
 # ISS-{NNN} WBS
@@ -175,6 +189,11 @@ await dv.view("_scripts/gantt/gantt-b");
 - [[ISS-{NNN} {title}]]
 ````
 
+> **WBS frontmatter (#8609 결정)**
+> - `type: wbs`: ISS WBS도 서비스 WBS와 같은 `wbs` type을 씁니다(vault `_templates/CLAUDE.md` type 레지스트리). 예전 ISS WBS는 `type: literature`로 남아 있고 #8610에서 치환해요. 서비스 WBS와 섞이지 않도록 데일리 "진행 중 WBS" 쿼리는 `20-areas/` 아래로 범위를 좁혔습니다.
+> - `related-iss`: gantt-b(`_scripts/gantt/gantt-b/view.js`)는 `related-iss`를 먼저 읽고, 없을 때만 예전 키 `related-issue`로 되짚습니다. 새 WBS에는 `related-iss`만 적어요. 값은 이 WBS가 속한 ISS 하나지만 허브와 같은 리스트 모양(`[ISS-NNN]`)으로 씁니다. Obsidian은 속성 type을 키 이름마다 vault 전체에서 하나로 두기 때문에, 같은 키를 노트마다 단일 값과 리스트로 섞으면 type 불일치로 표시돼요.
+> - 허브 스캔(archive, daily)은 허브를 `type: issue`로 식별하므로 같은 폴더의 WBS `status`를 허브 값으로 읽지 않습니다.
+
 ## summary: `ISS-{NNN} summary.md`
 
 인시던트의 **히스토리(맥락·흐름)를 서사로 파악**하기 위한 노트. hub의 `보고용 서머리`(STAR, 종료 후 보고용 압축)와 목적이 다르다 — 이건 **진행 중** 흐름 파악용이다. 생성 시엔 배경 seed만 채우고, steps/comms가 쌓이면 아래 **요약 노트 갱신** 절차로 이어 붙인다.
@@ -186,7 +205,6 @@ incident: ISS-{NNN}
 created: {today}
 updated: {today}
 tags: [summary, incident, history]
-related-issue: ISS-{NNN}
 ---
 
 # ISS-{NNN} 요약 (히스토리)
@@ -213,10 +231,11 @@ related-issue: ISS-{NNN}
 ## 관련 메모
 
 - [[ISS-{NNN} {title}]]
-- [[ISS-{NNN} WBS]]
+{wbs-link}
 ```
 
 > **생성 시엔 `## 배경`만 step-01 기준으로 seed**하고, `## 경과`·`## 현재 상태`는 placeholder로 둔다. 히스토리 축적은 아래 절차가 담당한다.
+> summary의 부모 ISS는 `incident`로만 적고 `related-iss`는 쓰지 않습니다. `related-iss`는 후속 ISS와 원본처럼 다른 ISS와의 관계를 나타내는 키라서, 자기 ISS를 넣으면 관계 조회에 잡음이 생겨요 (#8607 D2, D5).
 
 ## steps: `steps/step-{NN}-{slug}.md`
 
@@ -251,7 +270,7 @@ status: {done|in-progress|ready}
 
 ---
 
-← [[ISS-{NNN} WBS]]
+{back-link}
 ```
 
 ## comms: `comms/YYYY-MM-DD-{slug}.md`
@@ -260,7 +279,7 @@ status: {done|in-progress|ready}
 
 ```markdown
 ---
-type: incident-step
+type: incident-comm
 incident: ISS-{NNN}
 date: YYYY-MM-DD
 direction: outbound | inbound | both
@@ -271,7 +290,7 @@ summary: {한 줄 요약}
 
 # YYYY-MM-DD — {제목}
 
-← [[../ISS-{NNN} WBS]]
+{back-link}
 
 ## 원문 ({발신자} → {수신자}, {채널}, {날짜})
 
@@ -288,9 +307,15 @@ summary: {한 줄 요약}
 > inbound 수신 메시지는 검토 불필요 (원문 보존 원칙).
 
 **규칙**:
+- 생성 시 step-01은 `start-date: {today}`(생성일), `status: in-progress`로 씁니다. 발생 시점에 첫 step이 이미 착수된 것으로 봐요. 나머지 step은 `start-date`를 비우고 `status: ready`입니다 (#8609)
 - `start-date`: 완료된 step은 실제 날짜, 미래 step은 비워둠
+- 허브가 `ready`인데 step에 `start-date`를 채우면 허브 `status`도 `in-progress`로 같이 고칩니다. 한쪽만 커밋하면 린터(`lint-frontmatter.py`)가 계산값 불일치로 커밋을 막거나 경고해요 (#8607 D1)
 - `end-date`: 체크리스트 전부 `- [x]` 완료 시만 입력
 - `status` 유효값: `ready` (착수 전) / `in-progress` / `done` — `pending` 사용 금지 (린터 차단)
+- `cancelled`: 생성 시에는 쓰지 않습니다. ISS를 종료할 때 착수했지만 끝나지 않은 step을 닫는 값이며 `cancelled-date`, `cancelled-reason`을 같이 쓰고 `start-date`는 남겨요 (#8607 D1, SKILL.md "종료 절차")
+- 끝나지 않은 step을 `done`으로 적지 않습니다. 착수 전 step을 종료 때 닫으려면 `applicable: false` + `na-reason`을 씁니다 (#8607 D1)
+- 외부 회신 대기는 `status`를 바꾸지 않고 `waiting-on`(상대), `waiting-since`, `review-by`(YYYY-MM-DD) 필드를 더합니다. `review-by`가 지나면 정체로 봅니다 (#8607 D1)
+- comms의 `type`은 `incident-comm`입니다. `incident-step`은 step 파일 전용이에요 (#8607 D5)
 - 파일명: `step-{NN}-{kebab-slug}.md` (두 자리 zero-padding, 한글 사용)
 - step 번호 = 실제 작업 선후 관계 (파일 생성 순서 아님)
 

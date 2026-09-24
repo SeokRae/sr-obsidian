@@ -198,6 +198,9 @@ views:
 filters:
   and:
     - 'type == "issue"'
+    # 허브 status 는 ready | in-progress | done | cancelled (#8607 D1). closed 는 이관 전 레거시
+    - 'status != "done"'
+    - 'status != "cancelled"'
     - 'status != "closed"'
 
 properties:

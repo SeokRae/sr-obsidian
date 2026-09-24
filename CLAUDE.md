@@ -13,7 +13,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 skills/
   {skill-name}/
     SKILL.md        # 스킬 정의 (frontmatter + 실행 절차)
+    references/     # (선택) 템플릿, 형식처럼 SKILL.md에서 링크해 읽는 문서
+    scripts/        # (선택) 판정, 치환처럼 결정적으로 돌려야 하는 Python 스크립트 (예: archive/scripts/scan.py, migrate/scripts/relink.py)
+agents/             # 스킬이 띄우는 서브에이전트 정의 (예: handover-collector.md)
+references/         # 여러 스킬이 같이 쓰는 공통 문서 (git-workflow.md 등)
 ```
+
+`skills/*/scripts/`의 스크립트는 설치 캐시 경로에서 실행됩니다. SKILL.md는 `CLAUDE_PLUGIN_ROOT`를 먼저 보고, 없으면 설치 캐시에서 스크립트 파일을 찾아 플러그인 루트를 정해요(archive, migrate SKILL.md의 `ROOT=` 루트 해석 스니펫 참고). 스크립트를 추가하거나 옮기면 배포(버전 bump, 태그, marketplace pull, plugin update)까지 끝나야 설치본에서 보입니다. 실행하면 생기는 `__pycache__/`는 `.gitignore`로 제외합니다.
 
 ## 스킬 추가 체크리스트
 
