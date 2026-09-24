@@ -39,6 +39,17 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 | 기술사 4유형(technology/architecture/principle/metric)으로 정의 가능 | wiki-term → `30-resources/{카테고리}/{주제}/` |
 | vault 고유 컨텍스트(워크플로우·가이드·현황·운영 절차) | `20-areas/` 유지, `wiki-term: true` 부여 금지 |
 
+### 링크 규칙 (#8607 D6)
+
+wiki가 `[[ ]]`를 쓰는 모든 자리에 적용합니다: scan 후보표의 출처, fan-out 역링크, MOC 역링크, wiki-index 행, ingest-log 기록, query 답변의 출처 인용.
+
+- **형식은 `[[{파일명}|{용어명}]]`**: 파일명은 대상 노트의 실제 파일명에서 `.md`를 뺀 값이에요. 아래 §파일명 규칙으로 용어명에서 파일명을 만들어도 공백이 하이픈으로 바뀌는 식으로 H1과 달라질 수 있으니, 링크는 언제나 실제 파일명을 기준으로 겁니다. 파일명과 표시할 이름이 완전히 같을 때만 `[[{파일명}]]`로 줄여요.
+- **H1 제목이나 `aliases`로 링크 금지**: Obsidian은 파일명과 경로로만 링크를 해석합니다. 예를 들어 `50-moc/tech-moc.md`의 H1은 `Tech MOC`라서 `[[tech-moc|Tech MOC]]`로 걸어야 하고, `[[Tech MOC]]`는 미해소로 남아요.
+- **표 셀 안에서는 `\|`**: `| [[{파일명}\|{용어명}]] |`로 씁니다. 이스케이프하지 않으면 링크로 색인되지 않아요.
+- **같은 파일명이 둘 이상이면 경로형**: `[[{vault 기준 경로(.md 제외)}|{표시명}]]`
+- **선행 링크 금지**: 없는 노트에 `[[ ]]`를 걸지 않습니다. 생성하지 않은 scan 후보나 query 답변에서 언급만 한 개념은 평문으로 적어요.
+- **커밋 전 해소 확인**: Phase 2 커밋 직전에 [obsidian-markdown](../../references/obsidian-markdown.md)의 `링크 해소 확인`을 이번에 쓰거나 고친 파일의 절대 경로에 돌려 `미해소 0건`을 확인합니다. `검증 불가`(exit 2)는 링크 문제가 아니니 노트는 두고 vault 경로와 파일 인자를 바로잡아요.
+
 ---
 
 ## 모드 1: `scan` — 폴더 스캔으로 후보 추출
@@ -48,7 +59,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 1. 대상 폴더의 `type: permanent` 노트 전체 `Read`
 2. 기존 `wiki-term: true` 노트 확인: `Grep "wiki-term: true" 30-resources/ 20-areas/`
 3. 용어 후보 추출 (신호 강도 순):
-   - **Dangling wikilink**: `[[링크]]`인데 실제 파일 없는 것
+   - **Dangling wikilink**: `[[링크]]`인데 실제 파일 없는 것. 링크 텍스트가 기존 노트의 H1이나 aliases와 일치하면 새 용어가 아니라 제목형 링크이니 후보에서 빼요(#8607 D6)
    - **볼드 용어**: `**Term**` 또는 `**용어(영문)**` 패턴
    - **H2/H3 개념명**: 섹션 제목이 개념·약어인 것
    - **반복 태그**: 2개 이상 노트에 등장하는 태그
@@ -62,7 +73,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 | # | 용어 후보 | 출처 노트 | 상태 | 신호 |
 |---|----------|----------|------|------|
-| 1 | {용어명} | [[출처 노트]] | 신규 / 기존 | dangling / 볼드 / 섹션 / 태그 |
+| 1 | {용어명} | [[{출처 노트 파일명}]] | 신규 / 기존 | dangling / 볼드 / 섹션 / 태그 |
 
 > 생성할 번호를 선택하세요. (예: "1,3,4" / "전체")
 > 기존 노트에 wiki-term 태깅만 원하면 "태깅: {번호}" 입력
@@ -80,16 +91,17 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
      ```
      → 생성된 파일 `Read` → `Edit`으로 4유형 섹션 채우기 (`technology` / `architecture` / `principle` / `metric`)
    - **태깅만**: 기존 노트 프론트매터에 `wiki-term: true` 추가 `Edit`
-3. **Fan-out**: 출처 노트의 `## 관련 메모`에 역링크 삽입
-4. **wiki-index.md** 정적 테이블 새 행 추가
+3. **Fan-out**: 출처 노트의 `## 관련 메모`에 `[[{새 노트 파일명}|{용어명}]]`으로 역링크 삽입
+4. **wiki-index.md** 정적 테이블 새 행 추가 (용어 열은 `[[{파일명}\|{용어명}]]`)
 5. **Ingest Log** 기록:
    ```
    ## [YYYY-MM-DD] wiki | {용어명}
-   - 생성: [[{파일경로}]]
-   - 출처: [[{출처 노트}]]
+   - 생성: [[{파일명}|{용어명}]]
+   - 출처: [[{출처 노트 파일명}]]
    - 유형: {technology|architecture|principle|metric}
    ```
-6. **커밋 + PR** — [git-workflow](../../references/git-workflow.md) 커밋·PR 단계:
+6. **링크 해소 확인**: §링크 규칙의 커밋 전 확인을 1~5단계에서 쓰거나 고친 파일에 돌려요. `미해소 0건`이 나와야 다음 단계로 갑니다
+7. **커밋 + PR**: [git-workflow](../../references/git-workflow.md) 커밋, PR 단계:
    커밋 `docs: wiki-term {용어} 추가 (#{issue번호})`, PR body `Closes #{issue번호}`
 
 ---
@@ -115,7 +127,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 
 ### Phase 2: 생성 (WRITE)
 
-scan Phase 2와 동일한 순서로 진행 (`obsidian create` → Read → Edit → fan-out → wiki-index → log → PR).
+scan Phase 2와 동일한 순서로 진행 (`obsidian create` → Read → Edit → fan-out → wiki-index → log → 링크 해소 확인 → PR).
 
 ---
 
@@ -140,7 +152,7 @@ Karpathy: *"좋은 답변은 새 wiki 페이지로 저장되어야 한다. 탐�
 
 {답변 내용 (wiki 페이지 인용 포함)}
 
-> 출처: [[{페이지A}]], [[{페이지B}]]
+> 출처: [[{파일명A}|{용어명A}]], [[{파일명B}|{용어명B}]]
 
 **이 답변을 wiki 페이지로 저장할까요?** (y/n)
 > 저장하면: `30-resources/{카테고리}/{제목}.md` 로 `type: permanent` + `wiki-term: true` 파일 생성
@@ -152,7 +164,7 @@ Karpathy: *"좋은 답변은 새 wiki 페이지로 저장되어야 한다. 탐�
 scan Phase 2와 동일하되, 출처는 "query 답변"으로 기록:
 ```
 ## [YYYY-MM-DD] wiki | {제목}
-- 생성: [[{파일경로}]]
+- 생성: [[{파일명}|{제목}]]
 - 출처: query — "{원래 질문}"
 - 유형: {answer-type}
 ```
@@ -174,7 +186,9 @@ grep -rl "wiki-term: true" /Users/sr/obsidian/sr-labs/30-resources \
 
 | 용어 | 유형 | 한줄 정의 | 카테고리 | 생성일 |
 |------|------|----------|---------|--------|
-| [[Token-Bucket]] | technology | 버킷에 토큰을 채워 요청 속도를 제한하는 알고리즘 | rate-limit | 2026-01-01 |
+| [[Token-Bucket\|Token Bucket]] | technology | 버킷에 토큰을 채워 요청 속도를 제한하는 알고리즘 | rate-limit | 2026-01-01 |
+
+용어 열은 수집한 파일 경로의 파일명을 대상으로, H1 용어명을 표시명으로 씁니다(§링크 규칙). 파일명과 H1이 같으면 `[[{파일명}]]`만 써요.
 
 ---
 
@@ -198,8 +212,10 @@ aliases: [{영문 약어}, {한국어 풀네임}]
 
 > **한 줄 정의**: {한 문장}
 
-← [[{관련 MOC}]]
+← [[{관련 MOC 파일명}|{MOC 제목}]]
 ```
+
+MOC 역링크는 실재하는 MOC 파일명으로 겁니다. 맞는 MOC가 없으면 이 줄을 생략해요(§링크 규칙).
 
 ### technology 형식 (기본값)
 
@@ -258,6 +274,7 @@ AS-IS / TO-BE / 효과 (표)
 
 **파일명 규칙**: 용어명 그대로. 영문 약어 대문자, 한국어 설명은 kebab-case.
 예: `KYC-고객확인제도.md`, `DNAT.md`, `Token-Bucket.md`
+링크는 이 규칙으로 만든 실제 파일명을 대상으로 겁니다. `Token-Bucket.md`의 H1이 `Token Bucket`이면 `[[Token-Bucket|Token Bucket]]`이에요(§링크 규칙, #8607 D6).
 
 ---
 

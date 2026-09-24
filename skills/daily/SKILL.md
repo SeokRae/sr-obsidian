@@ -56,28 +56,42 @@ python3 _scripts/daily/collect.py open-issues
 
 - **ISS 이슈(vault)**: 위 `open-issues` 출력에 `ISS-NNN` 패턴으로 언급된 이슈만 검사 대상 —
   **vault 전체 `10-projects/ISS-*/` 스캔 금지** (대상 외 스캔 시 무관한 결과가 대량 발생한다).
-  해당 ISS의 `steps/` 전부 `end-date`가 **실제 날짜값으로 채워짐**인데 hub `status`가 `done`/`closed`가 아니면 `⚠️ 종료 후보`.
-
-  **`end-date` 필드 존재 여부와 값 유무를 반드시 구분할 것** — frontmatter에 `end-date:`만 있고 값이 비어있는 step도
-  단순 `grep -l "end-date"`로는 "세팅됨"으로 오카운트된다. 반드시 값까지 매치하는 정규식을 쓴다:
+  언급된 번호만 `--ids`로 넘겨 vault 감지기를 돌립니다. `--ids` 없이 돌리지 않아요.
+  `open-issues` 출력에 `ISS-NNN` 언급이 하나도 없으면 감지기를 실행하지 않습니다. 감지기도 `--ids` 값이 비거나 ISS 번호로 읽히지 않으면 전체 스캔으로 넘어가지 않고 빈 결과를 내요.
 
   ```bash
-  DIR="10-projects/ISS-{NNN}-*"
-  TOTAL=$(find $DIR/steps -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-  DONE=$(grep -lE "^end-date: [0-9]{4}-[0-9]{2}-[0-9]{2}" $DIR/steps/*.md 2>/dev/null | wc -l | tr -d ' ')
-  HUB=$(grep -l "^type: issue" $DIR/*.md 2>/dev/null | head -1)
-  HUB_STATUS=$(grep -m1 "^status" "$HUB" | cut -d: -f2 | tr -d ' ')
+  python3 _scripts/detect-stale-hubs.py --json --ids "ISS-077,ISS-084"
   ```
 
-  hub는 `type: issue` frontmatter를 가진 파일로 식별한다 — 파일명 패턴(`*현황*` 등)으로 추측하지 않는다.
-  `ISS-{NNN} WBS.md`(`type: literature`)에도 `status:` 필드가 있어 파일명만으로 hub를 짚으면 잘못된 status를 읽는다.
+  감지기는 `candidates`(종료 후보)와 `checked`(지정한 ISS 전부의 판정 레코드)를 냅니다. `checked`의 `verdict`가 `candidate`인 ISS가 `⚠️ 종료 후보`이고, `candidates`와 같은 목록이에요. 후보는 step이 모두 닫혔는데 hub `status`가 종료 상태가 아닌 ISS입니다 (#8607 D1).
+  - hub 종료 상태: `done`, `cancelled`. 레거시 `closed`는 #8610 이관 전까지 종료로 인정
+  - step 닫힘: 완료(`end-date`에 날짜 값), 중단(`status: cancelled` 또는 `cancelled-date`), 미적용(`applicable: false`) 중 하나. status와 날짜가 어긋나면 날짜를 따릅니다
+  - `checked`에는 10-projects에 없는 ISS도 빠지지 않습니다. 40-archives에 있으면 `archived`, 둘 다 없으면 `missing`이에요
 
-출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장 (종료 후보는 상단 분리). 종료 후보 sub-bullet은 다음 포맷을 고정한다:
+  bash grep으로 직접 세지 않는 이유는 예전 오카운트 두 가지를 감지기가 막기 때문입니다.
+  `end-date:`만 있고 값이 빈 step을 완료로 세지 않고(값까지 확인), hub를 frontmatter `type: issue`로 식별해요.
+  `ISS-{NNN} WBS.md`(type `wbs`, 레거시는 `literature`)에도 `status:`가 있어 파일명만으로 hub를 짚으면 잘못된 status를 읽습니다.
+  중단, 미적용 step을 완료로 부르지 않도록 집계는 `done_count`, `cancelled_count`, `na_count`로 나눠 옵니다.
+
+출력을 `{OPEN_ISSUES_WITH_STEPS}`로 저장 (종료 후보는 상단 분리). ISS를 언급한 이슈의 sub-bullet은 `checked` 레코드의 `verdict`별로 아래 포맷을 고정합니다.
+허브 링크는 감지기가 주는 `hub_link`(`[[허브 파일명|ISS-NNN]]`, #8607 D6)를 그대로 쓰고, `hub_link`가 `null`이면 링크 없이 평문 `ISS-NNN`을 씁니다 (선행 링크 금지).
 
 ```
 - [ ] #N — 제목
-  - {ISS-NNN} steps {완료}/{전체} 완료, hub status: {status} — 종결 판단 필요
+  - {sub-bullet}
 ```
+
+| `verdict` | sub-bullet |
+|------|------|
+| `candidate` | `{hub_link} steps {step_count}개 모두 닫힘 (완료 {done_count}, 중단 {cancelled_count}, 미적용 {na_count}), hub status: {hub_status}. 종결 판단 필요` |
+| `open` | `{hub_link} steps 닫힘 {closed_count}/{step_count} (완료 {done_count}, 중단 {cancelled_count}, 미적용 {na_count}), hub status: {hub_status} (종료 후보 아님)` |
+| `no-steps` | `{hub_link} steps 없음, hub status: {hub_status} (종료 후보 아님)` |
+| `hub-closed` | `{hub_link} hub status: {hub_status}, 종료 선언됨 (아카이브 대기, sr-obsidian:archive)` |
+| `archived` | `{hub_link} 아카이브됨 (40-archives, hub status: {hub_status})` |
+| `no-hub` | `ISS-NNN type: issue 허브 없음 ({folder}, 확인 필요)` |
+| `missing` | `ISS-NNN 폴더 없음 (10-projects, 40-archives 모두, 확인 필요)` |
+
+중단, 미적용 step을 "완료"로 합산하지 않습니다. `{closed_count}`는 완료, 중단, 미적용을 모두 더한 값이라 괄호 안 분리 표기를 빼지 않아요.
 
 (GH 이슈 종료 후보는 기존 "머지 PR #M 종료키워드 참조·미종료" 문구를 유지한다)
 

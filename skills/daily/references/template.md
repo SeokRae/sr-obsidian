@@ -9,6 +9,7 @@
   직전 노트가 아예 없으면 섹션 전체 생략, 한쪽 데이터만 비면 그 하위만 `- (없음)`.
   단 `### 🚀 어제 서비스 릴리즈`는 릴리즈가 없는 날이 정상이라 **결과가 비면 하위가 아니라 소제목째 생략**한다.
 - `{OPEN_ISSUES}` 자리에는 `{OPEN_ISSUES_WITH_STEPS}`(이슈 제목 + 계층형 sub-bullet) 삽입.
+- `## 진행 중 WBS / 이슈`의 WBS 조건은 `20-areas/` 아래만 봅니다. ISS WBS도 type `wbs`라서 범위를 좁히지 않으면 인시던트 WBS가 서비스 WBS 목록에 섞여요 (#8609, vault `_templates/tpl-daily.md`와 같은 쿼리).
 
 ## 템플릿
 
@@ -60,8 +61,10 @@ description: 날짜별 작업 로그 — 할 일, 배운 것, 회고
 ## 작업 로그
 
 > **ISS 작업**: ISS 허브를 부모로, 하위 step/comms를 서브 블렛으로 작성
-> `- [x] [[ISS 허브]] 작업 요약 (PR #번호)`
->   `- [[step-NN-파일명]] 또는 [[comms/파일명]] 변경 내용`
+> `- [x] [[{허브 파일명}|ISS-NNN]] 작업 요약 (PR #번호)`
+>   `- [[ISS-NNN-{slug}/steps/step-NN-파일명|step-NN]] 또는 [[ISS-NNN-{slug}/comms/파일명|요약]] 변경 내용`
+> 링크는 실제 파일명 기준입니다 (#8607 D6). 허브는 폴더 루트 `type: issue` 파일의 basename이고, H1 제목이나 `ISS-NNN`만 적으면 풀리지 않아요.
+> step 파일명은 ISS 사이에 자주 겹쳐서(`step-01-문의-수신-및-내용-분석` 등) ISS 폴더명부터 적는 경로형으로 씁니다. 이 형식은 아카이브로 폴더가 옮겨져도 그대로 풀립니다.
 > **독립 노트** (wiki·permanent 등): `- [x] [[노트]] 작업 내용 (PR #번호)`
 > **코드 저장소 릴리즈**: `### 서비스 릴리즈` 하위에 `collect.py releases {오늘}` 출력 그대로
 > 미완료 항목도 `- [ ]`로 진행 중 작업 기록 가능
@@ -85,7 +88,7 @@ TABLE
 FROM ""
 WHERE file.folder != "_templates"
 AND (
-  (type = "wbs" AND wbs-status != "export")
+  (type = "wbs" AND wbs-status != "export" AND startswith(file.folder, "20-areas/"))
   OR (type = "issue" AND status = "in-progress")
 )
 SORT type ASC, file.mtime DESC

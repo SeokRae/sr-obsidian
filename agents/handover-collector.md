@@ -37,7 +37,7 @@ model: opus
 
 무슨 일이 언제 있었는지. 해석·평가 없이 사건만.
 
-수집처: `steps/*.md`(frontmatter `title`·`status`·`start-date`·`end-date`) · `comms/*.md`(frontmatter `date`·`direction`·`from`·`to`·`summary`) · `phases/` · `60-logs/daily/` 내 대상 언급 · git 이력.
+수집처: `steps/*.md`(frontmatter `title`, `status`, `start-date`, `end-date`, 중단 step은 `cancelled-date`), `comms/*.md`(frontmatter `date`, `direction`, `from`, `to`, `summary`), `phases/`, `60-logs/daily/` 내 대상 언급, git 이력.
 
 ```bash
 git -C /Users/sr/obsidian/sr-labs log --oneline --grep="{label}" | head -50
@@ -83,13 +83,15 @@ git -C /Users/sr/obsidian/sr-labs log --oneline --grep="{label}" | head -50
 
 수집처:
 - step frontmatter `status: ready` / `in-progress` (`end-date` 없음)
+- step frontmatter `waiting-on`(회신을 기다리는 상대), `waiting-since`(대기 시작일), `review-by`(재확인일). `review-by`가 오늘보다 앞이면 정체로 적습니다 (#8607 D1)
+- step frontmatter `status: cancelled` + `cancelled-date` + `cancelled-reason`. ISS 종료 때 착수했지만 끝내지 못한 step이라 완료로 적지 않아요 (#8607 D1)
 - step frontmatter `applicable: false` + `na-reason` — **미진행 사유가 인계 시 가장 많이 되묻는 항목**
 - 허브·WBS의 블로커 표
 - `comms/`의 미발송 draft, 회신 대기
 - 본문의 `미결`·`대기`·`확인 필요`·`TODO` 문구
 
 ```bash
-grep -rn "^status: \(ready\|in-progress\)\|^applicable: false\|^na-reason:" {scope} 2>/dev/null
+grep -rnE '^(status: (ready|in-progress|cancelled)|applicable: false|na-reason:|waiting-on:|waiting-since:|review-by:|cancelled-date:|cancelled-reason:)' {scope} 2>/dev/null
 ```
 
 반환:
@@ -102,6 +104,8 @@ grep -rn "^status: \(ready\|in-progress\)\|^applicable: false\|^na-reason:" {sco
 | step-04 원인 확정·재발 방지 확인 | 미착수 step | ready — Stripe 회신 대기 | .../steps/step-04-....md |
 | 재발 통지 draft | 미발송 | 채널 send 차단, 사용자 수동 발송 필요 | .../comms/....md |
 | step-03 정산 대사 | 미진행(applicable:false) | na-reason: 대사 대상 거래 없음 | .../steps/step-03-....md |
+| step-05 파트너 답변 확인 | 회신 대기 | waiting-on: Stripe, waiting-since: 2026-09-01, review-by: 2026-09-15 (지남, 정체) | .../steps/step-05-....md |
+| step-06 재발 방지 배포 | 중단(cancelled) | cancelled-reason: 요구사항 철회, cancelled-date: 2026-09-20 | .../steps/step-06-....md |
 ```
 
 ## 출력 프로토콜

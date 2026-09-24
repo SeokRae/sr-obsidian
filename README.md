@@ -57,7 +57,7 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | daily | `sr-obsidian:daily` | Create or refresh today's daily note — Issue → branch → write → commit → PR automation |
 | weekly | `sr-obsidian:weekly` | Weekly business report (Thu–Wed cycle) — collect daily notes, draft, full PR automation |
 | retro | `sr-obsidian:retro` | Weekend retrospective (Mon–Fri cycle) — KPI and open-issue review, full PR automation |
-| archive | `sr-obsidian:archive` | Batch-move completed ISS (done/closed hub + all steps done) to 40-archives/ |
+| archive | `sr-obsidian:archive` | Batch-move closed ISS to 40-archives/ (hub `done` or `cancelled`, legacy `closed` accepted, + every step closed: done, cancelled, or not applicable), then rewrite links to the old path |
 | search | `sr-obsidian:search` | Natural-language vault search — returns related notes for any query |
 | defuddle | `sr-obsidian:defuddle` | Clip a URL into a clean markdown fleeting note in 00-inbox/ |
 | lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki quality checks — structural (orphan, dangling link) + semantic |
@@ -68,24 +68,34 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 
 ## Standard Folder Structure
 
+The standard is declared in the vault's `CLAUDE.md`, and `sr-obsidian:audit` checks projects against it.
+
 ```
 {project}/
 ├── {project-id} 프로젝트 현황.md   ← hub (sr-obsidian:hub)
-├── {project-id} WBS.md             ← WBS (sr-obsidian:wbs)
+├── {project-id} WBS.md             ← WBS (sr-obsidian:wbs), lowercase wbs.md also accepted
 │
-├── docs/
-│   ├── specs/        ← component roles, interfaces, requirements
-│   ├── architecture/ ← architecture analysis, expert reviews, constraints
-│   ├── adr/          ← Architecture Decision Records (sr-obsidian:history)
-│   ├── reports/      ← report source MD files
-│   ├── runbook/      ← operational procedures (Phase 5+)
-│   └── config/       ← infrastructure and environment config
+├── docs/                ← standard set of 12 folders
+│   ├── overview/        ← overview, API guide, onboarding (single source of truth for flows)
+│   ├── kickoff/         ← kickoff report, meeting notes, HTML slides (HTML allowed here)
+│   ├── constraints/     ← constraint analysis
+│   ├── session-design/  ← session design, scenarios
+│   ├── architecture/    ← per-component architecture
+│   ├── operations/      ← settlement, issues, test strategy, operating procedures
+│   ├── specs/           ← interface specs, API lists
+│   ├── config/          ← recorded config values
+│   ├── reports/         ← build reports (report source MD)
+│   ├── adr/             ← Architecture Decision Records (sr-obsidian:history)
+│   ├── components/      ← multi-module services only: per-module PRD, spec, legacy bundle
+│   └── _archive/        ← superseded document versions
 │
 ├── diagrams/         ← HTML only (sr-obsidian:visualize output)
 ├── features/         ← FT-xxx feature development folders
 ├── phases/           ← phase step files
 └── meetings/         ← meeting notes (sr-obsidian:history)
 ```
+
+Operating procedures go in `operations/`. The older `runbook/` folder is not part of the standard.
 
 ---
 

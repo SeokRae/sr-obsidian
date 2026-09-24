@@ -57,7 +57,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | daily | `sr-obsidian:daily` | 오늘 데일리 노트 생성·갱신 — Issue → 브랜치 → 작성 → 커밋 → PR 자동화 |
 | weekly | `sr-obsidian:weekly` | 주간보고 자동화 (목~수 사이클) — 데일리 노트 수집·초안·PR 전 과정 자동화 |
 | retro | `sr-obsidian:retro` | 주간 회고 자동화 (월~금 사이클, 주말) — KPI·오픈 이슈 검토·PR 자동화 |
-| archive | `sr-obsidian:archive` | 완료 ISS(hub done/closed + 모든 step done) 일괄 40-archives/ 이동 |
+| archive | `sr-obsidian:archive` | 종료된 ISS 일괄 40-archives/ 이동. hub `done` 또는 `cancelled`(레거시 `closed` 인정) + 모든 step 닫힘(완료, 중단, 미적용) + 이동 후 옛 경로 링크 치환 |
 | search | `sr-obsidian:search` | vault 자연어 검색 — 어떤 쿼리든 관련 노트 목록 반환 |
 | defuddle | `sr-obsidian:defuddle` | URL을 깔끔한 마크다운으로 추출해 00-inbox/ fleeting 노트로 저장 |
 | lint-wiki | `sr-obsidian:lint-wiki` | LLM Wiki 품질 검사 — 구조(orphan·dangling link) + 의미론 2단계 |
@@ -68,24 +68,34 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 
 ## 표준 폴더 구조
 
+표준은 vault `CLAUDE.md`가 선언하고, `sr-obsidian:audit`가 이 기준으로 검사합니다.
+
 ```
 {project}/
 ├── {project-id} 프로젝트 현황.md   ← 허브 (sr-obsidian:hub)
-├── {project-id} WBS.md             ← WBS (sr-obsidian:wbs)
+├── {project-id} WBS.md             ← WBS (sr-obsidian:wbs), 소문자 wbs.md도 허용
 │
-├── docs/
-│   ├── specs/        ← 컴포넌트 역할, 인터페이스, 요구사항
-│   ├── architecture/ ← 아키텍처 분석, 전문가 리뷰, 제약 분석
-│   ├── adr/          ← Architecture Decision Records (sr-obsidian:history)
-│   ├── reports/      ← 보고서 소스 MD
-│   ├── runbook/      ← 운영 절차 (Phase 5+)
-│   └── config/       ← 인프라·환경 설정 기록
+├── docs/                ← 표준 12개 폴더 세트
+│   ├── overview/        ← 개요, API 가이드, 온보딩 (단일 진실 흐름 문서)
+│   ├── kickoff/         ← 착수 보고, 회의록, HTML 슬라이드 (HTML 허용)
+│   ├── constraints/     ← 제약 분석
+│   ├── session-design/  ← 세션 설계, 시나리오
+│   ├── architecture/    ← 컴포넌트별 아키텍처
+│   ├── operations/      ← 정산, 이슈, 테스트 전략, 운영 절차
+│   ├── specs/           ← 인터페이스 명세, API 리스트
+│   ├── config/          ← 실제 설정값 기록
+│   ├── reports/         ← 구축 보고서 (보고서 소스 MD)
+│   ├── adr/             ← Architecture Decision Records (sr-obsidian:history)
+│   ├── components/      ← 멀티모듈 서비스 한정, 모듈별 PRD, Spec, legacy 번들
+│   └── _archive/        ← 구버전 문서 보관
 │
 ├── diagrams/         ← HTML 전용 (sr-obsidian:visualize 출력)
 ├── features/         ← FT-xxx 기능 개발 폴더
 ├── phases/           ← Phase step 파일
 └── meetings/         ← 회의록 (sr-obsidian:history)
 ```
+
+운영 절차는 `operations/`에 둡니다. 예전 `runbook/` 폴더는 표준 세트에 없어요.
 
 ---
 
