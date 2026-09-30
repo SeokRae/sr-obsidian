@@ -42,7 +42,7 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | **sr-obsidian** | `/sr-obsidian` | **Workflow entry point** — orchestrates new project setup or existing project management |
 | capture | `sr-obsidian:capture` | Fleeting note capture — keyword-only, no structure, saved to 00-inbox/ |
 | study | `sr-obsidian:study` | Chapter literature note → permanent note extraction (2-phase: analyze → extract) |
-| wiki | `sr-obsidian:wiki` | LLM Wiki term page creation — scan / create / index modes |
+| wiki | `sr-obsidian:wiki` | LLM Wiki term page creation — scan / create / query / index modes |
 | radar | `sr-obsidian:radar` | External web trend collection → wiki accumulation (dated log + wiki-term notes) — scheduler-ready |
 | scaffold | `sr-obsidian:scaffold` | Zettelkasten project scaffold — book study, knowledge area, or vault bootstrap |
 | iss | `sr-obsidian:iss` | Create full ISS incident/issue structure (hub + WBS + steps/ + comms/) |
