@@ -5,6 +5,7 @@ description: >
   Do NOT use for 구조화된 학습·permanent 노트 → sr-obsidian:study.
   Do NOT use for URL 웹 클리핑 → sr-obsidian:defuddle.
   Do NOT use for ADR·의사결정·회의록 → sr-obsidian:history.
+  Do NOT use for AI 회의 전사(영문 STT) 국문 번역·보정 → sr-obsidian:transcript.
   Keywords: 포착, 기록, fleeting, capture, 키워드, 메모
 allowed-tools: Glob, Write
 ---
