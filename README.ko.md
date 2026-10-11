@@ -114,7 +114,7 @@ Claude Code 재시작 후 확인:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.1.0
+#     Version: 0.16.5
 #     Scope: user
 #     Status: ✔ enabled
 ```
