@@ -4,6 +4,7 @@ description: >
   주간보고 작성 자동화 (목~수 사이클) — 해당 주 데일리 노트 수집·분석 → 초안 확인 → Issue → PR 자동화.
   Do NOT use for 주말 KPI·회고 → sr-obsidian:retro.
   Do NOT use for 당일 데일리 노트 → sr-obsidian:daily.
+  Do NOT use for 작업 경위·흐름 서사 종합·인수인계 문서 → sr-obsidian:handover.
   Keywords: 주간보고, weekly, 주간 리포트, 이번주 정리, 미완료 분석
 allowed-tools: Bash, Read, Glob, Write, Edit
 ---

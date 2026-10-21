@@ -114,7 +114,7 @@ Restart Claude Code, then verify:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.16.8
+#     Version: 0.16.9
 #     Scope: user
 #     Status: ✔ enabled
 ```

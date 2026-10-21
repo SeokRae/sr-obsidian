@@ -3,6 +3,7 @@ name: daily
 description: >
   오늘 데일리 노트 생성·갱신 — GitHub Issue → 브랜치 → 노트 작성 → PR 자동화. 파일이 이미 있으면 갱신 모드로 전환.
   Do NOT use for 주간보고 (use sr-obsidian:weekly — 목~수 사이클) 또는 주말 회고·KPI 검토 (use sr-obsidian:retro — 월~금 사이클).
+  Do NOT use for 작업 경위·흐름 서사 종합·인수인계 문서 → sr-obsidian:handover.
   Keywords: 데일리, daily, 오늘 노트, 일일 노트, 작업 로그, 갱신
 allowed-tools: Bash, Read, Glob, Write, Edit
 ---
