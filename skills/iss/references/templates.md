@@ -3,6 +3,8 @@
 `sr-obsidian:iss` Step 5(파일 생성)에서 사용하는 전체 템플릿.
 플레이스홀더(`{NNN}`, `{title}`, `{today}` 등)는 실제 값으로 치환한다.
 
+> **구조 정본은 vault 템플릿이다.** 절 순서와 이름은 vault `_templates/`의 `tpl-issue`, `tpl-incident-step`, `tpl-incident-comm`, `tpl-summary`를 따른다. vault 템플릿이 바뀌면 이 파일도 같이 맞춘다 (knowledge-labs #9122, vault `_templates/CLAUDE.md`의 "템플릿이 구조의 정본").
+
 ### 링크 플레이스홀더 (#8607 D6)
 
 존재하지 않는 노트에 `[[ ]]`를 미리 걸지 않습니다. 그래서 WBS 링크는 파일이 있을 때만 씁니다.
@@ -292,21 +294,39 @@ status: {done|in-progress|ready}
 type: incident-comm
 incident: ISS-{NNN}
 date: YYYY-MM-DD
-direction: outbound | inbound | both
+direction: inbound | outbound | both | internal
 from: {발신자}
 to: {수신자}
+status: {received | draft | ...}   # comms 상태 머신(vault _templates/CLAUDE.md)
+thread_url: {Slack 스레드 URL}      # Slack이면 필수(slack-intake 중복 대조 키), 아니면 줄째 생략
 summary: {한 줄 요약}
 ---
 
-# YYYY-MM-DD — {제목}
+# YYYY-MM-DD {제목}
 
 {back-link}
 
-## 원문 ({발신자} → {수신자}, {채널}, {날짜})
+## 배경
 
-> (원문 blockquote)
+{이 대화가 오간 이유를 한두 줄로. 앞뒤로 이어지는 comm이 있으면 링크}
 
-## 분석 / 요약
+## 원문
+
+{채널, 발신자 → 수신자, 시각. 받은 글은 고치지 않고 그대로. Slack은 스레드 링크와 메시지별 시각}
+
+## 번역과 요약
+
+{영문이면 번역, 국문이면 요약. 원문에 없는 판단이나 추정은 넣지 않는다}
+
+## 현황
+
+{지금 상태}
+
+## 완료 조건
+
+- [ ] {참여자가 요청한 것과 그 회신 여부 기준}
+
+## 관련 메모
 ```
 
 > **outbound 영문 메시지 humanize 검토 (필수)**
