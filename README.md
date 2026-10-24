@@ -1,6 +1,6 @@
 # sr-obsidian
 
-> A Claude Code plugin for managing Obsidian project documentation — hub notes, WBS, history, and folder structure, all in one place.
+> A Claude Code plugin for Obsidian Zettelkasten + project documentation — knowledge management and project docs automated with one consistent pattern.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet)](https://claude.ai/code)
@@ -114,7 +114,7 @@ Restart Claude Code, then verify:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.17.3
+#     Version: 0.17.4
 #     Scope: user
 #     Status: ✔ enabled
 ```

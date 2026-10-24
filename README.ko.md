@@ -1,6 +1,6 @@
 # sr-obsidian
 
-> Obsidian 프로젝트 문서 관리를 위한 Claude Code 플러그인 — 허브·WBS·히스토리·폴더 구조를 일관된 패턴으로 관리합니다.
+> Obsidian 제텔카스텐 + 프로젝트 문서 관리를 위한 Claude Code 플러그인 — 제텔카스텐 지식 관리와 프로젝트 문서화를 일관된 패턴으로 자동화합니다.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-blueviolet)](https://claude.ai/code)
@@ -114,7 +114,7 @@ Claude Code 재시작 후 확인:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.17.3
+#     Version: 0.17.4
 #     Scope: user
 #     Status: ✔ enabled
 ```
