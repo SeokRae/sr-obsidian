@@ -19,6 +19,7 @@ sr-obsidian 플러그인의 시작점. 상황을 파악하고 첫 번째 스킬�
 | `sr-obsidian:capture` | Fleeting 노트 포착 — 키워드만, 00-inbox/ |
 | `sr-obsidian:defuddle` | URL → 마크다운 웹 클리핑, 00-inbox/ 저장 |
 | `sr-obsidian:study` | 챕터 분석 → permanent 노트 추출 |
+| `sr-obsidian:learn` | 개념, 코드의 동작 방식 → 출처 대조한 흐름 문서, 시나리오, flowcast 그림 |
 | `sr-obsidian:wiki` | LLM Wiki 용어 페이지 생성 (scan/create/index 모드) |
 | `sr-obsidian:lint-wiki` | permanent 노트 4종 품질 검사 (orphan·dangling·MOC·섹션) |
 | `sr-obsidian:radar` | 외부 웹 최신 정보 수집 → wiki-term 누적 (60-logs/radar/ + 30-resources/) |

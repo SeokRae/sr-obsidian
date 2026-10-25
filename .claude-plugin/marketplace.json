@@ -6,15 +6,15 @@
     "email": "kslbsh@gmail.com"
   },
   "metadata": {
-    "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·radar·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·transcript·handover·visualize·audit·migrate·search·archive·defuddle·canvas·obsidian-bases",
-    "version": "0.17.4"
+    "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인: capture, study, learn, wiki, radar, lint-wiki, daily, weekly, retro, scaffold, iss, hub, wbs, history, transcript, handover, visualize, audit, migrate, search, archive, defuddle, canvas, obsidian-bases",
+    "version": "0.18.0"
   },
   "plugins": [
     {
       "name": "sr-obsidian",
       "source": "./",
-      "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인 — capture·study·wiki·radar·lint-wiki·daily·weekly·retro·scaffold·iss·hub·wbs·history·transcript·handover·visualize·audit·migrate·search·archive·defuddle·canvas·obsidian-bases",
-      "version": "0.17.4",
+      "description": "Obsidian 제텔카스텐 + 프로젝트 문서 관리 플러그인: capture, study, learn, wiki, radar, lint-wiki, daily, weekly, retro, scaffold, iss, hub, wbs, history, transcript, handover, visualize, audit, migrate, search, archive, defuddle, canvas, obsidian-bases",
+      "version": "0.18.0",
       "author": {
         "name": "SeokRae",
         "email": "kslbsh@gmail.com"
@@ -35,6 +35,7 @@
         "history",
         "hub",
         "iss",
+        "learn",
         "lint-wiki",
         "migrate",
         "obsidian-bases",
