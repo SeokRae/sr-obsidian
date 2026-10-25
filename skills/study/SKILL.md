@@ -3,6 +3,7 @@ name: study
 description: >
   챕터 literature 노트 분석 → 핵심 개념 식별·기존 노트 중복 체크 → permanent 노트 생성 + 학습 메모. "학습", "읽기", "독서", "개념 추출", "챕터 정리", "study" 요청 시 사용.
   Do NOT use for 분석 없는 빠른 포착 → sr-obsidian:capture.
+  Do NOT use for 개념, 코드의 내부 동작을 출처 대조해 그림으로 학습 → sr-obsidian:learn.
   Do NOT use for wiki/glossary 용어 페이지 → sr-obsidian:wiki.
   Do NOT use for 웹 본문 추출 → sr-obsidian:defuddle.
   Do NOT use for 책·영역 폴더 뼈대 생성 → sr-obsidian:scaffold.

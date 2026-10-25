@@ -42,6 +42,7 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | **sr-obsidian** | `/sr-obsidian` | **Workflow entry point** — orchestrates new project setup or existing project management |
 | capture | `sr-obsidian:capture` | Fleeting note capture — keyword-only, no structure, saved to 00-inbox/ |
 | study | `sr-obsidian:study` | Chapter literature note → permanent note extraction (2-phase: analyze → extract) |
+| learn | `sr-obsidian:learn` | Concept or code → how it works internally, checked step by step against primary sources (spec, pinned source file:line, run observation), then flow doc + scenario note + flowcast diagrams + reading order. Logs visualization gaps for flowcast promotion |
 | wiki | `sr-obsidian:wiki` | LLM Wiki term page creation — scan / create / query / index modes |
 | radar | `sr-obsidian:radar` | External web trend collection → wiki accumulation (dated log + wiki-term notes) — scheduler-ready |
 | scaffold | `sr-obsidian:scaffold` | Zettelkasten project scaffold — book study, knowledge area, or vault bootstrap |
