@@ -48,12 +48,14 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Skill, WebFetch
    | 명세 | JVMS, RFC, JSR의 절 | `JVMS 5.5`, `RFC 9293 3.5` |
 
    - **실행할 수 있으면 관측이 뼈대다.** 학습용 예제를 스크래치패드에 새로 만들어 트리거를 한 번 실행하고, 관측으로 호출 순서를 먼저 잡은 뒤 소스로 스텝마다 파일:줄을 단다. 소스만 읽고 순서를 정하면 순서가 틀린다(JVM 구동 학습에서 스텝 8과 9가 뒤바뀌었다). 예제에 회사 코드나 실 데이터를 쓰지 않는다.
+   - **대역으로 관측할 때는 대역의 계약부터 확인한다.** 실제 구현 대신 기록용 대역(가짜 매니저, 스텁 서버)을 쓰면, 대역이 실제 구현과 같은 계약을 따르는지 소스로 먼저 본다. 계약이 다르면 관측이 반대로 나온다(Spring 트랜잭션 학습에서 기록용 매니저의 트랜잭션 객체가 `SmartTransactionObject`가 아니라 E3가 롤백 대신 커밋으로 관측됐다).
    - 관측을 못 하면 순서의 근거를 호출 지점의 파일:줄이나 명세 절로 단다. 어느 쪽도 없으면 `[확인 필요]`.
    - **외부 소스 원문은 커밋하지 않는다.** 라이선스가 다른 소스(OpenJDK, 리눅스 커널, 외부 라이브러리)는 고정 태그로 스크래치패드에 받아(`git clone --depth 1 --branch {tag}`, raw 파일, `*-sources.jar`) 읽기만 한다. 노트에는 고정 태그 URL, 파일:줄, 함수 이름, 그 줄이 하는 일을 우리 말로 쓴 요약만 남긴다. 받은 코드는 실행하지 않는다.
 5. **시나리오 초안**: [scenario.md](references/scenario.md) 틀로 레인, 전제, 정상 흐름, 분기(B), 예외(E), 미결을 채운다.
 6. **출처 대조 관문**: 아래를 모두 만족하기 전에는 flowcast 스킬을 호출하지 않는다.
    - 모든 스텝의 근거 칸이 출처로 채워졌거나 `[확인 필요]`다. 아래 검사가 `0건`이어야 한다.
    - 관측이 있으면 정상 흐름의 순서가 관측 순서와 같다.
+   - 분기마다 "갈라지는 스텝"을 정상 흐름 스텝의 조건문과 하나씩 대조했다. 분기 조건이 바꾸는 `if`를 소스에서 모두 찾아 적는다(Spring 트랜잭션 학습에서 B2를 9, 10, 23으로만 적었다가 시퀀스를 그리며 12, 22, 24~26도 갈라짐을 찾았다).
    - 처음 이해와 출처가 다른 스텝은 시나리오 `## 출처 대조 결과` 표에 남겼다(없으면 "대조로 바뀐 것 없음").
 
    ```bash
@@ -98,7 +100,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Skill, WebFetch
 1. **git**: [git-workflow.md](../../references/git-workflow.md) 절차. 제목 `docs: {주제} 동작방식 학습 자료`, 브랜치 `feature/{N}-learn-{slug}`.
 2. **시나리오 노트**: Phase 1 초안을 Write한다. Phase 1 뒤에 고친 스텝이 있으면 관문 검사를 다시 돌린다.
 3. **흐름 문서**: [flow-doc.md](references/flow-doc.md) 틀. 요약 콜아웃 다음에 `## 읽는 순서`를 둔다.
-4. **그림**: [view-map.md](references/view-map.md)대로 flowcast 스킬에 위임한다. component, sequence, topology는 `flowcast:flowcast`로 한 번에 넘기고, mechanism과 state-loop는 각 스킬을 직접 부른다. `out_dir`과 `vault_iframe`은 `{주제 폴더}/diagrams`의 절대경로다. sequence의 소스는 시나리오 노트다. 페어드 MD에 `type: diagram`, `source:`가 있는지 확인하고, 그림 수와 이름을 흐름 문서 `## 파생 다이어그램`과 맞춘다.
+4. **그림**: [view-map.md](references/view-map.md)대로 flowcast 스킬에 위임한다. component, sequence, topology는 `flowcast:flowcast`로 한 번에 넘기고, mechanism과 state-loop는 각 스킬을 직접 부른다. `out_dir`과 `vault_iframe`은 `{주제 폴더}/diagrams`의 절대경로다. sequence의 소스는 시나리오 노트다. 대상 `diagrams/`에 다른 주제의 flowcast `_workspace/`가 있으면 오케스트레이터가 그것을 `_workspace_prev/`로 옮기므로, 이때는 뷰 스킬(`flowcast:component`, `flowcast:sequence`)을 한 장씩 직접 부른다. `render.py`는 HTML만 만든다. 페어드 MD는 같은 폴더의 기존 페어드 MD 형식을 따라 직접 쓰고, 표의 근거 줄 번호를 소스와 다시 대조한다. 페어드 MD에 `type: diagram`, `source:`가 있는지 확인하고, 그림 수와 이름을 흐름 문서 `## 파생 다이어그램`과 맞춘다.
 5. **갭 기록**: [gap-log.md](references/gap-log.md)대로 `60-logs/visualization-gaps.md`에 행을 append한다. 갭이 없으면 "갭 없음" 행. 같은 키가 이미 있으면 flowcast 승격 Issue를, flowcast 결함과 규칙 결함은 바로 flowcast Issue를 제안한다. 둘 다 승인 후 만든다.
 6. **Fan-out과 MOC**: 새 노트의 태그와 키워드로 기존 permanent 후보(최대 10개)와 MOC를 찾아 근거와 함께 보여 준다. 승인한 후보의 `## 관련 메모`에 `- [[{새 노트 파일명}]]`을, 승인한 MOC에 링크를 Edit으로 넣는다. 링크는 H1이 아니라 파일명 기준이다([obsidian-markdown](../../references/obsidian-markdown.md) 링크 대상 규칙).
 7. **Ingest Log**:

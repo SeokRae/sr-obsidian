@@ -12,9 +12,10 @@
 
 ## 위임할 때
 
-- component, sequence, topology 여러 장은 `flowcast:flowcast`에 한 번에 넘긴다. 소스 게이트를 통과하려면 흐름 문서와 시나리오가 먼저 vault에 있어야 한다.
+- component, sequence, topology 여러 장은 `flowcast:flowcast`에 한 번에 넘긴다. 소스 게이트를 통과하려면 흐름 문서와 시나리오가 먼저 vault에 있어야 한다. 대상 폴더에 다른 주제의 `_workspace/`가 있으면 뷰 스킬을 한 장씩 직접 부른다(SKILL.md Phase 2의 4).
 - `out_dir`과 `vault_iframe`은 `{주제 폴더}/diagrams`의 절대경로다. `$(pwd)` 같은 셸 치환을 쓰지 않고 실제 경로를 적는다.
 - sequence의 레인과 스텝 번호는 시나리오 노트와 같아야 한다. 분기와 예외가 그림에서 빠지지 않게 시나리오를 소스로 준다.
+- sequence 분기, 예외 시트에서는 정상 흐름과 같은 호출에만 원래 번호를 붙이고, 갈라진 화살표는 번호 없이 보조 라벨에 "스텝 N 대신"을 적는다. 같은 소속 레인이 양 끝으로 떨어져 있으면 존을 둘로 나눈다(flowcast는 같은 존의 레인이 붙어 있어야 한다).
 - mechanism과 state-loop는 `/flowcast` 팬아웃 대상이 아니라 각 스킬을 직접 부른다. 한 번에 한 장이다.
 
 ## flowcast에 없는 형태
