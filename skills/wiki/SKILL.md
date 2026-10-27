@@ -6,6 +6,7 @@ description: >
   Do NOT use for wiki 품질·연결 검사 → sr-obsidian:lint-wiki.
   Do NOT use for 외부 웹 수집·누적 → sr-obsidian:radar.
   Do NOT use for vault 전체 노트·이슈 검색 → sr-obsidian:search.
+  Do NOT use for 개념·코드의 내부 동작을 출처 대조해 흐름 그림으로 학습 → sr-obsidian:learn (wiki는 용어 정의 페이지, learn은 동작 흐름 문서·시나리오·flowcast).
   Keywords: wiki, 용어, 위키, glossary, term, wiki-term, 용어 페이지, query, 질의
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 ---
