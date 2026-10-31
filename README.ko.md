@@ -42,7 +42,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 | **sr-obsidian** | `/sr-obsidian` | **워크플로우 진입점** — 상황 파악 후 첫 번째 스킬 즉시 호출 |
 | capture | `sr-obsidian:capture` | Fleeting 노트 포착 — 키워드만 기록, 00-inbox/ 저장 |
 | study | `sr-obsidian:study` | 챕터 literature 노트 → permanent 노트 추출 (2-phase: 분석 → 생성) |
-| learn | `sr-obsidian:learn` | 개념, 코드 → 내부 동작을 1차 출처(명세, 고정 태그 소스의 파일:줄, 실행 관측)로 스텝마다 대조한 뒤 흐름 문서 + 시나리오 + flowcast 그림 + 읽는 순서. 못 그린 형태는 갭 기록 후 flowcast 승격 제안 |
+| learn | `sr-obsidian:learn` | 개념, 코드 → 내부 동작을 1차 출처(명세, 고정 태그 소스의 파일:줄, 실행 관측)로 스텝마다 대조한 뒤 흐름 문서 + 시나리오 + flowcast 그림 + 읽는 순서. 조사, 작성, 출처 대조는 각각 다른 에이전트(`learn-researcher`, `learn-writer`, `learn-verifier`)가 맡음. 못 그린 형태는 갭 기록 후 flowcast 승격 제안 |
 | wiki | `sr-obsidian:wiki` | LLM Wiki 용어 페이지 생성 — scan / create / query / index 모드 |
 | radar | `sr-obsidian:radar` | 외부 웹 동향 수집 → 위키 누적 (날짜 로그 + wiki-term 노트) — 스케줄러 자동 실행 |
 | scaffold | `sr-obsidian:scaffold` | 제텔카스텐 프로젝트 뼈대 생성 — book / area / vault 모드 |
@@ -115,7 +115,7 @@ Claude Code 재시작 후 확인:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.18.3
+#     Version: 0.19.0
 #     Scope: user
 #     Status: ✔ enabled
 ```
