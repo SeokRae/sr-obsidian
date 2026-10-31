@@ -42,7 +42,8 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Skill, WebFetch, Agent, Send
 | `learn-writer` | `sr-obsidian:learn-writer` | 시나리오 초안, vault 노트, 페어드 MD, 불일치 수정 | Phase 1의 5. 이후 `SendMessage`로 깨움 |
 | `learn-verifier` | `sr-obsidian:learn-verifier` | 관문과 재관문의 근거 칸 대조 | Phase 1의 6. 재관문은 `SendMessage`로 깨움 |
 
-- 띄우는 형식은 `Agent(name: "{이름}", subagent_type: "{subagent_type}", run_in_background: true, prompt: ...)`입니다. 프롬프트에는 각 정의의 `## 입력` 필드를 채우고, `lead: main`과 `skill_dir`(이 스킬의 Base directory)를 함께 넣어요.
+- 띄우는 형식은 `Agent(name: "{이름}", subagent_type: "{subagent_type}", prompt: ...)`입니다. 프롬프트에는 각 정의의 `## 입력` 필드를 채우고, `lead: main`과 `skill_dir`(이 스킬의 Base directory)를 함께 넣어요.
+- 팀원은 백그라운드로 돌아야 합니다. `SendMessage(to: "main")`은 백그라운드 서브에이전트만 쓸 수 있는 주소예요. Agent 도구 스키마에 `run_in_background`가 있으면 `true`로 넣고, 없으면 넣지 않습니다. 없는 런타임은 서브에이전트를 이미 백그라운드로 띄우고, 넣으면 호출이 입력 검증에서 실패해요.
 - verifier는 fork가 아닌 새 에이전트로 띄웁니다. 프롬프트에 `research.md`, 조사 요약, 작성 의도를 넣지 않습니다.
 - 불일치는 verifier가 writer에게 `SendMessage`로 바로 돌려보내고, 되돌림은 최대 2회예요. 그 사이 도착하는 회차 알림은 리드가 처리할 일이 아닙니다. 그래도 남으면 verifier가 리드에게 미해결로 보고하고 리드가 사용자에게 올립니다.
 - 사용자 확인(Phase 1 학습 계획, Phase 2 Issue 제안, fan-out과 MOC 승인)은 리드만 받습니다. 서브에이전트는 사용자에게 묻지 못해요.
