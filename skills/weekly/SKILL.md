@@ -72,12 +72,11 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 1. **중복 확인** — `60-logs/weekly/{YYYY-WNN} 주간보고.md` 존재 시 경고 후 덮어쓸지 확인
 2. **Issue + Branch** — [git-workflow](../../references/git-workflow.md) 표준 절차:
    제목 `docs: {YYYY-WNN} 주간보고 작성`, 브랜치 `feature/{N}-weekly-{YYYY-WNN}`
-3. **파일 작성** — [format.md](references/format.md)의 **파일 형식** 기준, `weekly-planner` 에이전트에 위임:
-   `Agent(weekly-planner, {week, goal})` → 생성 파일 Read 후 Phase 1 데이터·사용자 수정사항 보완.
-   **에이전트 오류·파일 미생성 시 fallback**: Phase 1 데이터를 직접 Write.
+3. **파일 작성**: [format.md](references/format.md)의 **파일 형식**으로 Phase 1 데이터와 사용자 수정사항을 직접 Write합니다.
+   서브에이전트에 넘기지 않아요. 이미 모은 데이터를 형식에 옮기는 단계라 맥락을 나눠도 얻는 게 없습니다.
 4. **자기검증** — 커밋 전 생성 파일을 다시 확인: 이월 3회↑ 항목에 "재검토 필요" 플래그를 붙였는가 / `steps/`가 존재하는 ISS를 flat으로 쓰지 않았는가. 누락 시 Edit로 보완 후 진행.
 5. **커밋 & PR** — git-workflow 커밋·PR 단계, 커밋 `docs: {YYYY-WNN} 주간보고 작성 (#{N})`
-6. **완료 출력** — Issue·Branch·PR·파일 경로 + 처리 건수(agent/수동)
+6. **완료 출력**: Issue, Branch, PR, 파일 경로
 
 ## 판단 기준
 

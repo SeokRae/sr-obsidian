@@ -64,7 +64,6 @@ ls "20-areas/payment/{project-id}/diagrams/{file}.html" 2>/dev/null && echo "EXI
 1. Read로 기존 HTML 전체 읽기
 2. 변경이 필요한 부분만 식별 (노드 좌표, 엣지 경로, 색상, 텍스트)
 3. Edit 도구로 해당 부분만 교체 — Write 전체 재작성 금지
-4. 수정 줄 수가 50줄 이상이면 bash-runner 서브에이전트에 위임
 
 **신규 파일인 경우 — Write:**
 
@@ -79,6 +78,9 @@ ls "20-areas/payment/{project-id}/diagrams/{file}.html" 2>/dev/null && echo "EXI
 ```
 /Users/sr/obsidian/sr-labs/20-areas/payment/{project-id}/diagrams/{file}.html
 ```
+
+**한 번의 Write나 Edit에는 500줄까지만 싣습니다 (두 분기 공통).**
+넘으면 뼈대를 먼저 Write하고 섹션마다 Edit로 채워요. 출력 토큰 한도는 응답 하나마다 걸려서, 서브에이전트에 넘겨도 한도는 같습니다. 그래서 위임하지 않고 나눠 씁니다.
 
 ### Step 4. 페어드 MD 생성
 
@@ -145,7 +147,7 @@ Obsidian에서 바로 확인:
 |------|------|------|
 | 기존 파일 개선 시 Edit 사용 | ✅/❌ | Write 전체 재작성 여부 |
 | 변경 줄 수 최소화 | ✅/❌ | 실제 변경 줄 수 기록 |
-| 출력 토큰 한도 위험 여부 | ✅/❌ | 500줄↑ Write 시 서브에이전트 사용 |
+| 출력 토큰 한도 위험 여부 | ✅/❌ | 한 호출에 500줄 넘게 실었는가, 넘었으면 나눠 썼는가 |
 | 소요 시간 적정 여부 | ✅/❌ | 10분 초과 시 원인 기록 |
 
 개선점이 있으면 `~/.claude/rules/corrections.md` 또는 프로젝트 memory에 기록한다.
