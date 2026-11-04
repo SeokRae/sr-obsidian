@@ -64,6 +64,17 @@ allowed-tools: Bash, Read, Glob, Write, Edit
 
    **step 계층 규칙**: step 내에 이번 주 추적할 하위 작업이 있을 때만 계층 표기, 없으면 step 한 줄.
 
+5. **개발사항 수집** — 주간보고로 그 주기에 개발한 내용을 앱별로 전달한다. 데일리 노트가 아니라 코드 저장소 릴리즈가 소스예요.
+
+   ```bash
+   python3 _scripts/daily/collect.py releases "{목}" "{수}"
+   ```
+
+   저장소별로 묶어 버전 범위를 적고, 각 릴리즈 노트(`gh release view {tag} --repo {owner}/{저장소}`)의 변경 항목을 개조식으로 옮긴다.
+   - 보고 전달용이라 ISS, PR, 저장소 이슈 번호를 적지 않는다(보고용 요약의 `→ PR #` 규칙과 다름)
+   - 배포 예정일과 스테이징 상태는 vault `20-areas/payment/{날짜} 비대면 운영 배포 목록.md`가 있을 때만 그 노트 기준으로 적는다. 없으면 적지 않고 추정하지 않는다
+   - 릴리즈가 없는 주는 "없음"
+
 초안을 [format.md](references/format.md)의 **초안 출력 형식**으로 표시하고 종료:
 > 수정할 내용이 있으면 알려주세요. (분류 수정: "1번 blocked→deferred") 확인되면 "저장" 입력 시 작성합니다.
 
@@ -74,7 +85,7 @@ allowed-tools: Bash, Read, Glob, Write, Edit
    제목 `docs: {YYYY-WNN} 주간보고 작성`, 브랜치 `feature/{N}-weekly-{YYYY-WNN}`
 3. **파일 작성**: [format.md](references/format.md)의 **파일 형식**으로 Phase 1 데이터와 사용자 수정사항을 직접 Write합니다.
    서브에이전트에 넘기지 않아요. 이미 모은 데이터를 형식에 옮기는 단계라 맥락을 나눠도 얻는 게 없습니다.
-4. **자기검증** — 커밋 전 생성 파일을 다시 확인: 이월 3회↑ 항목에 "재검토 필요" 플래그를 붙였는가 / `steps/`가 존재하는 ISS를 flat으로 쓰지 않았는가. 누락 시 Edit로 보완 후 진행.
+4. **자기검증** — 커밋 전 생성 파일을 다시 확인: 이월 3회↑ 항목에 "재검토 필요" 플래그를 붙였는가 / `steps/`가 존재하는 ISS를 flat으로 쓰지 않았는가 / `## 개발사항`에 ISS, PR 번호가 섞이지 않았는가. 누락 시 Edit로 보완 후 진행.
 5. **커밋 & PR** — git-workflow 커밋·PR 단계, 커밋 `docs: {YYYY-WNN} 주간보고 작성 (#{N})`
 6. **완료 출력**: Issue, Branch, PR, 파일 경로
 
