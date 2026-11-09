@@ -90,7 +90,7 @@ diagrams/{보고서}-delivery.html ← 전달본 (보고·킥오프 등)
 │   ├── components/      ← 멀티모듈 서비스 한정, 모듈별 PRD, Spec, legacy 번들
 │   └── _archive/        ← 구버전 문서 보관
 │
-├── diagrams/         ← HTML 전용 (sr-obsidian:visualize 출력)
+├── diagrams/         ← HTML 다이어그램 + 페어드 MD (sr-obsidian:visualize 출력)
 ├── features/         ← FT-xxx 기능 개발 폴더
 ├── phases/           ← Phase step 파일
 └── meetings/         ← 회의록 (sr-obsidian:history)
@@ -115,7 +115,7 @@ Claude Code 재시작 후 확인:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.20.0
+#     Version: 0.20.1
 #     Scope: user
 #     Status: ✔ enabled
 ```
