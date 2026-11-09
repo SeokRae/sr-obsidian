@@ -90,7 +90,7 @@ The standard is declared in the vault's `CLAUDE.md`, and `sr-obsidian:audit` che
 │   ├── components/      ← multi-module services only: per-module PRD, spec, legacy bundle
 │   └── _archive/        ← superseded document versions
 │
-├── diagrams/         ← HTML only (sr-obsidian:visualize output)
+├── diagrams/         ← HTML diagrams + paired MD (sr-obsidian:visualize output)
 ├── features/         ← FT-xxx feature development folders
 ├── phases/           ← phase step files
 └── meetings/         ← meeting notes (sr-obsidian:history)
@@ -115,7 +115,7 @@ Restart Claude Code, then verify:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.20.0
+#     Version: 0.20.1
 #     Scope: user
 #     Status: ✔ enabled
 ```
