@@ -103,7 +103,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Skill, WebFetch, Agent, Send
    ```bash
    printf '\n## [%s] learn | {주제} → 노트 2, 그림 {N}\n{만든 파일 경로 목록}\n' "$(date +%Y-%m-%d)" >> 60-logs/ingest-log.md
    ```
-9. **검사와 PR**: `{ws}/verify-log.md`의 회차 요약을 시나리오 노트 `## 검증 기록` 표와 PR 본문에 옮깁니다. 재관문 뒤에 쓰는 기록이라 대조 대상이 아니에요. 만든 노트를 `python3 _scripts/note_validator.py {경로...}`로 검사하고, `python3 "{skill_dir}/scripts/evidence_gate.py" "{시나리오 노트}"`를 한 번 더 돌립니다. 만든 경로만 명시해 add하고(`git add -A` 금지) `git diff --cached --name-only`로 확인한 뒤 커밋, PR(`Closes #N`).
+9. **검사와 PR**: `{ws}/verify-log.md`의 회차 요약을 시나리오 노트 `## 검증 기록` 표와 PR 본문에 옮깁니다. 재관문 뒤에 쓰는 기록이라 대조 대상이 아니에요. 만든 노트를 `python3 _scripts/note_validator.py {경로...}`로 검사하고, `python3 "{skill_dir}/scripts/evidence_gate.py" "{시나리오 노트}"`를 한 번 더 돌립니다. 만든 경로만 [git-workflow.md](../../references/git-workflow.md)의 스테이징 규칙대로 add한 뒤 커밋, PR(`Closes #N`).
 
 ## 하지 않는 것
 

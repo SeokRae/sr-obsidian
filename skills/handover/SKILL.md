@@ -168,7 +168,7 @@ gh pr list --repo SeokRae/knowledge-labs --state merged --search "{label}" --lim
 3. **노트 작성** — 아래 형식. 갱신 모드면 Edit로 해당 섹션만 손댄다.
 
 4. **커밋 & PR** — [git-workflow](../../references/git-workflow.md) 커밋·PR 단계.
-   `git add "{출력경로}"` 후 `git diff --cached --name-only`로 의도한 파일만 staged인지 확인.
+   스테이징 대상은 `{출력경로}` 하나.
    커밋 `docs: {label} 인수인계 문서 작성 (#{N})`
 
 5. **완료 출력** — Issue·Branch·PR·파일 경로, 그리고 근거 없는 구간 건수.
