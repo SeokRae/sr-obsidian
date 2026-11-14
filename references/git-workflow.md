@@ -9,6 +9,8 @@ sr-labs vault 노트 작업의 표준 Issue→Branch→PR 절차.
 - 브랜치는 반드시 **main 최신에서** 분기. worktree 금지(머지 전까지 Obsidian에서 파일이 안 보임), feature 브랜치 체인 금지.
 - PR body에 `Closes #N` 필수 — 머지 시 이슈 자동 종료(self-issue open 누수 차단).
 - 같은 목적의 오픈 이슈가 이미 있으면 **재사용**하고 신규 생성하지 않는다.
+- 스테이징은 이번 작업이 만들거나 고친 경로만 지정해서 한다. `git add -A`, `git commit -am`은 쓰지 않는다. vault는 여러 세션이 워킹트리 하나를 공유해서, 다른 세션의 미커밋 파일이 커밋에 실린다.
+- 커밋 직전에 `git diff --cached --name-only`로 staged 목록을 눈으로 확인한다. 의도하지 않은 파일이 섞였으면 `git restore --staged <경로>`로 뺀다.
 
 ## 절차
 
@@ -24,7 +26,8 @@ git checkout main && git pull origin main
 git checkout -b feature/${ISSUE}-{slug}
 
 # 3. 노트 작성 후 커밋·Push·PR
-git add {파일}
+git add -- {이번 작업이 만들거나 고친 파일}
+git diff --cached --name-only   # 위 파일만 있는지 눈으로 확인
 git commit -m "{prefix}: {제목} (#${ISSUE})"
 git push -u origin HEAD
 gh pr create --repo SeokRae/knowledge-labs \

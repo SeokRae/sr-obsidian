@@ -151,7 +151,7 @@ vault 에 `_scripts/vault-review.py` 가 있으면 이관 전후로 돌려서 A 
 sr-obsidian:audit 재실행 결과: ✅ 전체 통과
 ```
 
-커밋할 때는 옮긴 파일과 relink 가 고친 파일만 경로를 지정해서 add 합니다. 공유 워킹트리라 `git add -A` 는 쓰지 않아요. 커밋 직전에 `git diff --cached --name-only` 로 목록을 눈으로 확인하고, 보류한 파일이나 `[dirty]` 파일이 섞였으면 빼냅니다.
+커밋할 때는 옮긴 파일과 relink 가 고친 파일만 add 합니다. 스테이징 규칙은 [git-workflow](../../references/git-workflow.md)를 따릅니다. staged 목록에 보류한 파일이나 `[dirty]` 파일이 섞였으면 빼냅니다.
 
 ## 판단 기준
 

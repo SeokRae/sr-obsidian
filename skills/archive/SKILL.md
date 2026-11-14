@@ -105,7 +105,7 @@ python3 "$RELINK" --vault . \
 - `[folder-ref]`: Dataview `FROM`, `dv.pages`, Bases `inFolder`처럼 옮긴 ISS 폴더 경로를 문자열로 참조하는 곳입니다. 엔진이 고치지 않으니 표시된 새 경로로 사람이 고쳐요. 고치지 않으면 쿼리가 오류 없이 비어 버립니다(60-logs 기록은 건수만 PR 본문에 남김)
 - `[dirty-move]`: 옮기는 폴더 안 파일에 미커밋 변경이 있습니다. 그 ISS는 이동을 보류하거나 `git mv`를 되돌리고, 변경 주인이 커밋한 뒤 다시 실행해요
 
-스테이징은 경로를 지정해서 합니다. `git add -A`는 쓰지 않아요.
+스테이징 대상은 옮긴 폴더와 relink가 "링크 갱신" 목록에 적은 파일입니다. 스테이징 규칙은 [git-workflow](../../references/git-workflow.md)를 따릅니다.
 
 ```bash
 git add -- {relink 가 "링크 갱신" 목록에 적은 파일들}
