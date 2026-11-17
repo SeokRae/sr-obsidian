@@ -48,6 +48,7 @@ _scripts/wireframe/{app}/
 | `out_dir` | 노트를 쓸 vault 폴더 |
 | `sitemap.collapse_tabs` | 항목이 많은 탭을 화면 하나로 접는다 (탭 id → 대표 경로) |
 | `sitemap.outside_groups` | 메뉴 밖 라우트를 묶는 규칙. `exact`, `suffix`, `contains` 중 먼저 맞는 묶음에 넣는다 |
+| `wireframe.note` | 와이어프레임 목록 노트 이름. 화면별 파일은 같은 이름의 하위 폴더에 `{app}-{순번}-{명세 이름}.excalidraw.md` 로 쓴다 |
 | `wireframe.types` | 유형 id 와 이름, 그리는 순서. classify.py 의 id 와 같아야 한다 |
 | `wireframe.representative` | 유형마다 그릴 대표 라우트 하나 |
 | `wireframe.extra` | 유형에서 크게 벗어나 따로 그릴 라우트 |
