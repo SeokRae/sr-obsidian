@@ -43,6 +43,7 @@ diagrams/{report}-delivery.html  ← delivery version (for stakeholders)
 | capture | `sr-obsidian:capture` | Fleeting note capture — keyword-only, no structure, saved to 00-inbox/ |
 | study | `sr-obsidian:study` | Chapter literature note → permanent note extraction (2-phase: analyze → extract) |
 | learn | `sr-obsidian:learn` | Concept or code → how it works internally, checked step by step against primary sources (spec, pinned source file:line, run observation), then flow doc + scenario note + flowcast diagrams + reading order. Research, writing, and source cross-check run as separate agents (`learn-researcher`, `learn-writer`, `learn-verifier`). Logs visualization gaps for flowcast promotion |
+| wireframe | `sr-obsidian:wireframe` | React SPA code → screen sitemap + as-is wireframes (Excalidraw), one representative page per layout type. Spec writing and live-screen cross-check run as separate agents (`wireframe-spec-writer`, `wireframe-verifier`). Per-app config and specs live in the vault `_scripts/wireframe/{app}/` |
 | wiki | `sr-obsidian:wiki` | LLM Wiki term page creation — scan / create / query / index modes |
 | radar | `sr-obsidian:radar` | External web trend collection → wiki accumulation (dated log + wiki-term notes) — scheduler-ready |
 | scaffold | `sr-obsidian:scaffold` | Zettelkasten project scaffold — book study, knowledge area, or vault bootstrap |
@@ -115,7 +116,7 @@ Restart Claude Code, then verify:
 ```bash
 claude plugins list
 #   ❯ sr-obsidian@sr-obsidian
-#     Version: 0.20.4
+#     Version: 0.21.0
 #     Scope: user
 #     Status: ✔ enabled
 ```
