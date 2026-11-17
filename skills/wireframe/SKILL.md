@@ -11,7 +11,7 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, SendMessage
 
 # sr-obsidian:wireframe (앱 화면 사이트맵과 와이어프레임)
 
-앱 코드에서 화면 전체를 찾아 사이트맵으로 펼치고, 화면을 레이아웃 유형으로 묶어 유형마다 대표 페이지 한 장을 와이어프레임으로 그린다. 모든 화면을 1:1로 그리지 않는 대신, 모든 화면이 어느 와이어프레임에 해당하는지는 빠짐없이 적는다. 기준점은 vault의 `20-areas/payment/untact-qa/diagrams/qa-app-sitemap.excalidraw.md`, `qa-app-wireframes.excalidraw.md`와 어댑터 `_scripts/wireframe/nicepay-qa/`다.
+앱 코드에서 화면 전체를 찾아 사이트맵으로 펼치고, 화면을 레이아웃 유형으로 묶어 유형마다 대표 페이지 한 장을 와이어프레임으로 그린다. 모든 화면을 1:1로 그리지 않는 대신, 모든 화면이 어느 와이어프레임에 해당하는지는 빠짐없이 적는다. 기준점은 vault의 `20-areas/payment/untact-qa/diagrams/qa-app-sitemap.excalidraw.md`, `qa-app-wireframes.md`(목록)와 `qa-app-wireframes/`(화면별)와 어댑터 `_scripts/wireframe/nicepay-qa/`다.
 
 ## 사용법
 
@@ -25,7 +25,8 @@ allowed-tools: Read, Glob, Grep, Write, Edit, Bash, Agent, SendMessage
 | 산출물 | type | 위치 |
 |---|---|---|
 | 사이트맵 | diagram | `{out_dir}/{sitemap.note}.excalidraw.md` |
-| 와이어프레임 (공통 헤더 + 유형별 대표 + 따로 그린 화면) | diagram | `{out_dir}/{wireframe.note}.excalidraw.md` |
+| 와이어프레임 목록 노트 (유형, 화면 수, 대표, 링크, 유형별 화면 목록) | diagram | `{out_dir}/{wireframe.note}.md` |
+| 와이어프레임 (공통 헤더 + 유형별 대표 + 따로 그린 화면, 한 장에 파일 하나) | diagram | `{out_dir}/{wireframe.note}/{app}-{순번}-{명세 이름}.excalidraw.md` |
 | 레이아웃 명세 | - | vault `_scripts/wireframe/{app}/specs/*.json` (다시 그릴 때 재사용) |
 
 설정 키(`out_dir`, `note` 등)와 어댑터 구성은 [adapter.md](references/adapter.md), 명세 형식은 [spec-schema.md](references/spec-schema.md)에 있다.
@@ -93,10 +94,10 @@ SD="$ROOT/skills/wireframe/scripts"; AD="_scripts/wireframe/{app}"; EX="_scripts
 2. **렌더와 눈 확인**:
    ```bash
    python3 -I $SD/build_sitemap.py --exdraw $EX --config $AD/config.json --menu {ws}/menu.json --pages {ws}/pages.json --out {ws}/sitemap.excalidraw.md --svg {ws}/sitemap.svg --rev "{브랜치} {커밋}"
-   python3 -I $SD/build_wireframes.py --exdraw $EX --config $AD/config.json --specs {ws}/specs --pages {ws}/pages.json --out {ws}/wf.excalidraw.md --svg {ws}/wf.svg --rev "{브랜치} {커밋}"
-   rsvg-convert -w 3600 {ws}/wf.svg -o {ws}/wf.png
+   python3 -I $SD/build_wireframes.py --exdraw $EX --config $AD/config.json --specs {ws}/specs --pages {ws}/pages.json --out {ws}/{note}.md --svg {ws}/svg --split-dir {ws}/{note} --rev "{브랜치} {커밋}"
+   rsvg-convert -w 1400 {ws}/svg/{파일}.svg -o {ws}/{파일}.png
    ```
-   PNG를 `sips -c {h} {w} --cropOffset {y} {x}` 로 잘라 화면 2~3장을 확대해 본다. 글자 겹침, 빈 카드, 잘린 문구가 있으면 명세나 렌더러를 고친다. 메뉴가 없는 앱은 사이트맵을 건너뛴다.
+   `--split-dir` 를 주면 화면 한 장을 파일 하나로 쓰고 `--out` 에 목록 노트를 쓴다. 빼면 한 파일에 모두 그린다(16장이면 보기 불편해서 기본은 분리). 화면 2~3장의 PNG를 열어 본다. 글자 겹침, 빈 카드, 잘린 문구가 있으면 명세나 렌더러를 고친다. 메뉴가 없는 앱은 사이트맵을 건너뛴다.
 3. **배포 화면 대조** (`wireframe-verifier`): `specs`, `base_url`, `outline`(`$SD/outline.js`), `out`(`{ws}/verify.md`)을 넘긴다. 불일치는 리드가 명세에서 고치고 2를 다시 돌린다. 상태 차이는 고치지 않는다. 검증 불가(창 너비, 로그인)면 사용자에게 알리고 대조 없이 갈지 묻는다.
 4. **보고**: 화면별 대조 결과 표, 고친 불일치, 대조 못 한 영역(실행 뒤, 스크롤 아래, 배포본 버전)을 보여 주고 vault에 쓸지 확인받는다.
 
@@ -104,7 +105,7 @@ SD="$ROOT/skills/wireframe/scripts"; AD="_scripts/wireframe/{app}"; EX="_scripts
 
 1. **git**: [git-workflow.md](../../references/git-workflow.md) 절차. 제목 `docs: {app} 화면 사이트맵과 와이어프레임`, 브랜치 `feature/{N}-{app}-wireframe`.
 2. **명세 보관**: `{ws}/specs/*.json` 을 `$AD/specs/` 로 복사한다.
-3. **노트**: Phase 2의 2 명령을 `--out {out_dir}/{note}.excalidraw.md` 로 다시 돌린다. `python3 _scripts/note_validator.py {경로...}` 로 검사하고 `obsidian open path="{경로}"` 로 연다.
+3. **노트**: Phase 2의 2 명령을 `--out {out_dir}/{note}.md --split-dir {out_dir}/{note}` 로 다시 돌린다. 예전 판의 파일 중 이번에 만들지 않은 것(대표가 바뀐 유형의 옛 파일, 합본 `{note}.excalidraw.md`)은 지우고, 그 파일을 가리키던 링크를 목록 노트로 고친다. `python3 _scripts/note_validator.py {경로...}` 로 검사하고 `obsidian open path="{경로}"` 로 연다.
 4. **커밋과 PR**: 만든 경로만 스테이징 규칙대로 add 한다. PR 본문에 기준 커밋, 유형 수, 대조 결과 요약, 대조 못 한 영역을 적는다.
 
 ## 하지 않는 것
