@@ -41,13 +41,27 @@ allowed-tools: Read, Write, Bash, Grep, Glob
 
 새 건이 기존 ISS를 잇는다면 원본 위치부터 봅니다(아래 "다른 ISS 링크"의 `find` 명령). 원본이 `40-archives/`에 있으면 아래 "후속 ISS" 절차를 따르고, 재오픈은 하지 않아요 (#8607 D2).
 
+### Step 0-1. 알람 패턴 대조
+
+알람(나이스봇 등)으로 시작한 건이면 vault의 `20-areas/payment/incident-patterns/`에서 알람 시그니처가 같은 패턴 노트(`type: incident-pattern`)를 찾습니다. 시그니처는 출처 모듈, 코드, 메시지를 함께 봐요. 같은 코드도 모듈마다 뜻이 다르기 때문입니다(예: UNT_PAY 9996은 망취소 실패, SPI 9996은 원장 INSERT 실패).
+
+```bash
+find 20-areas/payment/incident-patterns -maxdepth 1 -name 'PT-*.md' -exec grep -l '^type: incident-pattern' {} + 2>/dev/null
+```
+
+- 맞는 패턴이 있으면 허브 `alarm-pattern`에 ID를 적습니다(`[PT-01, PT-03]`, 여러 개 가능). 거래 대조는 패턴 노트의 `## 판정 절차`를 따릅니다
+- 맞는 패턴이 없으면 `alarm-pattern: []`로 둡니다. 같은 시그니처의 ISS가 이미 하나 있으면(두 번째 발생) 패턴 노트를 새로 만들고 두 허브에 키를 답니다
+- 새로 알게 된 원인과 판정 기준은 패턴 노트의 `## 알려진 원인`, `## 판정 절차`에도 반영합니다. 거래 값과 알람 원문은 ISS에 둡니다
+- 패턴 폴더가 없는 vault면 이 단계를 건너뜁니다
+- 규칙 정본은 vault `10-projects/CLAUDE.md`의 "알람 패턴 묶기"입니다
+
 ### Step 1. 다음 ISS 번호
 
 `10-projects/ISS-*` + `40-archives/ISS-*` 중 최대 번호 + 1 (3자리 zero-padding).
 
 ### Step 2. 정보 확인
 
-인자 또는 대화에서 파악 — `title`, `slug`(kebab-case), `source`(개인/github/회의/파트너), `related-ft`, `steps`.
+인자 또는 대화에서 파악 — `title`, `slug`(kebab-case), `source`(개인/github/회의/파트너), `related-ft`, `alarm-pattern`(Step 0-1), `steps`.
 steps 미지정이면 이슈 내용 기반 자동 추론 (유형별 기본 steps는 [templates.md](references/templates.md) 참조).
 **section 유효값**: `발생` | `발견` | `조사` | `원인 분석` | `조치` | `후속`
 
@@ -157,6 +171,7 @@ summary.md가 **없으면 backfill 생성, 있으면 갱신** — 요약 없이 
 | 상황 | 처리 |
 |------|------|
 | 관련 FT 있음 | hub에 `related-ft:` 필드 + FT ↔ ISS 양방향 링크 |
+| 알람으로 시작한 건 | Step 0-1로 패턴 노트와 대조하고 허브 `alarm-pattern`에 기록. 두 번째 발생이면 패턴 노트 생성 |
 | 새 건의 원본 ISS가 `40-archives/`에 있음 | 재오픈 금지. 조치가 필요하면 후속 ISS, 정보성이면 원본 comms/에 추가 (#8607 D2) |
 | 원본 ISS가 `10-projects/`에서 진행 중 | 후속 ISS 절차 대상 아님. 원본에 step, comms를 더할지 새 ISS로 뗄지 판단이 서지 않으면 질문 1회 |
 | `ready` 허브의 step에 `start-date`를 처음 채움 | 같은 수정에서 허브 `status`를 `in-progress`로 갱신 |

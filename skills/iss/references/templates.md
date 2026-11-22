@@ -13,6 +13,7 @@
 - `{back-link}`: WBS 파일이 있으면 `← [[ISS-{NNN} WBS]]`, 없으면 허브로 `← [[{허브 파일명}|ISS-{NNN}]]` (허브 basename, 확장자 제외)
 - Step 5 신규 생성은 WBS를 같이 만들기 때문에 항상 WBS 쪽 링크를 씁니다.
 - 기존 ISS에 summary, step, comms를 덧붙일 때는 `ISS-{NNN} WBS.md`가 실제로 있는지 먼저 확인해요. WBS 없이 운영된 ISS가 있습니다.
+- `{alarm-pattern}`: SKILL.md Step 0-1에서 찾은 알람 패턴 ID 리스트(`[PT-01]`), 알람 건이 아니거나 맞는 패턴이 없으면 `[]`
 - `{related-iss}`: 후속 ISS면 `[ISS-원본]`, 관련 ISS가 여럿이면 `[ISS-a, ISS-b]`, 없으면 `[]` (#8607 D2, D5)
 
 ## hub: `ISS-{NNN} {title}.md`
@@ -31,6 +32,7 @@ effort:
 github: SeokRae/knowledge-labs#{gh-issue-번호}
 related-ft: {related-ft}
 related-iss: {related-iss}
+alarm-pattern: {alarm-pattern}
 description: {한 줄 설명}
 ---
 
